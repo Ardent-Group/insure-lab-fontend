@@ -4,14 +4,28 @@ import * as ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
+import { ChakraProvider } from '@chakra-ui/react'
+
+import { extendTheme } from '@chakra-ui/react'
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
+const colors = {
+   white: "#FFFFFF",
+   navbarBgColor: 'FFFFFF',
+   ctaBg: "#3E7FDF",
+   footerBgColor: "linear-gradient(0deg, rgba(103, 80, 164, 0.05), rgba(103, 80, 164, 0.05)), #FFFBFE;",
+}
+
+const theme = extendTheme({ colors })
+
 root.render(
   <StrictMode>
+    <ChakraProvider theme={theme}>
     <ColorModeScript />
     <App />
+    </ChakraProvider>
   </StrictMode>
 );
 
