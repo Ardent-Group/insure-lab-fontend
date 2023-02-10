@@ -32,9 +32,9 @@ const Navbar = () => {
         boxShadow="0px 4px 61px rgba(0, 0, 0, 0.1)"
         // zIndex={50000}
       >
-       <Link href={"/Home"}>
+       <Link href={"/"}>
         <Image src={insurelabLogo} />
-        </Link>    
+      </Link>    
      
         {isDesktop ? (
             <>
@@ -42,7 +42,7 @@ const Navbar = () => {
              {navbar_data.map((item) => (
                <Link key={nanoid()} href={item.link}>
                  <Button variant="nav" fontWeight={400}
-                  _focus={{ color: "ctaBg", fontWeight: "600" }}
+                  _focus={{ color: "ctaBg", fontWeight: "600", textDecoration: "none" }}
                   > {item.name} </Button>
                </Link>
              ))}

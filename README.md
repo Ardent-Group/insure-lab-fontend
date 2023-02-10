@@ -1,5 +1,26 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+## Developer Information
+
+A. Clone the repository with the following commands (authentication is required) from `develop` branch
+1. git clone https://github.com/Insure-Lab/insure-lab-fontend.git
+[ Do this command on your terminal to get develop branch on your local machine 
+- (`git clone -b develop https://github.com/Insure-Lab/insure-lab-fontend.git`) this will clone only develop branch instead of main branch. Please always make sure you make PR so that it can be review and get merged]
+2. Mount your resulting local app-backend directory on your IDE (e.g. VS Code)
+3. Run npm install to fetch requisite node modules dependencies
+4. To run, see the Running the app section below.
+
+B. Create a branch for your development, preferably named in line with the issue assigned to you. E.g.,
+1. git checkout -b implement-user-login
+
+C. When done locally, stage files and commit locally with befitting comment and then push the branch with -set-upstream option enabled. E.g.,
+1. git add --all
+2. git commit -m 'Implemented User CodeInputPage'
+3. git push –set-upstream origin implement-user-login
+
+D. Make a Pull request on GitHub for your pushed branch to be reviewed and then eventually merged
+
 ## Available Scripts
 
 In the project directory, you can run:

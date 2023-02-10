@@ -14,12 +14,19 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // import { ColorModeSwitcher } from './ColorModeSwitcher';
 // import { Logo } from './Logo';
 import Home from './pages/Home';
+import Protocols from './pages/Protocols';
 
 function App() {
   return (
-     <Flex>
-      <Home />
-     </Flex>
+    <Router>
+      <Flex>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/protocols" element={<Protocols />} />
+            {/* <Route path="/admin-voting" element={<AdminVoting />} /> */}
+          </Routes>
+        </Flex>
+    </Router>
   );
 }
 

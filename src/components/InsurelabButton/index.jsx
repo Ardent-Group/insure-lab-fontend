@@ -46,7 +46,6 @@ const useStyles = () => {
       fontWeight: "400",
       loadingText: "Submitting",
       fontSize: ["20px"],
-      fontWeight: "500",
       lineHeight: "20px",
       letterSpacing: "0.2px",
       borderColor: "dark",

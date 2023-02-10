@@ -5,21 +5,21 @@ export const navbar_data = [
     {
         id: "1",
         name: "Home",
-        link: "/Home",
+        link: "/",
     },
     {
         id: "2",
         name: "Insured protocols",
-        link: "/Protocols"
+        link: "/protocols"
     },
     {
         id: "3",
         name: "Claims",
-        link: "/Claims"
+        link: "/claims"
     },
     {
         id: "4",
         name: "Governance",
-        link: "/Governanace"
+        link: "/governanace"
     }
 ]
