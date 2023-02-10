@@ -63,7 +63,7 @@ const Footer = () => {
             {/* LEFT COLUMN */}
           <Flex w={"25%"} flexDir={"column"}>
             {/* Insurelab Logo is here */}
-          <Image src={insurelabLogo} />
+          <Image src={insurelabLogo} boxSize='200px' />
 
             <Flex my="30px">
              <Text {...footerDesc}>insurance coverage for these critical components of the decentralized ecosystem</Text>
