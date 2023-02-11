@@ -52,7 +52,7 @@ const Footer = () => {
     let copyRightYear = new Date().getFullYear();
 
   return (
-    <Flex {...root} flexDir={"column"} bgImage="url('/images/Footer-Background.png')">
+    <Flex {...root} flexDir={"column"} bgImage="url('/images/Footer-Background.png')" p="50px">
         <Container>
         <Flex
           height={330}
@@ -127,7 +127,7 @@ const Footer = () => {
           </Flex>
         </Flex>
          
-         <Divider  border="1px solid #49454F" />
+         <Divider  border="1px solid #3E7FDF"  />
 
          {/* Footer Links is here */}
      <Box

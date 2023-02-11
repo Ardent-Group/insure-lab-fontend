@@ -1,5 +1,5 @@
-import React, {Suspense, lazy, useEffect} from 'react'
-import { Flex, Box, Text, Spinner, Image, HStack, VStack, SimpleGrid } from '@chakra-ui/react'
+import React, {Suspense, lazy, useState} from 'react'
+import { Flex, Box, Text, Spinner, Image, HStack, VStack, SimpleGrid, Center, keyframes } from '@chakra-ui/react'
 import Footer from '../components/Footer';
 import Container from '../components/Container';
 import rockTypeImage from '../assets/Rock.svg';
@@ -7,10 +7,23 @@ import ProtocolGrid from '../components/ProtocolGrid';
 import { nanoid } from 'nanoid';
 import { useNavigate } from "react-router-dom";
 import { protocolCardData } from '../utils/protocolGrid'
+import ReactPaginate from 'react-paginate';
+import '../constants/pagination.css'
+import {useParams} from "react-router-dom";
+import { motion } from 'framer-motion';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 const ProtocolFilter = lazy(() => import("../components/ProtocolFilter"));
+
+
+const animationKeyframes = keyframes`
+  0% { transform: rotate(0); }
+  25% { transform: rotate(0); }
+  100% { transform: rotate(360deg);}
+`;
+
+const animation = `${animationKeyframes} 2s ease-in-out infinite`;
 
 const Protocols = () => {
 
@@ -26,6 +39,38 @@ const Protocols = () => {
     } = useStyles();
 
     let navigate = useNavigate();
+    const {id} = useParams();
+
+    const [protocolCard, setProtocolCard] = useState(protocolCardData.slice(0, 30));
+    //state holding page of the pagination
+    const [pageNumber, setPageNumber] = useState(0);
+
+    const protocolCardPerPage = 15
+    const pagesVisited = pageNumber * protocolCardPerPage;
+
+    const  displayProtocolCard = protocolCard
+    .slice(pagesVisited, pagesVisited + protocolCardPerPage)
+    .map((e) => {
+      return (
+        <ProtocolGrid 
+        key={nanoid()}
+        onClick={e.onclick}
+        // icon={e.icon({
+        //   color: "",
+        // })}
+        link={e.id}
+        icon={""}
+        cardName={e.label}
+      />
+      )
+    }) 
+
+    const pageCount = Math.ceil(protocolCard.length / protocolCardPerPage);
+
+    //selected is the pageNumber selected 
+    const changePage = ({selected}) => {
+       setPageNumber(selected);
+    }
 
   return (
     <Box w={"100%"}>
@@ -71,11 +116,13 @@ const Protocols = () => {
                   {...protocolInnerBox2}
                   display={{ base: "none", md: "flex" }}
                   // pos={"relative"}
+                  as={motion.div}
+                  animation={animation}
                 >
                   <Image
                     src={rockTypeImage}
-                    right={"60px"}
-                    bottom={"50px"}
+                    // right={"60px"}
+                    // bottom={"50px"}
                   />
                 </VStack>
 
@@ -119,7 +166,7 @@ const Protocols = () => {
                 w={"100%"}
               >
                 <Suspense fallback={<Spinner size="sm" />}>
-                  {protocolCardData.map((e, i) => (
+                  {/* {protocolCard.map((e, i) => (
                     <ProtocolGrid 
                       key={nanoid()}
                       onClick={e.onclick}
@@ -129,7 +176,27 @@ const Protocols = () => {
                       icon={""}
                       cardName={e.label}
                     />
-                  ))}
+                  ))} */}
+                  {displayProtocolCard}
+                  {/* <Flex alignContent={"center"} 
+                   justifyContent={"center"}
+                    pos="relative"
+                   > */}
+                   <Center>
+                   <ReactPaginate
+                   previousLabel={"<"}
+                   nextLabel={">"}
+                   pageCount={pageCount}
+                   onPageChange={changePage}
+                   containerClassName={"paginationBttns"}
+                   previousClassName={"previousBttns"}
+                   nextLinkClassName={'nextBttns'}
+                   disabledClassName={'paginationDisabled'}
+                   activeClassName={'paginationActive'}
+                  >
+                  </ReactPaginate>
+                  </Center>        
+                  {/* </Flex> */}
                 </Suspense>
               </SimpleGrid>
             </Flex>
