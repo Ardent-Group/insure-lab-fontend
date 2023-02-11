@@ -15,6 +15,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // import { Logo } from './Logo';
 import Home from './pages/Home';
 import Protocols from './pages/Protocols';
+import ProtocolDetails from './pages/ProtocolDetails';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/protocols" element={<Protocols />} />
+            <Route path="/protocols/:id" element={<ProtocolDetails />} />
             {/* <Route path="/admin-voting" element={<AdminVoting />} /> */}
           </Routes>
         </Flex>

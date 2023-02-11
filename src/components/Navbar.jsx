@@ -1,8 +1,9 @@
 import {useState} from "react";
-import {  Flex, Button, Link,  HStack, chakra, Text, Image, useBreakpointValue, Box} from '@chakra-ui/react';
+import {  Flex, Button, HStack, chakra, Text, Image, useBreakpointValue, Box} from '@chakra-ui/react';
 import { nanoid } from "nanoid";
 import {navbar_data} from '../utils/navbarData';
 import  insurelabLogo from '../assets/Logo.svg'
+import { Link } from "react-router-dom";
 import MobileDrawer from "./mobileDrawer/MobileDrawer";
 
 const CTA = "Connect Wallet"
@@ -22,8 +23,8 @@ const Navbar = () => {
     <chakra.header id="header">
       <Flex
         w="100%"
-        px="6"
-        py="5"
+        // px="6"
+        // py="5"
         align="center"
         justify="space-between"
         bg="navbarBgColor"
@@ -31,8 +32,9 @@ const Navbar = () => {
         top={0}
         boxShadow="0px 4px 61px rgba(0, 0, 0, 0.1)"
         // zIndex={50000}
+        p="20px 100px"
       >
-       <Link href={"/"}>
+       <Link to="/">
         <Image src={insurelabLogo} />
       </Link>    
      
@@ -40,9 +42,12 @@ const Navbar = () => {
             <>
              <HStack as="nav" spacing="5">
              {navbar_data.map((item) => (
-               <Link key={nanoid()} href={item.link}>
+               <Link key={nanoid()} to={item.link}
+               >
                  <Button variant="nav" fontWeight={400}
-                  _focus={{ color: "ctaBg", fontWeight: "600", textDecoration: "none" }}
+                  // transition="opacity 400ms ease"
+                  _focus={{ color: "ctaBg", fontWeight: "600" }}
+                  // _focusVisible={{ outline: "3px solid ctaBg" }}
                   > {item.name} </Button>
                </Link>
              ))}

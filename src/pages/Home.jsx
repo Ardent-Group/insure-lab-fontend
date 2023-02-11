@@ -6,20 +6,32 @@ import {Flex,
         Spinner, 
         HStack, 
         VStack,
-        Image
+        Image,
+        keyframes,
+        Spacer
       } from "@chakra-ui/react";
 import Container from '../components/Container';
 import Images_Icons from '../constants/icons-images';
-import blockchainLogo from '../assets/blockchain.svg';
+import blockchainLogo from '../assets/Rectangle 1.svg';
 import LockDexImage from '../assets/LockDex.svg'
 import SecureDexImage from '../assets/SecureDex.svg';
 import MoneyDexImage from '../assets/MoneyDex.svg';
 import ClaimDexImage from '../assets/ClaimDex.svg';
 import Footer from '../components/Footer';
+import { motion } from 'framer-motion';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 // const Footer = lazy(() => import("@/components/Footer"));
+
+
+const animationKeyframes = keyframes`
+ 0% { transform: rotate(0); }
+ 25% { transform: rotate(90deg); }
+100% { transform: rotate(180deg);}
+`;
+
+const animation = `${animationKeyframes} 3s ease-in-out infinite`;
 
 const Home = () => {
 
@@ -68,7 +80,6 @@ const Home = () => {
                   <Text
                     {...joinText}
                     color="black"
-                    mt="20px"
                   >
                     With the increasing popularity of decentralized technologies, 
                     it has become increasingly important to ensure their security and stability.
@@ -93,15 +104,16 @@ const Home = () => {
                 <VStack
                   {...homeInnerBox2}
                   display={{ base: "none", md: "flex" }}
-                  // pos={"relative"}
+                  as={motion.div}
+                  animation={animation}
+                  overflowX="hidden"
+                  overflowY="hidden"
                 >
                   <Image
                     src={blockchainLogo}
-                    // pos={"absolute"}
-                    // w={"300px"}
-                    // h={"300px"}
-                    right={"60px"}
-                    bottom={"50px"}
+                    // right={"60px"}
+                    boxSize="500px"
+                    // bottom={"50px"}
                   />
                 </VStack>
             </HStack>
@@ -111,7 +123,7 @@ const Home = () => {
           
 
           {/*  ------------------------------------ Section 2 ------------------------- */}
-      <Flex>
+      <Flex p="50px">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
             <HStack {...outerBox2}>
@@ -123,14 +135,14 @@ const Home = () => {
                 >
                   <Image
                     src={LockDexImage}
-                    pos={"absolute"}
-                    w={"300px"}
-                    h={"300px"}
+                    // pos={"absolute"}
+                    // w={"300px"}
+                    // h={"300px"}
                     right={"60px"}
                     bottom={"50px"}
                   />
                 </VStack>
-
+                 <Spacer mr="20px" />
                 {/* RIGHT */}
                 <Flex
                   {...homeInnerBox1}
@@ -161,7 +173,7 @@ const Home = () => {
       </Flex>
 
          {/*  ------------------------------------ Section 3 ------------------------- */}
-      <Flex>
+      <Flex p="50px">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
             <HStack {...outerBox2}>
@@ -198,9 +210,9 @@ const Home = () => {
                 >
                   <Image
                     src={SecureDexImage}
-                    pos={"absolute"}
-                    w={"300px"}
-                    h={"300px"}
+                    // pos={"absolute"}
+                    // w={"300px"}
+                    // h={"300px"}
                     right={"60px"}
                     bottom={"50px"}
                   />
@@ -212,7 +224,7 @@ const Home = () => {
       </Flex>
 
       {/*  ------------------------------------ Section 4 ------------------------- */}
-      <Flex>
+      <Flex p="50px">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
             <HStack {...outerBox2}>
@@ -224,9 +236,9 @@ const Home = () => {
                 >
                   <Image
                     src={MoneyDexImage}
-                    pos={"absolute"}
-                    w={"300px"}
-                    h={"300px"}
+                    // pos={"absolute"}
+                    // w={"300px"}
+                    // h={"300px"}
                     right={"60px"}
                     bottom={"50px"}
                   />
@@ -299,9 +311,9 @@ const Home = () => {
                 >
                   <Image
                     src={ClaimDexImage}
-                    pos={"absolute"}
-                    w={"300px"}
-                    h={"300px"}
+                    // pos={"absolute"}
+                    // w={"300px"}
+                    // h={"300px"}
                     right={"60px"}
                     bottom={"50px"}
                   />
@@ -344,21 +356,21 @@ const useStyles = () => {
     homeInnerBox2: {
       w: {
         base: "100vw",
-        md: "47vw",
+        md: "45vw",
       },
       h: "90%",
       overflow: "hidden",
       // zIndex: 3000000,
     },
     homeWelcomeText: {
-       fontSize: "36px",
+       fontSize: "34px",
        width: "100%",
        fontWeight: "600",
        lineHeight: "165%",
        color: "black",
     },
     homeBox: {
-      h: "750px",
+      h: "600px",
       w: "100%",
       bgRepeat: "no-repeat",
       bgSize: "cover",
@@ -393,7 +405,7 @@ const useStyles = () => {
       justify: "space-evenly",
     },
     joinText: {
-      fontSize: ["20px"],
+      fontSize: ["16px"],
       width: "100%",
       color: "white",
       my: {

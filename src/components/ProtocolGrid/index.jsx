@@ -1,5 +1,6 @@
-import { Heading, Spacer, Stack, Flex, Text, Avatar, Image, Box, Button, Center } from "@chakra-ui/react";
+import { Heading, Spacer, Stack, Flex, Text, Avatar, Image, Box, Button } from "@chakra-ui/react";
 import React, { lazy, FC, MouseEventHandler } from "react";
+import { Link } from "react-router-dom";
 import webLogo from '../../assets/link-2.svg'
 import secureLogo from "../../assets/shield-tick.svg"
 import AvatarLogo from '../../assets/uniswap 1.svg'
@@ -10,6 +11,7 @@ const ProtocolGrid = ({
   icon,
   cardName,
   onClick,
+  link
 }) => {
   const { root, text, title, subTitle, title2 } = useStyles();
 
@@ -20,7 +22,8 @@ const ProtocolGrid = ({
       bg="footerBgColor"
       _hover={{  boxShadow: '2xl' }}
       onClick={onClick}
-    >
+    > 
+    <Link to={link}>
       <Flex>
        <Avatar src={AvatarLogo} />
        <Flex flexDir="column" ml="15px" textAlign="left">
@@ -96,7 +99,7 @@ const ProtocolGrid = ({
         </Flex>
         </Flex>
      
-     
+        </Link>
     </Stack>
   );
 };
@@ -112,7 +115,7 @@ const useStyles = () => {
       },
     //   bg: "grey",
       p: ["10px", "15px", "18px", "20px", "25px"],
-      h: "360px",
+      h: "345px",
     },
     text: {
       fontSize: ["12px", "14px", "16px", "16px", "20px"],
