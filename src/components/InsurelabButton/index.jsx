@@ -24,7 +24,7 @@ const InsurelabButton = ({
         loadingText="loading"
       >
         {icon}
-        <Heading fontSize={"70%"}>{name}</Heading>
+        <Text fontSize={"70%"}>{name}</Text>
       </Button>
     </>
   );

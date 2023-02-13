@@ -1,7 +1,7 @@
 import React, {Suspense, lazy, useState} from 'react'
 import { Flex, Text, Box, Skeleton, Spinner, Image, 
    Spacer, Select, Divider, Avatar, InputGroup, Input,
-    Center, InputRightAddon, InputLeftAddon, Button, } from '@chakra-ui/react'
+    Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import Footer2 from '../components/Footer2';
@@ -16,17 +16,19 @@ import walletLogo from '../assets/empty-wallet.svg'
 import calendarLogo from '../assets/calendar.svg'
 import deleteIcon from '../assets/delete 1.svg'
 import { FaPlus } from 'react-icons/fa';
+import highRiskIcon from '../assets/Frame 95.svg';
 
 const NavBar = lazy(() => import("../components/Navbar"));
+const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 
 const ProtocolDetails = () => {
 
    const {id} = useParams();
 
-   const { fontBold, font, font2, root, font3, font4, font5 } = useStyles();
+   const { fontBold, font, font2, root, font3, font4, font5, font6, font7 } = useStyles();
 
   return (
-    <Box w={"100%"}>
+    <Box w={"100%"} backgroundColor="bg">
     <Suspense
     //  fallback={<Skeleton isLoaded={false} w={"100%"} h={"48px"}></Skeleton>}
      fallback={<Spinner size="sm" />}
@@ -153,6 +155,63 @@ const ProtocolDetails = () => {
             </Button>
           </Flex>
 
+          <HStack justify="space-between" flexDir="row" mt="30px" p="20px">
+            <Flex flexDir={"column"} bg="footerBgColor" p="20px 40px">
+              <Flex justify="space-between" flexDir="row">
+              <Flex flexDir="column">
+                <Text {...font7}>Cover amount left</Text>
+                <Text {...font7} mt='10px'>Percentage per cover</Text>
+                <Text {...font7} mt='10px'>Risk level</Text> 
+                <Text {...font7} mt='10px'>Cover Payment</Text>
+              </Flex>
+
+              <Flex flexDir="column" textAlign="right">
+                <Text {...font6}>0.0000 USDC</Text>
+                <Text {...font6} mt='10px'>0.05%</Text>
+                <Flex justify="right" alignItems="center" mt='10px'>
+                  <Image src={highRiskIcon} boxSize="15px" />
+                  <Text {...font3} >High risk</Text>
+                </Flex> 
+                <Text>Cover amount left</Text>
+              </Flex>
+              </Flex>
+             
+              {/*  connect your wallet */}
+              <Box  w='100%' p={4} mt="17px" borderRadius="4px" bg="white"
+               boxShadow="0px 4px 8px 3px rgba(0, 0, 0, 0.15)">
+                <Flex flexDir="row" justify="space-between">
+                  <Text fontSize="14px" fontWeight="400">Please connect your wallet.</Text>
+                  <Text fontSize="14px" fontWeight="600" color="#3E7FDF">Connect</Text>
+                </Flex>
+                
+              </Box>
+
+            </Flex>
+
+            <Flex flexDir="column">
+              {/* ----------------------------- Check Box ---------------------------- */}
+             <Flex mb="20px">
+             <Checkbox border="#212121">
+              <Text fontWeight="500" maxWidth="400px">I agree to the terms and conditions set out and identified by insurelab.</Text>
+             </Checkbox>
+             </Flex>
+             <Suspense fallback={<Spinner size="sm" />}>
+                    <InsurelabButton
+                      name={"Confirm insurance"}
+                      rest={{
+                        width: ["40%"],
+                        height: ["50px"],
+                        mt: { base: null, md: "10px" },
+                        color: "white",
+                        bg: "ctaBg",
+                        fontWeight: "400"
+                      }}
+                      // onCLick={}
+                    />
+                  </Suspense>
+            </Flex>
+          </HStack>
+
     </Flex>
 
       {/* Footer Two */}
@@ -167,7 +226,7 @@ export default ProtocolDetails
 const useStyles = () => {
   return {
        root: {
-           bg: "white",
+           bg:"white",
            shadow: "0px 4px 61px rgba(0, 0, 0, 0.1)",
            borderRadius: "8px",
            h: "88px",
@@ -202,6 +261,16 @@ const useStyles = () => {
         fontWeight: "400",
         fontSize: "11px",
         lineHeight: "24px",
+       },
+       font6: {
+        fontWeight: "400",
+        fontSize: "16px",
+        lineHeight: "125%",
+       },
+       font7: {
+        fontWeight: "500",
+        fontSize: "16px",
+        lineHeight: "125%",
        }
   }
 }

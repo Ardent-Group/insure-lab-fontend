@@ -16,6 +16,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from './pages/Home';
 import Protocols from './pages/Protocols';
 import ProtocolDetails from './pages/ProtocolDetails';
+import UnlistedCreate from './pages/UnlistedCreate';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/protocols" element={<Protocols />} />
             <Route path="/protocols/:id" element={<ProtocolDetails />} />
+            <Route path="/create-custom-insurance" element={<UnlistedCreate />} />
+            <Route path="/risk-assessor-dashboard" element={<Dashboard />} />
             {/* <Route path="/admin-voting" element={<AdminVoting />} /> */}
           </Routes>
         </Flex>
