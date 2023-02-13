@@ -7,8 +7,8 @@ A. Clone the repository with the following commands (authentication is required)
 1. git clone https://github.com/Insure-Lab/insure-lab-fontend.git
 [ Do this command on your terminal to get develop branch on your local machine 
 - (`git clone -b develop https://github.com/Insure-Lab/insure-lab-fontend.git`) this will clone only develop branch instead of main branch. Please always make sure you make PR so that it can be review and get merged]
-2. Mount your resulting local app-backend directory on your IDE (e.g. VS Code)
-3. Run yarn install to fetch requisite node modules dependencies
+2. Mount your resulting local app-backend directory on your IDE (e.g. VS Code) step 2 not necessary 
+3. Run `yarn install` to fetch requisite node modules dependencies
 4. To run, see the Running the app section below.
 
 B. Create a branch for your development, preferably named in line with the issue assigned to you. E.g.,
