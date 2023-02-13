@@ -4,46 +4,40 @@ import { nanoid } from "nanoid";
 
 
 const DashboardCardItem = ({
-  icon,
+  iconnum,
   cardName,
   onClick,
+  color,
+  // bgDashboard
 }) => {
+
   const { root, text } = useStyles();
-
-
-  const BGCOLOR = [
-     { 
-        id: "1",
-        color: "#B6FEA4",
-      },
-      {
-        id: "2",
-        bgcolor: "#FCDF96",
-      },
-      {
-        id: "3",
-        bgcolor: "#AFD9FF",
-      },
-  ]
 
   return (
     <>
-     {/* {BGCOLOR.map((e, i) => ( */}
     <Stack
       {...root}
       key={nanoid()}
       as="button"
-      color="white"
-      // bg={}
+      color="black"
+      bg={color}
+      bgImage="url('/images/bg-dashboard.png')" 
       onClick={onClick}
+      justify={"center"}
+      textAlign="left"
+      align="left"
     >
-      {icon}
+      <Text mt="30px" fontSize="24px" fontWeight="500">{iconnum}</Text>
       <Spacer />
-      <Flex justify="center" align="center" >
-      <Text {...text} textAlign="center">{cardName}</Text>
-      </Flex> 
+      {/* <Flex justify="center" align="center" > */}
+      <Text {...text} textAlign="left" 
+       fontSize="14px" 
+       fontWeight="400"
+       >
+        {cardName}
+      </Text>
+      {/* </Flex>  */}
     </Stack>
-     {/* ))} */}
     </>
   );
 };
@@ -55,11 +49,11 @@ const useStyles = () => {
     root: {
       borderRadius: {
         base: "10px",
-        md: "16px",
+        md: "8px",
       },
     //   bg: "grey",
       p: "20px 40px",
-      h: "150px",
+      h: "200px",
     },
     text: {
       fontSize: ["16px"],

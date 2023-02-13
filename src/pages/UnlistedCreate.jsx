@@ -152,11 +152,11 @@ const UnlistedCreate = () => {
               
                   {/* ------------------------------- Input 4 ------------------------------- */}
                    <Flex flexDir="column" mt="30px">
-                      <Text fontSize="15px" fontWeight="500">Description</Text>
+                      <Text fontSize="15px" fontWeight="500">Select the risk level of the protocol</Text>
                         <Spacer />
                         <Flex flexDir="column" mt="20px">
                         <Text>10</Text>
-                        <Slider aria-label='slider-ex-1' defaultValue={10}
+                        <Slider aria-label='slider-ex-1' defaultValue={0}
                         onChangeEnd={(val) => console.log(val)}
                         >
                           <SliderTrack>
