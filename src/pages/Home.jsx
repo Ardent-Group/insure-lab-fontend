@@ -27,11 +27,11 @@ const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 
 const animationKeyframes = keyframes`
  0% { transform: rotate(0); }
- 25% { transform: rotate(90deg); }
-100% { transform: rotate(180deg);}
+ 25% { transform: rotate(0deg); }
+ 100% { transform: rotate(360deg);}
 `;
 
-const animation = `${animationKeyframes} 3s ease-in-out infinite`;
+const animation = `${animationKeyframes} 6s ease-in-out infinite`;
 
 const Home = () => {
 
@@ -43,6 +43,7 @@ const Home = () => {
       joinText,
       homeInnerBox1,
       homeInnerBox2,
+      homeInnerBox3,
       homeWelcomeText,
       homeBox2,
       outerBox2
@@ -50,10 +51,11 @@ const Home = () => {
 
   return (
     <>
-    <Box w={"100%"}>
+    <Box w={"100%"} {...root}>
      <Suspense
         // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
-        fallback={<Spinner size="sm" />}
+        fallback={<Spinner size="lg" />}
+        zIndex={10000}
       >
         <NavBar />
       </Suspense>
@@ -94,6 +96,7 @@ const Home = () => {
                         mt: { base: null, md: "10px" },
                         color: "white",
                         bg: "ctaBg",
+                        fontWeight: "400"
                       }}
                       // onCLick={}
                     />
@@ -101,21 +104,23 @@ const Home = () => {
                 </Flex>
 
                       {/* RIGHT */}
-                <VStack
-                  {...homeInnerBox2}
+                <HStack
+                  {...homeInnerBox3}
                   display={{ base: "none", md: "flex" }}
                   as={motion.div}
                   animation={animation}
+                  pt="-100px"
+                  pos="relative"
                   overflowX="hidden"
                   overflowY="hidden"
                 >
                   <Image
                     src={blockchainLogo}
-                    // right={"60px"}
-                    boxSize="500px"
-                    // bottom={"50px"}
+                    right={"60px"}
+                    // boxSize="500px"
+                    bottom={"50px"}
                   />
-                </VStack>
+                </HStack>
             </HStack>
           </Container>
          </Suspense>
@@ -336,10 +341,10 @@ export default Home
 const useStyles = () => {
   return {
     root: {
-      backgroundColor: "",
-      height: "10vh",
-      borderBottomLeftRadius: 20,
-      borderBottomRightRadius: 20,
+      backgroundColor: "#FBFDFF",
+      // height: "10vh",
+      // borderBottomLeftRadius: 20,
+      // borderBottomRightRadius: 20,
     },
     home: {
       color: "red",
@@ -348,17 +353,26 @@ const useStyles = () => {
     },
     homeInnerBox1: {
       w: {
-        base: "90vw",
+        base: "60vw",
         md: "46vw",
       },
-      h: "90%",
+      h: "",
     },
     homeInnerBox2: {
       w: {
-        base: "100vw",
-        md: "45vw",
+        base: "60vw",
+        md: "35vw",
       },
-      h: "90%",
+      h: "100%",
+      overflow: "hidden",
+      // zIndex: 3000000,
+    },
+    homeInnerBox3: {
+      w: {
+        base: "60vw",
+        md: "35vw",
+      },
+      h: "100%",
       overflow: "hidden",
       // zIndex: 3000000,
     },
@@ -370,7 +384,7 @@ const useStyles = () => {
        color: "black",
     },
     homeBox: {
-      h: "600px",
+      h: "550px",
       w: "100%",
       bgRepeat: "no-repeat",
       bgSize: "cover",
@@ -394,14 +408,14 @@ const useStyles = () => {
     },
     outerBox: {
       bg: "transparent",
-      h: "630px",
+      h: "300px",
       w: "100%",
       justify: "space-evenly",
     },
     outerBox2: {
       // h: "500px",
       // w: "100%",
-      mt: "100px",
+      mt: "40px",
       justify: "space-evenly",
     },
     joinText: {

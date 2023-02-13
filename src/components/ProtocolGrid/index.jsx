@@ -11,7 +11,8 @@ const ProtocolGrid = ({
   icon,
   cardName,
   onClick,
-  link
+  link,
+  onOpen
 }) => {
   const { root, text, title, subTitle, title2 } = useStyles();
 
@@ -19,11 +20,10 @@ const ProtocolGrid = ({
     <Stack
       {...root}
       as="button"
-      bg="footerBgColor"
+      bg="#FFFFFF"
       _hover={{  boxShadow: '2xl' }}
       onClick={onClick}
     > 
-    <Link to={link}>
       <Flex>
        <Avatar src={AvatarLogo} />
        <Flex flexDir="column" ml="15px" textAlign="left">
@@ -85,21 +85,23 @@ const ProtocolGrid = ({
         <Flex flexDir="column">
          <Button color="black" borderRadius="100px" bg="#DCE7F9"
           fontSize="14px" fontWeight={500}
+          onClick={onOpen}
          >
             Create cover
         </Button>
         </Flex>
           <Spacer mr="60px" />
           <Flex flexDir="column">
+          <Link to={link}>
           <Button color="white" borderRadius="100px" bg="ctaBg"
           fontSize="14px" fontWeight={500}
           >
             Insure
          </Button>
+         </Link>
         </Flex>
         </Flex>
-     
-        </Link>
+    
     </Stack>
   );
 };
@@ -109,10 +111,10 @@ export default ProtocolGrid;
 const useStyles = () => {
   return {
     root: {
-      borderRadius: {
-        base: "10px",
-        md: "16px",
-      },
+      // borderRadius: {
+      //   base: "10px",
+      //   md: "16px",
+      // },
     //   bg: "grey",
       p: ["10px", "15px", "18px", "20px", "25px"],
       h: "345px",

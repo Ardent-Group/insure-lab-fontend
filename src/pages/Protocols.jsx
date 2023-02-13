@@ -1,16 +1,42 @@
 import React, {Suspense, lazy, useState} from 'react'
-import { Flex, Box, Text, Spinner, Image, HStack, VStack, SimpleGrid, Center, keyframes } from '@chakra-ui/react'
+import { 
+  Flex, 
+  Box, 
+  Text, 
+  Spinner, 
+  Image, 
+  HStack, 
+  VStack, 
+  SimpleGrid, 
+  Center, keyframes, 
+  Skeleton, useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  ModalBody,
+  Button,
+  Spacer,
+  Input,
+  InputRightAddon,
+  InputGroup,
+} from '@chakra-ui/react'
 import Footer from '../components/Footer';
 import Container from '../components/Container';
 import rockTypeImage from '../assets/Rock.svg';
 import ProtocolGrid from '../components/ProtocolGrid';
 import { nanoid } from 'nanoid';
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { protocolCardData } from '../utils/protocolGrid'
 import ReactPaginate from 'react-paginate';
 import '../constants/pagination.css'
 import {useParams} from "react-router-dom";
 import { motion } from 'framer-motion';
+import arrowLeft from "../assets/arrow-left.svg";
+import walletIcon from '../assets/empty-wallet.svg'
+
+import TransactionLoaderModal from '../components/TransactionLoaderModal';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -23,7 +49,7 @@ const animationKeyframes = keyframes`
   100% { transform: rotate(360deg);}
 `;
 
-const animation = `${animationKeyframes} 2s ease-in-out infinite`;
+const animation = `${animationKeyframes} 4s ease-in-out infinite`;
 
 const Protocols = () => {
 
@@ -36,10 +62,23 @@ const Protocols = () => {
      protocolInnerBox2,
      protocolInnerBox1,
      outerBox,
+     fontBold
     } = useStyles();
 
     let navigate = useNavigate();
     const {id} = useParams();
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    // ------------------ useDisclosure for TransactionLoaderModal component
+    const {
+      isOpen: transactionLoadingIsOpen,
+      onOpen: transactionLoadingOnOpen,
+      onClose: transactionLoadingOnClose
+    } = useDisclosure();
+
+    const [isTransactionLoading, setIsTransactionLoading] = useState(false);
+
+    const [skeletonLoading, setSeletonLoading] = useState(false);
 
     const [protocolCard, setProtocolCard] = useState(protocolCardData.slice(0, 30));
     //state holding page of the pagination
@@ -61,6 +100,7 @@ const Protocols = () => {
         link={e.id}
         icon={""}
         cardName={e.label}
+        onOpen={onOpen}
       />
       )
     }) 
@@ -73,7 +113,7 @@ const Protocols = () => {
     }
 
   return (
-    <Box w={"100%"}>
+    <Box w={"100%"} {...root}>
        <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
@@ -128,6 +168,7 @@ const Protocols = () => {
 
                 <Flex>
                 <Suspense fallback={<Spinner size="sm" />}>
+                  <Link to="/create-custom-insurance">
                     <InsurelabButton
                       name={"Insure unlisted protocol"}
                       rest={{
@@ -139,8 +180,9 @@ const Protocols = () => {
                         borderRadius: "10px",
                         fontWeight: "400"
                       }}
-                      // onCLick={}
+                      // onCLick={unlistedOnOpen}
                     />
+                    </Link>
                   </Suspense>
                 </Flex>
             </HStack>
@@ -158,31 +200,22 @@ const Protocols = () => {
       </Suspense>
       </Flex>
 
-            <Flex mt="70px" p="50px">
+            <Flex mt="70px" p="50px" flexDir="column">
+            {skeletonLoading ? (
+              <Skeleton height='200px'></Skeleton>
+            ) : (
               <SimpleGrid
                 columns={3}
                 spacing="40px"
                 spacingX={"60px"}
                 w={"100%"}
               >
-                <Suspense fallback={<Spinner size="sm" />}>
-                  {/* {protocolCard.map((e, i) => (
-                    <ProtocolGrid 
-                      key={nanoid()}
-                      onClick={e.onclick}
-                      // icon={e.icon({
-                      //   color: "",
-                      // })}
-                      icon={""}
-                      cardName={e.label}
-                    />
-                  ))} */}
+                <Suspense fallback={<Spinner boxSize="lg" />}>
                   {displayProtocolCard}
-                  {/* <Flex alignContent={"center"} 
-                   justifyContent={"center"}
-                    pos="relative"
-                   > */}
-                   <Center>
+                </Suspense>
+              </SimpleGrid>
+              )}
+                <Center mt="38px">
                    <ReactPaginate
                    previousLabel={"<"}
                    nextLabel={">"}
@@ -195,12 +228,134 @@ const Protocols = () => {
                    activeClassName={'paginationActive'}
                   >
                   </ReactPaginate>
-                  </Center>        
-                  {/* </Flex> */}
-                </Suspense>
-              </SimpleGrid>
+                  </Center> 
             </Flex>
-          
+
+          {/* ---------------------------------- Create Insurance cover for InstaDapp Protocol -------------------------- */}
+          <>
+          <Modal isOpen={isOpen} onClose={onClose} size='3xl'
+            isCentered
+            blockScrollOnMount={true}
+            scrollBehavior={"inside"}
+            motionPreset="slideInBottom"
+          >
+          <ModalOverlay bg="#00000020" backdropFilter="auto" backdropBlur="2px" />
+            <ModalContent w={{ base: "90vw", md: "60vw" }} borderRadius={0} >
+          <ModalBody padding={"40px 80px"}>
+            <Flex>
+            <Flex onClick={onClose} justify="center" alignItems="center"> 
+             <Image src={arrowLeft} boxSize="15px" />
+             <Spacer mr="5px" />
+             <Text {...fontBold}>Create insurance cover for InstadApp protocol</Text> 
+            </Flex>      
+            </Flex>
+              <Text fontSize="14px" fontWeight={500}>
+                Please fill in the following information to create cover for the protocol
+              </Text>
+
+              <Flex mt="20px" flexDir="column" p="20px">
+                 {/* ------------------------------- Input 1 ------------------------------- */}
+                 <Flex flexDir="column">
+                      <Text fontSize="15px" fontWeight="500">Covered address</Text>
+                        <Spacer />
+                        <InputGroup
+                          _focus={{ boxShadow: "none" }}
+                          as="button"
+                          w={"100%"}
+                        >
+                          <Input
+                            placeholder="Enter the covered wallet address"
+                            borderRadius="0"
+                            border="0"
+                            borderBottom="1px solid #49454F"
+                            _placeholder={{
+                              color: "#1C1B1F",
+                              justifySelf: "flex-end",
+                              fontSize: "12px"
+                            }}
+                            _focus={{ boxShadow: "none" }}
+                          />
+                        </InputGroup>
+                </Flex>
+
+                  {/* ------------------------------- Input 2 ------------------------------- */}
+                  <Flex flexDir="column" mt="30px">
+                      <Text fontSize="15px" fontWeight="500">Amount Covered</Text>
+                        <Spacer />
+                        <InputGroup
+                          _focus={{ boxShadow: "none" }}
+                          as="button"
+                          w={"100%"}
+                        >
+                          <Input
+                            placeholder="Enter amount of insurance cover"
+                            borderRadius="0"
+                            border="0"
+                            borderBottom="1px solid #49454F"
+                            _placeholder={{
+                              color: "#1C1B1F",
+                              justifySelf: "flex-end",
+                              fontSize: "12px"
+                            }}
+                            _focus={{ boxShadow: "none"}}
+                          />
+                          <InputRightAddon borderRadius={0} border="0" bg="footerBgColor">
+                           <Text fontSize="12px" fontWeight={500}>USDC</Text>
+                           <Image src={walletIcon} ml="4px" boxSize="20px" />
+                          </InputRightAddon>
+                        </InputGroup>
+                </Flex>
+
+                {/* ------------------------------- Input 3 ------------------------------- */}
+                <Flex flexDir="column" mt="30px">
+                      <Text fontSize="15px" fontWeight="500">Description</Text>
+                        <Spacer />
+                        <InputGroup
+                          _focus={{ boxShadow: "none" }}
+                          as="button"
+                          w={"100%"}
+                        >
+                          <Input
+                            placeholder="Enter the description of the protocol cover"
+                            borderRadius="0"
+                            border="0"
+                            borderBottom="1px solid #49454F"
+                            _placeholder={{
+                              color: "#1C1B1F",
+                              justifySelf: "flex-end",
+                              fontSize: "12px"
+                            }}
+                            _focus={{ boxShadow: "none" }}
+                          />
+                        </InputGroup>
+                </Flex>
+
+              </Flex>
+          </ModalBody>
+
+          <ModalFooter justifyContent={"center"} align="center">
+            <Button bg="#3E7FDF"
+              borderRadius="20px"
+              p="10px 140px"
+              color="white"
+              fontSize="14px"
+              fontWeight="400"
+              onClick={transactionLoadingOnOpen}
+              >
+              Confirm insurance
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+          </>
+
+          <>
+          <TransactionLoaderModal transactionLoadingIsOpen={transactionLoadingIsOpen}
+           transactionLoadingOnClose={transactionLoadingOnClose}
+           transactionLoadingOnOpen={transactionLoadingOnOpen}
+          />
+          </>
+
        {/* Footer is here */}
        
       <Footer />
@@ -214,10 +369,10 @@ export default Protocols
 const useStyles = () => {
   return {
     root: {
-      backgroundColor: "",
-      height: "10vh",
-      borderBottomLeftRadius: 20,
-      borderBottomRightRadius: 20,
+      backgroundColor: "#FBFDFF",
+      // height: "10vh",
+      // borderBottomLeftRadius: 20,
+      // borderBottomRightRadius: 20,
     },
     protocol: {
       color: "red",
@@ -232,7 +387,7 @@ const useStyles = () => {
        color: "black",
     },
     protocolBox: {
-      h: "330px",
+      h: "300px",
       w: "100%",
       bgRepeat: "no-repeat",
       bgSize: "cover",
@@ -292,5 +447,10 @@ const useStyles = () => {
       },
       fontWeight: "500"
     },
+    fontBold: {
+      fontWeight: "600",
+      fontSize: "18px",
+      lineHeight: "165%",
+     },
   };
 };
