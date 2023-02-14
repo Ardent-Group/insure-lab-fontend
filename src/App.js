@@ -18,6 +18,9 @@ import Protocols from './pages/Protocols';
 import ProtocolDetails from './pages/ProtocolDetails';
 import UnlistedCreate from './pages/UnlistedCreate';
 import Dashboard from './pages/Dashboard';
+import Proposals from './pages/Proposals';
+import Claims from './pages/Claims';
+import Governance from './pages/Governance';
 
 function App() {
   return (
@@ -29,7 +32,9 @@ function App() {
             <Route path="/protocols/:id" element={<ProtocolDetails />} />
             <Route path="/create-custom-insurance" element={<UnlistedCreate />} />
             <Route path="/risk-assessor-dashboard" element={<Dashboard />} />
-            {/* <Route path="/admin-voting" element={<AdminVoting />} /> */}
+            <Route path="/governance-proposals" element={<Proposals />} />
+            <Route path="/claims" element={<Claims />} />
+            <Route path="/governance" element={<Governance />} />
           </Routes>
         </Flex>
     </Router>

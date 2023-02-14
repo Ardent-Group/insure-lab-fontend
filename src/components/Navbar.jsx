@@ -1,5 +1,21 @@
 import {useState} from "react";
-import {  Flex, Button, HStack, chakra, Text, Image, useBreakpointValue, Box} from '@chakra-ui/react';
+import {  
+  Flex,
+  Button, 
+  HStack, 
+  chakra, 
+  Text, 
+  Image, 
+  useBreakpointValue, 
+  Box,
+  Menu,
+  MenuItem,
+  MenuButton,
+  Avatar,
+  MenuList,
+  MenuDivider,
+} from '@chakra-ui/react';
+import {ChevronDownIcon} from '@chakra-ui/icons'
 import { nanoid } from "nanoid";
 import {navbar_data} from '../utils/navbarData';
 import  insurelabLogo from '../assets/Logo.svg'
@@ -51,7 +67,35 @@ const Navbar = () => {
                   > {item.name} </Button>
                </Link>
              ))}
+              <Flex alignItems={'left'}>
+           <Menu>
+            <Flex justify="center" align="center">
+             <Link to="/governance">
+              <Text  _focus={{ color: "ctaBg", fontWeight: "600"  }}>
+                Governance
+              </Text>
+            </Link> 
+            </Flex>
+               <MenuButton
+                 px={2}
+                 py={1}
+                 _focus={{ boxShadow: 'none', color: "ctaBg", fontWeight: "600"  }}
+               >
+                 <ChevronDownIcon />
+               </MenuButton>
+               <MenuList border="none">
+                <Link to="/governance-proposals">
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Proposals</MenuItem>
+                </Link>
+                 
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Members</MenuItem>
+                 {/* <MenuDivider /> */}
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Governance Profile</MenuItem>
+                </MenuList>
+              </Menu>
+          </Flex>
            </HStack>
+          
            <HStack>
              <Button borderRadius="100px" 
               bg="ctaBg" 

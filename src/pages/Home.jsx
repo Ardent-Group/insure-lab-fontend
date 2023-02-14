@@ -26,12 +26,11 @@ const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 
 
 const animationKeyframes = keyframes`
- 0% { transform: rotate(0); }
- 25% { transform: rotate(0deg); }
- 100% { transform: rotate(360deg);}
+ 0% { transform: rotate(360deg); }
+ 100% { transform: rotate(0); }
 `;
 
-const animation = `${animationKeyframes} 6s ease-in-out infinite`;
+const animation = `${animationKeyframes} 3s ease-in-out infinite`;
 
 const Home = () => {
 
@@ -55,7 +54,7 @@ const Home = () => {
      <Suspense
         // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="lg" />}
-        zIndex={10000}
+        zIndex={30000}
       >
         <NavBar />
       </Suspense>
@@ -109,7 +108,7 @@ const Home = () => {
                   display={{ base: "none", md: "flex" }}
                   as={motion.div}
                   animation={animation}
-                  pt="-100px"
+                  // pt="-100px"
                   pos="relative"
                   overflowX="hidden"
                   overflowY="hidden"
@@ -117,7 +116,7 @@ const Home = () => {
                   <Image
                     src={blockchainLogo}
                     right={"60px"}
-                    // boxSize="500px"
+                    zIndex={"-9999999"}
                     bottom={"50px"}
                   />
                 </HStack>
@@ -388,7 +387,7 @@ const useStyles = () => {
       w: "100%",
       bgRepeat: "no-repeat",
       bgSize: "cover",
-      pt: "50px",
+      pt: "100px",
       px: {
         base: "0%",
         md: "5%",

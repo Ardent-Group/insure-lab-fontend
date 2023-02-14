@@ -121,7 +121,7 @@ const Protocols = () => {
         <NavBar />
       </Suspense>
       
-      <Flex {...protocolBox} bgImage="url('/images/Header-banner.png')" mt="40px">
+      <Flex {...protocolBox} bgImage="url('/images/Header-banner.png')">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
             <HStack {...outerBox}>

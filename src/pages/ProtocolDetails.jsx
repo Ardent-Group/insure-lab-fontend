@@ -48,6 +48,7 @@ const ProtocolDetails = () => {
         <Spacer ml="10px" />
           <Select placeholder={"USDC"} icon={<MdArrowDropDown />}
           _placeholder={{ color: "#49454F", fontWeight: "500" }}
+          _focus={{ boxShadow: "none" }}
           border="1px solid #CFC4C5" 
           borderRadius="20px" h="46px"
           >
@@ -91,14 +92,18 @@ const ProtocolDetails = () => {
            {/* -------------------------- Detail 3 ----------------------- */}
             <Flex justify="center" alignItems="center">
             <InputGroup>
-            <InputLeftAddon bg="white" h="43px" border="1px solid #B9A7AA">
+            <InputLeftAddon bg="white" h="43px" border="1px solid #B9A7AA"
+            _focus={{ boxShadow: "none" }}
+            >
                   <Flex justify="space-between" alignItems="center">
                     <Image src={qrCodeLogo} boxSize="20px"  />
                   </Flex>
                 </InputLeftAddon>
               <Input type='text' placeholder='Enter the covered address' 
                h="43px" w="200px" 
+               border="1px solid #B9A7AA"
                _placeholder={{ color: "#9E8C90", fontSize: "10px" }}
+               _focus={{ boxShadow: "none" }}
                />
             </InputGroup>
 
@@ -110,8 +115,11 @@ const ProtocolDetails = () => {
               <Input type='text' placeholder='Enter the covered amount' 
                h="43px" w="150px" border="1px solid #B9A7AA" 
                _placeholder={{ color: "#9E8C90", fontSize: "10px" }}
+               _focus={{ boxShadow: "none" }}
                />
-               <InputRightAddon bg="footerBgColor" h="43px" border="1px solid #B9A7AA">
+               <InputRightAddon bg="footerBgColor" h="43px" border="1px solid #B9A7AA"
+               _focus={{ boxShadow: "none" }}
+               >
                   <Flex justify="space-between" alignItems="center">
                     <Text color="#4C4546" fontSize="10px" mr="5px">USDC</Text>
                     <Image src={walletLogo} boxSize="20px"  />
@@ -128,8 +136,11 @@ const ProtocolDetails = () => {
               <Input type='text' placeholder='Select cover period' 
                h="43px" w="150px" border="1px solid #B9A7AA" 
                _placeholder={{ color: "#9E8C90", fontSize: "10px" }}
+               _focus={{ boxShadow: "none" }}
                />
-               <InputRightAddon bg="footerBgColor" h="43px" border="1px solid #B9A7AA">
+               <InputRightAddon bg="footerBgColor" h="43px"
+                focus={{ boxShadow: "none" }}
+               >
                   <Flex justify="space-between" alignItems="center">
                     <Text color="#4C4546" fontSize="10px" mr="5px">Days</Text>
                     <Image src={calendarLogo} boxSize="20px"  />
