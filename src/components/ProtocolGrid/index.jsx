@@ -87,7 +87,7 @@ const ProtocolGrid = ({
           fontSize="14px" fontWeight={500}
           onClick={onOpen}
          >
-            Create cover
+            Add cover
         </Button>
         </Flex>
           <Spacer mr="60px" />

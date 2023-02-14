@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
 
-const ProtocolFilter = () => {
+const ProposalFilter = () => {
 
 
   const { root, popFont } = useStyles();
@@ -37,31 +37,19 @@ const ProtocolFilter = () => {
           />
         </InputGroup>
 
-            <Text {...popFont}>Filterby:</Text>
+            <Text {...popFont}>FilterbyStatus:</Text>
         
           {/* Select one */}
-          <Select placeholder='Chain type' _placeholder={{ color: "#49454F"}} width={"30%"}
-           _focus={{ boxShadow: "none" }}
-          >
+          <Select placeholder='All' _placeholder={{ color: "#49454F"}} width={"20%"}>
             <option value='option1'>Option 1</option>
             <option value='option2'>Option 2</option>
             <option value='option3'>Option 3</option>
           </Select>
-
-        {/* Select Two */}
-            <Select placeholder='Risk type' _placeholder={{ color: "#49454F"}} width={"30%"}
-             _focus={{ boxShadow: "none" }}
-            >
-            <option value='option1'>Option 1</option>
-            <option value='option2'>Option 2</option>
-            <option value='option3'>Option 3</option>
-          </Select>
-
     </HStack>
   );
 };
 
-export default memo(ProtocolFilter);
+export default memo(ProposalFilter);
 
 const useStyles = () => {
   return {

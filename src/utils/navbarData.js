@@ -17,9 +17,9 @@ export const navbar_data = [
         name: "Claims",
         link: "/claims"
     },
-    {
-        id: "4",
-        name: "Governance",
-        link: "/governanace"
-    }
+    // {
+    //     id: "4",
+    //     name: "Governance",
+    //     link: "/governanace"
+    // }
 ]
