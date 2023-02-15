@@ -346,7 +346,7 @@ const Protocols = () => {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+          </Modal>
           </>
 
           <>

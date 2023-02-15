@@ -21,6 +21,8 @@ import Dashboard from './pages/Dashboard';
 import Proposals from './pages/Proposals';
 import Claims from './pages/Claims';
 import Governance from './pages/Governance';
+import DaoMemberPortal from './pages/DaoMemberPortal';
+import Members from './pages/Members'
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
             <Route path="/governance-proposals" element={<Proposals />} />
             <Route path="/claims" element={<Claims />} />
             <Route path="/governance" element={<Governance />} />
+            <Route path="/dao-member-portal" element={<DaoMemberPortal />} />
+            <Route path="/members" element={<Members />} />
           </Routes>
         </Flex>
     </Router>
