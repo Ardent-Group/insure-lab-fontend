@@ -390,9 +390,10 @@ const Dashboard = () => {
           </ModalFooter>
         </ModalContent>
       </Modal> 
-      </>
-           {/* ----------------------------- Confirm Loading ----------------------- */}
-           <ConfirmLoaderModal confirmLoadingIsOpen={confirmLoadingIsOpen} 
+        </>
+
+        {/* ----------------------------- Confirm Loading ----------------------- */}
+          <ConfirmLoaderModal confirmLoadingIsOpen={confirmLoadingIsOpen} 
             confirmLoadingOnClose={confirmLoadingOnClose}
             confirmLoadingOnOpen={confirmLoadingOnOpen}
            />

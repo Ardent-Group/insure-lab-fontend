@@ -32,8 +32,10 @@ const Navbar = () => {
       } = useNavbarStyles();
 
       const [isMenu, setIsMenu] = useState(false);
+      const [isVisible, setIsVisible] = useState(false);
 
       const isDesktop = useBreakpointValue({ base: false, lg: true })
+
 
   return (
     <chakra.header id="header">
@@ -80,6 +82,7 @@ const Navbar = () => {
                  px={2}
                  py={1}
                  _focus={{ boxShadow: 'none', color: "ctaBg", fontWeight: "600"  }}
+                 showOnHover="true"
                >
                  <ChevronDownIcon />
                </MenuButton>
@@ -87,8 +90,9 @@ const Navbar = () => {
                 <Link to="/governance-proposals">
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Proposals</MenuItem>
                 </Link>
-                 
+                <Link to="/members">
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Members</MenuItem>
+                 </Link>
                  {/* <MenuDivider /> */}
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Governance Profile</MenuItem>
                 </MenuList>
