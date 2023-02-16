@@ -1,4 +1,7 @@
 import uniswapLogo from '../assets/uniswap 1.svg'
+import avatar1 from '../assets/avatar1.svg'
+import avatar2 from '../assets/avatar2.svg'
+import avatar3 from '../assets/avatar3.svg'
 // import bgDashboard from ''
 
 export const dashCardData = [
@@ -67,5 +70,70 @@ export const listedCover = [
     coverBought: "8,000.00 USDC",
     totalProfit: "1,500.00 USDC",
     dateCreated: "21/01/2023",
+   },
+]
+
+
+export const memberList = [
+  {
+   id: "#001",
+   address: "0x8b93...8b0F",
+   balance: "12500 USDC",
+   percentage: "0.281",
+   voting: "0.0281",
+  },
+  {
+    id: "#002",
+    address: "0x8b93...8b0F",
+    balance: "12500 USDC",
+    percentage: "0.281",
+    voting: "0.0281",
+   },
+   {
+    id: "#003",
+    address: "0x8b93...8b0F",
+    balance: "12500 USDC",
+    percentage: "0.281",
+    voting: "0.0281",
+   },
+]
+
+
+
+export const votersList = [
+  {
+   id: "1",
+   address: "0x8b93...8b0F",
+   avatar: avatar1,
+   votedecision: "Yes",
+   ensname: "#bafkrei",
+  },
+  {
+    id: "2",
+    address: "0x8b93...8b0F",
+    votedecision: "Yes",
+    avatar: avatar2,
+    ensname: "#bafkrei",
+   },
+   {
+    id: "3",
+    address: "0x8b93...8b0F",
+    votedecision: "Yes",
+    avatar: avatar3,
+    ensname: "#bafkrei",
+   },
+   {
+    id: "3",
+    address: "0x8b93...8b0F",
+    votedecision: "Yes",
+    avatar: avatar2,
+    ensname: "#bafkrei",
+   },
+   {
+    id: "4",
+    address: "0x8b93...8b0F",
+    votedecision: "Yes",
+    avatar: avatar3,
+    ensname: "#bafkrei",
    },
 ]

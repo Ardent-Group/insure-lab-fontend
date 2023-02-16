@@ -34,6 +34,7 @@ import uniswapLogo from '../assets/uniswap 1.svg'
 import useCollapse from 'react-collapsed';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
+import arrowLeft from '../assets/arrow-left.svg'
 
 
 const NavBar = lazy(() => import("../components/Navbar"));
@@ -62,6 +63,7 @@ const Proposals = () => {
     } = useStyles();
 
     let navigate = useNavigate();
+
     const {id} = useParams();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -129,7 +131,14 @@ const Proposals = () => {
       </Flex>
     
       {/* ---------------------------- Search and Filter area -------------------------- */}
-      <Flex w={"100%"}>
+      <Flex w={"100%"} flexDir="column">
+        <Link to="/governance">
+      <Flex flexDir="row" p="60px" mt="-40px" align="center"> 
+            <Image src={arrowLeft} boxSize="15px" mr="10px" />
+              <Text fontSize="16px" fontWeight="500">Back</Text>
+            </Flex> 
+          </Link>
+          
          <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
@@ -140,7 +149,8 @@ const Proposals = () => {
 
       <Suspense fallback={<Spinner size="sm" />}>
         <Container>
-        <Stack p="60px" flexDir="column">
+        <Stack p="60px" flexDir="column" mt="-40px">
+          <Link to={`/governance-claims/${id}`}>
           <Flex flexDir="column"
              bg="white"
              boxShadow="0px 4px 61px rgba(0, 0, 0, 0.1)"
@@ -232,6 +242,7 @@ const Proposals = () => {
               </Flex>
             </Flex>
          </Flex>
+         </Link>
        </Stack>
           </Container>
        </Suspense>

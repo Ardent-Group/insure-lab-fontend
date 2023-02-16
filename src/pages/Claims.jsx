@@ -38,22 +38,6 @@ const Claims = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { isOpen: warningIsOpen, 
-      onOpen: warningOnOpen, 
-      onClose: warningOnClose 
-     } = useDisclosure();
-
-
-    const { isOpen: withdrawCoverIsOpen,
-       onOpen: withdrawCoverOnOpen,
-       onClose: withdrawCoverOnClose
-    } = useDisclosure();
-
-    const { isOpen: confirmLoadingIsOpen, 
-         onOpen: confirmLoadingOnOpen, 
-         onClose: confirmLoadingOnClose 
-        } = useDisclosure();
-
   return (
     <Box w={"100%"} {...root}>
     <Suspense

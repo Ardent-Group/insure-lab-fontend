@@ -87,14 +87,16 @@ const Navbar = () => {
                  <ChevronDownIcon />
                </MenuButton>
                <MenuList border="none">
-                <Link to="/governance-proposals">
+                <Link to="/governance-claims">
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Proposals</MenuItem>
                 </Link>
-                <Link to="/members">
+                <Link to="/dao-members">
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Members</MenuItem>
                  </Link>
                  {/* <MenuDivider /> */}
+                 <Link to="/dao-member-portal">
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Governance Profile</MenuItem>
+                 </Link>
                 </MenuList>
               </Menu>
           </Flex>

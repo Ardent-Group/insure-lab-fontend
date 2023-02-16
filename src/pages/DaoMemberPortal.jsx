@@ -24,17 +24,16 @@ const DaoMemberPortal = () => {
    </Suspense>
 
       <Flex padding={"40px 80px"} flexDir="column" mt="30px">
-       <Flex>
-          
-            <Flex justify="center" alignItems="center"> 
-            <Link to="/governance">
-            <Image src={arrowLeft} boxSize="15px" />
-             <Spacer mr="5px" />
-              <Text fontSize="18px" fontWeight="500">Back</Text> 
-              </Link>
-            </Flex> 
-            </Flex>
-     
+         
+               <Flex w="100%" flexDir="column">
+                 <Link to="/governance">
+                 <Flex flexDir="row" align="center"> 
+                  <Image src={arrowLeft} boxSize="15px" mr="8px" />
+                   <Text fontSize="16px" fontWeight="500">Back</Text>
+                   </Flex> 
+                   </Link>
+                 </Flex>
+       
               <Flex mt="-20px" flexDir="column" p="70px">
                 <Flex flexDir="row" justify="space-between"
                   borderRadius="20px"
@@ -126,7 +125,6 @@ const DaoMemberPortal = () => {
                
                 </Flex>
               </Flex> 
-
 
                <Box mt="-20px" flexDir="column" p="70px">
                 <Text fontSize="20px" fontWeight="600" mb="20px">Activities</Text>

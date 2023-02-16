@@ -104,7 +104,7 @@ const Governance = () => {
                  and issues raised by insurers and risk assessors.
                 </Text>
                 <Flex mt="30px">
-                <Link to="/feeds">
+                <Link to="/governance-claims">
                 <Flex justify="center" alignItems="center"> 
                  <Text fontSize="16px" fontWeight="600">View feeds</Text> 
                  <Spacer mr="5px" />
@@ -122,7 +122,7 @@ const Governance = () => {
                 played in shaping the future of Insurance.
                 </Text>
                 <Flex mt="30px">
-                <Link to="/members">
+                <Link to="/dao-members">
                 <Flex justify="center" alignItems="center"> 
                  <Text fontSize="16px" fontWeight="600">View members</Text> 
                   <Spacer mr="5px" />
@@ -140,7 +140,7 @@ const Governance = () => {
                and contributions to the Governance DAO 
                 </Text>
                 <Flex mt="30px">
-                <Link to="/portal">
+                <Link to="/dao-member-portal">
                 <Flex justify="center" alignItems="center"> 
                  <Text fontSize="16px" fontWeight="600">View Portal</Text> 
                  <Spacer mr="5px" />

@@ -10,8 +10,12 @@ import {
   InputGroup,
   InputLeftElement,
   Icon,
+  Image,
+  Spacer
 } from "@chakra-ui/react";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import arrowLeft from '../../assets/arrow-left.svg';
 
 const ProposalFilter = () => {
 
@@ -21,26 +25,22 @@ const ProposalFilter = () => {
   // const allMaterials = [];
 
   return (
-    <HStack w={"100%"} p="60px" mt="-50px">
+    <HStack w={"100%"} p="60px">
       {/* -----------------------------------------------------DIVIDE----------------------------------------------- */}
         <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<Icon as={FaSearch} color="1C1B1F" />}
-          />
-          <Input
-            placeholder="Search protocols"
-            borderRadius="24px"
-            border="1px solid #CFC4C5"
-            width={"50%"}
-            _placeholder={{ color: "1C1B1F" }}
-          />
+           <Link to="/governance">
+              <Flex flexDir="row" align="center"> 
+            <Image src={arrowLeft} boxSize="15px" mr="10px" />
+              <Text fontSize="16px" fontWeight="500">Back</Text>
+            </Flex> 
+          </Link>
+          
         </InputGroup>
 
-            <Text {...popFont}>FilterbyStatus:</Text>
+            <Text {...popFont}>Sortby:</Text>
         
           {/* Select one */}
-          <Select placeholder='All' _placeholder={{ color: "#49454F"}} width={"20%"}>
+          <Select placeholder='None' _placeholder={{ color: "#49454F"}} width={"10%"}>
             <option value='option1'>Option 1</option>
             <option value='option2'>Option 2</option>
             <option value='option3'>Option 3</option>
