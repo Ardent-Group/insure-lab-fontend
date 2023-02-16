@@ -8,6 +8,51 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { SkeletonTheme } from 'react-loading-skeleton'
 import { extendTheme } from '@chakra-ui/react'
 
+// Wagmi & RainbowKit setup
+import '@rainbow-me/rainbowkit/styles.css';
+import { WagmiConfig, configureChains, createClient } from 'wagmi';
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+
+// custom chain
+const insureLabFantomTestnet = {
+  id: 4002,
+  name: 'fantomTestnet',
+  network: 'fantomTestnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Fantom',
+    symbol: 'FTM'
+  },
+  rpcUrls: {
+    public: { http: ['https://rpc.testnet.fantom.network/'] },
+    default: { http: ['https://rpc.testnet.fantom.network/'] }
+  },
+  blockExplorers: {
+    etherscan: { name: 'FtmScan', url: 'https://testnet.ftmscan.com/' },
+    default: {name: 'FtmScan', url: 'https://testnet.ftmscan.com/' },
+  },
+  contracts: {},
+  testnet: true,
+}
+
+const { provider, chains } = configureChains(
+  [insureLabFantomTestnet],
+  [jsonRpcProvider({ rpc: chain => ({ http: chain.rpcUrls.default }) })]
+)
+
+const { connectors } = getDefaultWallets({
+  appName: "InsureLab",
+  chains
+});
+
+const wagmiClient = createClient({
+  autoConnect: false,
+  connectors,
+  provider
+});
+
+
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
@@ -24,12 +69,16 @@ const theme = extendTheme({ colors })
 
 root.render(
   <StrictMode>
-    <ChakraProvider theme={theme}>
-    <SkeletonTheme baseColor="#202020" highlightColor="#444">
-    <ColorModeScript />
-    <App />
-    </SkeletonTheme>
-    </ChakraProvider>
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains}>
+        <ChakraProvider theme={theme}>
+          <SkeletonTheme baseColor="#202020" highlightColor="#444">
+            <ColorModeScript />
+            <App />
+          </SkeletonTheme>
+        </ChakraProvider>
+      </RainbowKitProvider>
+    </WagmiConfig>
   </StrictMode>
 );
 
