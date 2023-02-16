@@ -14,6 +14,8 @@ import {
   Avatar,
   MenuList,
   MenuDivider,
+  useDisclosure,
+  Center
 } from '@chakra-ui/react';
 import {ChevronDownIcon} from '@chakra-ui/icons'
 import { nanoid } from "nanoid";
@@ -35,7 +37,7 @@ const Navbar = () => {
       const [isVisible, setIsVisible] = useState(false);
 
       const isDesktop = useBreakpointValue({ base: false, lg: true })
-
+      const {isOpen, onOpen, onClose} = useDisclosure()
 
   return (
     <chakra.header id="header">
@@ -63,39 +65,39 @@ const Navbar = () => {
                <Link key={nanoid()} to={item.link}
                >
                  <Button variant="nav" fontWeight={400}
-                  // transition="opacity 400ms ease"
                   _focus={{ color: "ctaBg", fontWeight: "600" }}
-                  // _focusVisible={{ outline: "3px solid ctaBg" }}
                   > {item.name} </Button>
                </Link>
              ))}
               <Flex alignItems={'left'}>
-           <Menu>
-            <Flex justify="center" align="center">
-             <Link to="/governance">
-              <Text  _focus={{ color: "ctaBg", fontWeight: "600"  }}>
-                Governance
-              </Text>
-            </Link> 
-            </Flex>
+              <Menu isOpen={isOpen}>
                <MenuButton
                  px={2}
                  py={1}
-                 _focus={{ boxShadow: 'none', color: "ctaBg", fontWeight: "600"  }}
-                 showOnHover="true"
+                 _hover={{ color: "ctaBg", boxShadow: 'none', fontWeight: "600"}}
+                 onMouseEnter={onOpen}
+                 onMouseLeave={onClose}
+                 w={{lg: "135px"}}
                >
-                 <ChevronDownIcon />
+                <Flex>
+                  Governance
+                  <Center>
+                    <ChevronDownIcon />
+                  </Center>
+                </Flex>
                </MenuButton>
-               <MenuList border="none">
+               <MenuList border="none" onMouseEnter={onOpen} onMouseLeave={onClose} mt={-1}>
+                <Link to="/governance">
+                  <MenuItem _hover={{bg: 'ctaBg', color: "white" }}>Governance</MenuItem>
+                </Link> 
                 <Link to="/governance-proposals">
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Proposals</MenuItem>
                 </Link>
                 <Link to="/members">
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Members</MenuItem>
-                 </Link>
-                 {/* <MenuDivider /> */}
+                </Link>
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Governance Profile</MenuItem>
-                </MenuList>
+              </MenuList>
               </Menu>
           </Flex>
            </HStack>
