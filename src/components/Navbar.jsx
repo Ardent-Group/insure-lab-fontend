@@ -14,6 +14,8 @@ import {
   Avatar,
   MenuList,
   MenuDivider,
+  useDisclosure,
+  Center
 } from '@chakra-ui/react';
 import {ChevronDownIcon} from '@chakra-ui/icons'
 import { nanoid } from "nanoid";
@@ -22,15 +24,11 @@ import  insurelabLogo from '../assets/Logo.svg'
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import MobileDrawer from "./mobileDrawer/MobileDrawer";
+//connect wallet
+import { ConnectInsureLab } from "../utils/customConnect";
 
-const CTA = "Connect Wallet"
 
 const Navbar = () => {
-     
-    const {
-        logoFont,
-        ctaFont,
-      } = useNavbarStyles();
 
       const [isMenu, setIsMenu] = useState(false);
       const [isVisible, setIsVisible] = useState(false);
@@ -38,7 +36,7 @@ const Navbar = () => {
       let navigate = useNavigate();
 
       const isDesktop = useBreakpointValue({ base: false, lg: true })
-
+      const {isOpen, onOpen, onClose} = useDisclosure()
 
   return (
     <chakra.header id="header">
@@ -66,64 +64,45 @@ const Navbar = () => {
                <Link key={nanoid()} to={item.link}
                >
                  <Button variant="nav" fontWeight={400}
-                  // transition="opacity 400ms ease"
                   _focus={{ color: "ctaBg", fontWeight: "600" }}
-                  // _focusVisible={{ outline: "3px solid ctaBg" }}
                   > {item.name} </Button>
                </Link>
              ))}
               <Flex alignItems={'left'}>
-           <Menu>
-            <Flex justify="center" align="center">
-             <Link to="/governance">
-              <Text  _focus={{ color: "ctaBg", fontWeight: "600"  }}>
-                Governance
-              </Text>
-            </Link> 
-            </Flex>
+              <Menu isOpen={isOpen}>
                <MenuButton
                  px={2}
                  py={1}
-                 _focus={{ boxShadow: 'none', color: "ctaBg", fontWeight: "600"  }}
-                 showOnHover="true"
+                 _hover={{ color: "ctaBg", boxShadow: 'none', fontWeight: "600"}}
+                 onMouseEnter={onOpen}
+                 onMouseLeave={onClose}
+                 w={{lg: "135px"}}
                >
-                 <ChevronDownIcon />
+                <Flex>
+                  Governance
+                  <Center>
+                    <ChevronDownIcon />
+                  </Center>
+                </Flex>
                </MenuButton>
-               <MenuList border="none">
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
-                  onClick={() => navigate("/governance-claims")}
-                 >
-                  Proposals
-                </MenuItem>
-
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
-                   onClick={() => navigate("/dao-members")}
-                  >
-                    Members
-                  </MenuItem>
-                 {/* <MenuDivider /> */}
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
-                  onClick={() => navigate("/dao-member-portal")}
-                  >
-                    Governance Profile
-                  </MenuItem>
-                  
-                </MenuList>
+               <MenuList border="none" onMouseEnter={onOpen} onMouseLeave={onClose} mt={-1}>
+                <Link to="/governance">
+                  <MenuItem _hover={{bg: 'ctaBg', color: "white" }}>Governance</MenuItem>
+                </Link> 
+                <Link to="/governance-proposals">
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Proposals</MenuItem>
+                </Link>
+                <Link to="/members">
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Members</MenuItem>
+                </Link>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Governance Profile</MenuItem>
+              </MenuList>
               </Menu>
           </Flex>
            </HStack>
           
            <HStack>
-             <Button borderRadius="100px" 
-              bg="ctaBg" 
-              {...ctaFont}
-              _hover={{
-               bg: "linear-gradient(0deg, rgba(103, 80, 164, 0.14), rgba(103, 80, 164, 0.14)), #FFFBFE",
-               color: "black"
-              }}
-              >
-               {CTA}
-             </Button>  
+             <ConnectInsureLab />
            </HStack>
            </>
           ) : (
@@ -137,7 +116,7 @@ const Navbar = () => {
 
 export default Navbar;
 
-const useNavbarStyles = () => {
+export const useNavbarStyles = () => {
     return {
         logoFont: {
            fontSize: "22px",
