@@ -20,6 +20,7 @@ import { nanoid } from "nanoid";
 import {navbar_data} from '../utils/navbarData';
 import  insurelabLogo from '../assets/Logo.svg'
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MobileDrawer from "./mobileDrawer/MobileDrawer";
 
 const CTA = "Connect Wallet"
@@ -33,6 +34,8 @@ const Navbar = () => {
 
       const [isMenu, setIsMenu] = useState(false);
       const [isVisible, setIsVisible] = useState(false);
+
+      let navigate = useNavigate();
 
       const isDesktop = useBreakpointValue({ base: false, lg: true })
 
@@ -87,16 +90,24 @@ const Navbar = () => {
                  <ChevronDownIcon />
                </MenuButton>
                <MenuList border="none">
-                <Link to="/governance-claims">
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Proposals</MenuItem>
-                </Link>
-                <Link to="/dao-members">
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Members</MenuItem>
-                 </Link>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                  onClick={() => navigate("/governance-claims")}
+                 >
+                  Proposals
+                </MenuItem>
+
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                   onClick={() => navigate("/dao-members")}
+                  >
+                    Members
+                  </MenuItem>
                  {/* <MenuDivider /> */}
-                 <Link to="/dao-member-portal">
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Governance Profile</MenuItem>
-                 </Link>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                  onClick={() => navigate("/dao-member-portal")}
+                  >
+                    Governance Profile
+                  </MenuItem>
+                  
                 </MenuList>
               </Menu>
           </Flex>

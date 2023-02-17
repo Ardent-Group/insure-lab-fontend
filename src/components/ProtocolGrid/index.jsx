@@ -1,6 +1,6 @@
 import { Heading, Spacer, Stack, Flex, Text, Avatar, Image, Box, Button } from "@chakra-ui/react";
 import React, { lazy, FC, MouseEventHandler } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import webLogo from '../../assets/link-2.svg'
 import secureLogo from "../../assets/shield-tick.svg"
 import AvatarLogo from '../../assets/uniswap 1.svg'
@@ -16,6 +16,8 @@ const ProtocolGrid = ({
 }) => {
   const { root, text, title, subTitle, title2 } = useStyles();
 
+  let navigate = useNavigate()
+
   return (
     <Stack
       {...root}
@@ -23,6 +25,8 @@ const ProtocolGrid = ({
       bg="#FFFFFF"
       _hover={{  boxShadow: '2xl' }}
       onClick={onClick}
+      justify="center"
+      alignItems="center"
     > 
       <Flex>
        <Avatar src={AvatarLogo} />
@@ -92,13 +96,12 @@ const ProtocolGrid = ({
         </Flex>
           <Spacer mr="60px" />
           <Flex flexDir="column">
-          <Link to={link}>
           <Button color="white" borderRadius="100px" bg="ctaBg"
           fontSize="14px" fontWeight={500}
+          onClick={() => navigate(link)}
           >
             Insure
          </Button>
-         </Link>
         </Flex>
         </Flex>
     

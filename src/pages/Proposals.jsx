@@ -10,13 +10,6 @@ import {
   SimpleGrid, 
   Center, keyframes, 
   Skeleton, useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
-  Button,
-  Spacer,
   Avatar,
   Stack,
   Select,
@@ -81,13 +74,14 @@ const Proposals = () => {
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
   
   return (
-    <Box w={"100%"} {...root}>
+    <Box w="100%">
        <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
       >
         <NavBar />
       </Suspense>
+    <Flex w={"100%"} {...root} flexDir="column">
       
       <Flex {...protocolBox} bgImage="url('/images/proposal-bg.png')">
          <Suspense fallback={<Spinner size="sm" />}>
@@ -132,13 +126,13 @@ const Proposals = () => {
     
       {/* ---------------------------- Search and Filter area -------------------------- */}
       <Flex w={"100%"} flexDir="column">
-        <Link to="/governance">
-      <Flex flexDir="row" p="60px" mt="-40px" align="center"> 
+          <Flex flexDir="row" p="60px" mt="-40px" align="center"
+           onClick={() => navigate('/governance')}
+           cursor="pointer"
+          > 
             <Image src={arrowLeft} boxSize="15px" mr="10px" />
               <Text fontSize="16px" fontWeight="500">Back</Text>
-            </Flex> 
-          </Link>
-          
+            </Flex>     
          <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
@@ -249,6 +243,7 @@ const Proposals = () => {
     
        
       <Footer />
+    </Flex>
     </Box>
   )
 }

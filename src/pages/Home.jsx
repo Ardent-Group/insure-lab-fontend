@@ -11,6 +11,7 @@ import {Flex,
         Spacer
       } from "@chakra-ui/react";
 import Container from '../components/Container';
+import { useNavigate } from 'react-router-dom';
 import Images_Icons from '../constants/icons-images';
 import blockchainLogo from '../assets/Rectangle 1.svg';
 import LockDexImage from '../assets/LockDex.svg'
@@ -48,17 +49,16 @@ const Home = () => {
       outerBox2
     } = useStyles();
 
+    let navigate = useNavigate();
+
   return (
-    <>
-    <Box w={"100%"} {...root}>
-     <Suspense
-        // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
+    <Box w={"100%"}>
+       <Suspense
         fallback={<Spinner size="lg" />}
-        zIndex={30000}
       >
         <NavBar />
       </Suspense>
-
+    <Box w={"100%"} {...root}>
       <Flex {...homeBox} bgImage="url('/images/Hero-section-Background.png')">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
@@ -97,26 +97,23 @@ const Home = () => {
                         bg: "ctaBg",
                         fontWeight: "400"
                       }}
-                      // onCLick={}
+                      onCLick={() => {
+                        navigate('/protocols')
+                      }}
                     />
                   </Suspense>
                 </Flex>
 
-                      {/* RIGHT */}
+                   {/* RIGHT */}
                 <HStack
                   {...homeInnerBox3}
                   display={{ base: "none", md: "flex" }}
                   as={motion.div}
                   animation={animation}
-                  // pt="-100px"
-                  pos="relative"
-                  overflowX="hidden"
-                  overflowY="hidden"
                 >
                   <Image
                     src={blockchainLogo}
                     right={"60px"}
-                    zIndex={"-9999999"}
                     bottom={"50px"}
                   />
                 </HStack>
@@ -330,7 +327,7 @@ const Home = () => {
        {/* Footer area */}
        <Footer />
     </Box>
-    </>
+    </Box>
   )
 }
 

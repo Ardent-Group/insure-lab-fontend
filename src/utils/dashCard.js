@@ -2,6 +2,7 @@ import uniswapLogo from '../assets/uniswap 1.svg'
 import avatar1 from '../assets/avatar1.svg'
 import avatar2 from '../assets/avatar2.svg'
 import avatar3 from '../assets/avatar3.svg'
+import ethereumLogo from '../assets/ethereum 1.svg'
 // import bgDashboard from ''
 
 export const dashCardData = [
@@ -136,4 +137,96 @@ export const votersList = [
     avatar: avatar3,
     ensname: "#bafkrei",
    },
+]
+
+export const myInsureCover = [
+  {
+   id: "1",
+   logo: uniswapLogo,
+   logo2: ethereumLogo,
+   logoname: "InstaDapp",
+   subtile: "Smart contract vulnerability",
+   chains: "ethereum",
+   coveredAddress: "0x8b93...8b0F",
+   coveredPeriod: "21/01/2023 - 30/05/2023",
+  },
+  {
+   id: "2",
+   logo: uniswapLogo,
+   logo2: ethereumLogo,
+   logoname: "InstaDapp",
+   subtile: "Smart contract vulnerability",
+   chains: "ethereum",
+   coveredAddress: "0x8b93...8b0F",
+   coveredPeriod: "21/01/2023 - 30/05/2023",
+  },
+  {
+   id: "3",
+   logo: uniswapLogo,
+   logo2: ethereumLogo,
+   logoname: "InstaDapp",
+   subtile: "Smart contract vulnerability",
+   chains: "ethereum",
+   coveredAddress: "0x8b93...8b0F",
+   coveredPeriod: "21/01/2023 - 30/05/2023",
+  },
+  {
+   id: "4",
+   logo: uniswapLogo,
+   logo2: ethereumLogo,
+   logoname: "InstaDapp",
+   subtile: "Smart contract vulnerability",
+   chains: "ethereum",
+   coveredAddress: "0x8b93...8b0F",
+   coveredPeriod: "21/01/2023 - 30/05/2023",
+  },
+]
+
+
+export const myInsureClaim = [
+  {
+   id: "1",
+   logo: uniswapLogo,
+   logo2: ethereumLogo,
+   chainId: "001",
+   logoname: "InstaDapp",
+   subtile: "Smart contract vulnerability",
+   chains: "ethereum",
+   claimAmount: "2,000.000 USDT",
+   button1: "In Progress"
+  },
+  {
+   id: "2",
+   logo: uniswapLogo,
+   logo2: ethereumLogo,
+   logoname: "InstaDapp",
+   chainId: "002",
+   logoname: "InstaDapp",
+   subtile: "Smart contract vulnerability",
+   chains: "ethereum",
+   claimAmount: "2,000.000 USDT",
+   button1: "In Progress"
+  },
+  {
+   id: "3",
+   logo: uniswapLogo,
+   logo2: ethereumLogo,
+   chainId: "003",
+   logoname: "InstaDapp",
+   subtile: "Smart contract vulnerability",
+   chains: "ethereum",
+   claimAmount: "2,000.000 USDT",
+   button2: "Completed"
+  },
+  {
+   id: "4",
+   logo: uniswapLogo,
+   logo2: ethereumLogo,
+   chainId: "004",
+   logoname: "InstaDapp",
+   subtile: "Smart contract vulnerability",
+   chains: "ethereum",
+   claimAmount: "2,000.000 USDT",
+   button3: "Rejected"
+  },
 ]

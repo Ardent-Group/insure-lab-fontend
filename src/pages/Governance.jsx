@@ -55,23 +55,25 @@ const Governance = () => {
     const { isOpen: isOpen3, onOpen: onOpen3, onClose: onClose3 } = useDisclosure();
 
   return (
-    <>
-    <Box w={"100%"} {...root}>
-     <Suspense
+    <Box>
+      <Suspense
         // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="lg" />}
       >
         <NavBar />
       </Suspense>
-
-      <Flex flexDir="column">
+    <Box w={"100%"}>
+      <Flex flexDir="column" 
+        {...root}
+        bgImage="url('/images/noiselayer.png')"
+       >
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
             <HStack {...homeBox} textAlign="center" 
               justifyContent="center"
-              alignItems="center" flexDir="column"
-              bgImage="url('/images/NOISE_LAYER.png')"
-             >
+              alignItems="center" 
+              flexDir="column"
+              >
                 <Text {...textDesign} bgClip='text'>Creating a new, fairer, and more secure future for insurance.</Text>
                 <Text fontSize="24px" fontWeight="500" pb="34px">As a DAO, we are owned and governed by our community. 
                   By joining InsureLab's DAO, you will have the opportunity 
@@ -158,7 +160,7 @@ const Governance = () => {
               bg="linear-gradient(97.66deg, #0B354D 0%, #000000 100%)" 
               borderRadius="20px"
               // h="400px"
-              //  bgImage="url('/images/NOISE_LAYER.png')"
+              //  bgImage="url('/images/noiselayer.png')"
               p="40px"
               justify="space-between"
               flexDir="row"
@@ -410,7 +412,7 @@ const Governance = () => {
        {/* Footer area */}
        <Footer />
     </Box>
-    </>
+    </Box>
   )
 }
 
@@ -421,6 +423,8 @@ const useStyles = () => {
   return {
     root: {
       backgroundColor: "#FBFDFF",
+      bgRepeat: "no-repeat",
+      bgSize: "cover",
       // borderBottomLeftRadius: 20,
       // borderBottomRightRadius: 20,
     },

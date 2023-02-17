@@ -70,14 +70,15 @@ const Members = () => {
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
   
   return (
-    <Box w={"100%"} {...root}>
+    <Box w="100%">
        <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
       >
         <NavBar />
       </Suspense>
-      
+   
+    <Flex w={"100%"} {...root} flexDir="column">
       <Flex {...protocolBox} bgImage="url('/images/proposal-bg.png')">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
@@ -109,8 +110,8 @@ const Members = () => {
                 >
                   <Image
                     src={blockChainPartLogo}
-                    right={"60px"}
-                    bottom={"50px"}
+                    // right={"60px"}
+                    // bottom={"50px"}
                   />
                 </VStack>
 
@@ -171,6 +172,7 @@ const Members = () => {
     
        
       <Footer />
+    </Flex>
     </Box>
   )
 }
@@ -223,8 +225,8 @@ const useStyles = () => {
         md: "35vw",
       },
       h: "90%",
-      overflow: "hidden",
-      // zIndex: 3000000,
+      // overflow: "hidden",
+      // // zIndex: 3000000,
     },
     homeBox2: {
       h: "600px",

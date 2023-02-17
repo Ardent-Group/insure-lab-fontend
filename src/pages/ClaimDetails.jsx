@@ -81,14 +81,14 @@ const ClaimDetails = () => {
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
   
   return (
-    <Box w={"100%"} {...root}>
-       <Suspense
-        // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
-        fallback={<Spinner size="sm" />}
+    <Box w={"100%"}>
+        <Suspense
+        // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
+        fallback={<Spinner size="lg" />}
       >
         <NavBar />
       </Suspense>
-       
+    <Box w={"100%"} {...root}>      
       <Flex w={"100%"} flexDir="column">
         <Link to="/governance">
         <Flex flexDir="row" p="60px"  align="center"> 
@@ -371,6 +371,7 @@ const ClaimDetails = () => {
     
        
       <Footer />
+    </Box>
     </Box>
   )
 }

@@ -3,7 +3,8 @@ import React from "react";
 
 export default function Container({ children, ...props }) {
   return (
-    <ContainerBox pos="relative" maxW={"container"} {...props}>
+    // pos="relative"
+    <ContainerBox maxW={"container"} {...props}>
       {children}
     </ContainerBox>
   );

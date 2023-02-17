@@ -113,20 +113,57 @@ const Protocols = () => {
     }
 
   return (
-    <Box w={"100%"} {...root}>
-       <Suspense
+    <Box w="100%">
+      <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
       >
         <NavBar />
       </Suspense>
-      
+    <Flex w={"100%"} {...root} flexDir="column">     
       <Flex {...protocolBox} bgImage="url('/images/Header-banner.png')">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
             <HStack {...outerBox}>
-                  {/* LEFT */}
-                  <Flex
+            
+          {/* LEFT */}
+            <Flex>
+                <Suspense fallback={<Spinner size="sm" />}>
+                  <Link to="/create-custom-insurance">
+                    <InsurelabButton
+                      name={"Insure unlisted protocol"}
+                      rest={{
+                        width: ["100%"],
+                        height: ["50px"],
+                        mt: { base: null, md: "10px" },
+                        color: "white",
+                        bg: "ctaBg",
+                        borderRadius: "10px",
+                        fontWeight: "400"
+                      }}
+                      // onCLick={unlistedOnOpen}
+                    />
+                    </Link>
+                  </Suspense>
+            </Flex>
+
+                {/* Center */}
+                <VStack
+                  {...protocolInnerBox2}
+                  display={{ base: "none", md: "flex" }}
+                  // pos={"relative"}
+                  as={motion.div}
+                  animation={animation}
+                >
+                  <Image
+                    src={rockTypeImage}
+                    // right={"60px"}
+                    // bottom={"50px"}
+                  />
+                </VStack>
+
+                {/* Right */}
+                <Flex
                   {...protocolInnerBox1}
                   flexDir={"column"}
                   display={{ base: "none", md: "flex" }}
@@ -151,40 +188,6 @@ const Protocols = () => {
                   </Text>
                 </Flex>
 
-                {/* Center */}
-                <VStack
-                  {...protocolInnerBox2}
-                  display={{ base: "none", md: "flex" }}
-                  // pos={"relative"}
-                  as={motion.div}
-                  animation={animation}
-                >
-                  <Image
-                    src={rockTypeImage}
-                    // right={"60px"}
-                    // bottom={"50px"}
-                  />
-                </VStack>
-
-                <Flex>
-                <Suspense fallback={<Spinner size="sm" />}>
-                  <Link to="/create-custom-insurance">
-                    <InsurelabButton
-                      name={"Insure unlisted protocol"}
-                      rest={{
-                        width: ["100%"],
-                        height: ["50px"],
-                        mt: { base: null, md: "10px" },
-                        color: "white",
-                        bg: "ctaBg",
-                        borderRadius: "10px",
-                        fontWeight: "400"
-                      }}
-                      // onCLick={unlistedOnOpen}
-                    />
-                    </Link>
-                  </Suspense>
-                </Flex>
             </HStack>
           </Container>
          </Suspense>
@@ -359,6 +362,7 @@ const Protocols = () => {
        {/* Footer is here */}
        
       <Footer />
+    </Flex>
     </Box>
   )
 }

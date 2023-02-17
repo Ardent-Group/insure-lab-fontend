@@ -5,6 +5,7 @@ import { Flex, Box, Spinner, Text, Image, Spacer, Button,
 } from '@chakra-ui/react';
 import Footer2 from '../components/Footer2';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
 import uniswapLogo from '../assets/uniswap 1.svg'
 
@@ -13,26 +14,28 @@ const NavBar = lazy(() => import("../components/Navbar"));
 const DaoMemberPortal = () => {
 
      const {root} = useStyles();
+     let navigate = useNavigate();
 
   return (
-    <Box w={"100%"} {...root}>
+    <Box w="100%">
     <Suspense
      // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
      fallback={<Spinner size="sm" />}
    >
      <NavBar />
-   </Suspense>
-
+   </Suspense> 
+   
+    <Box w={"100%"} {...root}>
       <Flex padding={"40px 80px"} flexDir="column" mt="30px">
          
-               <Flex w="100%" flexDir="column">
-                 <Link to="/governance">
-                 <Flex flexDir="row" align="center"> 
+                 <Flex flexDir="row" align="center"
+                  onClick={() => navigate("/governance")}
+                  cursor="pointer"
+                 > 
                   <Image src={arrowLeft} boxSize="15px" mr="8px" />
                    <Text fontSize="16px" fontWeight="500">Back</Text>
                    </Flex> 
-                   </Link>
-                 </Flex>
+           
        
               <Flex mt="-20px" flexDir="column" p="70px">
                 <Flex flexDir="row" justify="space-between"
@@ -189,6 +192,7 @@ const DaoMemberPortal = () => {
 
       {/* Footer here */}
       <Footer2 />
+   </Box>
    </Box>
   )
 }
