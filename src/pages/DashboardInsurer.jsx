@@ -28,7 +28,7 @@ import {
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import Footer from '../components/Footer2';
-import { dashCardData, listedCover } from '../utils/dashCard';
+import { dashCardData, myInsureCover, myInsureClaim } from '../utils/dashCard';
 import { nanoid } from 'nanoid';
 import secureLogo from '../assets/shield-tick.svg'
 import walletIcon from '../assets/empty-wallet.svg'
@@ -39,7 +39,6 @@ import warningAnimation from '../lottie/88003-blue-warning.json';
 const style = {
   height: 300,
 };
-
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const DashboardCardItem = lazy(() => import("../components/DashboardCardItem/index"));
@@ -57,7 +56,6 @@ const Dashboard = () => {
       onClose: warningOnClose 
      } = useDisclosure();
 
-
     const { isOpen: withdrawCoverIsOpen,
        onOpen: withdrawCoverOnOpen,
        onClose: withdrawCoverOnClose
@@ -70,12 +68,12 @@ const Dashboard = () => {
 
   return (
     <Box w="100%">
-      <Suspense
-        fallback={<Spinner size="md" />}
+       <Suspense
+        // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
+        fallback={<Spinner size="lg" />}
       >
         <NavBar />
       </Suspense>
-
     <Box w={"100%"} {...root}>
       <Suspense
         fallback={<Spinner size="md" />}
@@ -103,195 +101,193 @@ const Dashboard = () => {
               </SimpleGrid>
             </Flex>
 
+              {/* --------------------- My Insurance covers --------------------------- */}
             <Flex flexDir="column">
-              {/* --------------------- Listed Protocol covers --------------------------- */}
-              <Flex flexDir="column" mt="40px">
-               <Text fontSize="16px" fontWeight="600">Listed Protocol covers</Text>
-               <Text fontSize="14px" fontWeight="400">Here are your insurance coverages of listed protocols.</Text>
+              <Flex flexDir="row" mt="40px" justify="space-between">
+                <Flex flexDir="column">
+                  <Text fontSize="16px" fontWeight="600">My Insurance covers</Text>
+                  <Text fontSize="14px" fontWeight="400">All of your insured protocols and cover details</Text>
+                </Flex>
+             
+                <Flex flexDir="column">
+                <Button borderRadius="100px" bg="white" border="2px solid #3E7FDF"
+                 _hover={{
+                    bg: "none"
+                 }}
+                >
+                 <Text fontSize="14px" fontWeight="500">View all covers</Text>
+                 </Button>
+                </Flex>
+                
               </Flex>
                 {/* ---------------------------------------- Tabs -------------------------- */}
                <Flex flexDir="row" justify="space-between" mt="30px">
                 <Text color="#352F30" fontWeight="600" fontSize="14px">Products</Text> 
-                <Text color="#645C5E" fontWeight="500" fontSize="14px">Total amount</Text> 
-                <Text color="#645C5E" fontWeight="500" fontSize="14px">Covers bought </Text> 
-                <Text color="#645C5E" fontWeight="500" fontSize="14px">Total profit</Text> 
-                <Text color="#645C5E" fontWeight="500" fontSize="14px">Date created</Text> 
-                <Text ></Text> 
-                <Text ></Text> 
-                <Text ></Text> 
-                <Text ></Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Chains</Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Covered Address</Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Covered period</Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Status</Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Links</Text> 
+                <Text></Text> 
+                {/* <Text></Text>  */}
+                {/* <Text></Text>  */}
                </Flex>
                <Divider border="1px solid #6750A4" mt="15px" />
 
           {/* -------------------------------------- Tab Info -------------------------------- */}
-          {listedCover.map((e, i) => (
+          {myInsureCover.map((e, i) => (
          <Flex flexDir="row" justify="space-between" mt="15px" {...root2} key={nanoid()}>
           {/* -------------------------- Detail 1 ----------------------- */}
             <>
           <Flex>
-            <Avatar boxSize="30px" src={e.logo} mr="8px" />
+            <Avatar boxSize="20px" src={e.logo} mr="5px" />
             <Flex flexDir="column">
                 <Text {...font3}>{e.logoname}</Text>
                 <Flex justify={"center"} alignItems="center">
-                 <Image src={secureLogo} boxSize={"20px"} mr="4px" />
+                 <Image src={secureLogo} boxSize={"15px"} mr="2px" />
                   <Text {...font4}>{e.subtile}</Text>
                 </Flex>
             </Flex>
           </Flex>
-           {/* -------------------------- Detail 2 Total Amount ----------------------- */}
-          <Flex justify="center" alignItems="center">
-            <Text {...font5}>{e.totalAmount}</Text>
-          </Flex>
-
-           {/* -------------------------- Detail 3 Cover Bought ----------------------- */}
+           {/* -------------------------- Detail 2 Chains ----------------------- */}
            <Flex justify="center" alignItems="center">
-            <Text {...font5}>{e.coverBought}</Text>
+            <Avatar boxSize="30px" src={e.logo2} mr="8px" />
+            <Text {...font5}>{e.chains}</Text>
+          </Flex>
+           {/* -------------------------- Detail 3 Covered Address ----------------------- */}
+           <Flex justify="center" alignItems="center">
+            <Text {...font5}>{e.coveredAddress}</Text>
           </Flex>
 
-            {/* -------------------------- Detail 4 Total Profit----------------------- */}
+            {/* -------------------------- Detail Covered Period ----------------------- */}
             <Flex justify="center" alignItems="center">
-            <Text {...font5}>{e.totalProfit}</Text>
+            <Text {...font5}>{e.coveredPeriod}</Text>
            </Flex>
-        
-            {/* -------------------------- Detail 5 ----------------------- */}
-            <Flex justify="center" alignItems="center">
-              <Text {...font5}>{e.dateCreated}</Text>
-            </Flex>
 
-          {/* ----------------------------- withdrwal button ------------------- */}
-          {buttonHere ? (
+            {/* -------------------------- Detail Covered Period ----------------------- */}
+            <Flex justify="center" alignItems="center">
+            <Button borderRadius="10px" bg="#DEFFD9">
+                 <Text fontSize="14px" fontWeight="500">Active</Text>
+                 </Button>
+           </Flex>
+           
+        
+          {/* ----------------------------- Claim Button ------------------- */}
+          {!buttonHere ? (
           <HStack flexDir="row" justify="space-between">                 
-                {/* -------------------------- Detail 5 ----------------------- */}
-                <Flex justify="center" alignItems="center">
-                <Text {...font6}>28 days remaining</Text>
-                </Flex>
-                 <Spacer />
                  {/* ------------------------ Button Action here ----------------- */}
-                  <Center bg="#E4DCF9" borderRadius="100px" p="10px 15px" cursor="pointer">
-                    <Text fontSize="9px" fontWeight="600">Withdrawal in progress</Text>
+                  <Center bg="#3E7FDF" borderRadius="100px" p="10px 15px" cursor="pointer">
+                    <Text fontSize="9px" color="white" fontWeight="600">Claim Insurance</Text>
                   </Center> 
           </HStack>
             ): (
-              <HStack flexDir="row" justify="space-between">                 
-              {/* -------------------------- Detail 5 ----------------------- */}
-               <Center  border="2px solid #9CBCED" 
-               borderRadius="100px" 
-                p="10px 15px" 
-                cursor="pointer"
-                onClick={onOpen}
-                >
-                  <Text fontSize="9px" fontWeight="600">WithDraw Profit</Text>
-                </Center> 
-               <Spacer />
-               {/* ------------------------ Button Action here ----------------- */}
-                <Center bg="#DCE7F9" borderRadius="100px" p="10px 15px" cursor="pointer"
-                 onClick={warningOnOpen}
-                >
-                  <Text fontSize="9px" fontWeight="600">WithDraw Cover</Text>
-                </Center> 
-                </HStack>
+               <></>
             )}
+
+                <Flex justify="center" alignItems="center">
+                 {/* <Text fontSize="12px" color="#201A1B" fontWeight="600">View claim</Text> */}
+           </Flex>
           </>
              </Flex>
           ))}
             </Flex>
 
 
-            <Flex flexDir="column" mt="30px">
-              {/* --------------------- Listed Protocol covers --------------------------- */}
-              <Flex flexDir="column" mt="40px">
-               <Text fontSize="16px" fontWeight="600">Protocol covers listed by you</Text>
-               <Text fontSize="14px" fontWeight="400">Here are your insurance coverages of protocols. listed by you</Text>
+               {/* --------------------- My Insurance claims --------------------------- */}
+            <Flex flexDir="column">
+              <Flex flexDir="row" mt="50px" justify="space-between">
+                <Flex flexDir="column">
+                  <Text fontSize="16px" fontWeight="600">My Insurance claims</Text>
+                  <Text fontSize="14px" fontWeight="400">All of your insured protocols and cover details</Text>
+                </Flex>
+             
+                <Flex flexDir="column">
+                <Button borderRadius="100px" bg="white" border="2px solid #3E7FDF"
+                 _hover={{
+                    bg: "none"
+                 }}
+                >
+                 <Text fontSize="14px" fontWeight="500">View all claims</Text>
+                 </Button>
+                </Flex>
+                
               </Flex>
                 {/* ---------------------------------------- Tabs -------------------------- */}
                <Flex flexDir="row" justify="space-between" mt="30px">
                 <Text color="#352F30" fontWeight="600" fontSize="14px">Products</Text> 
-                <Text color="#645C5E" fontWeight="500" fontSize="14px">Total amount</Text> 
-                <Text color="#645C5E" fontWeight="500" fontSize="14px">Covers bought </Text> 
-                <Text color="#645C5E" fontWeight="500" fontSize="14px">Total profit</Text> 
-                <Text color="#645C5E" fontWeight="500" fontSize="14px">Date created</Text> 
-                <Text ></Text> 
-                <Text ></Text> 
-                <Text ></Text> 
-                <Text ></Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Claim ID</Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Chains</Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Claim Amount</Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Status</Text> 
+                <Text color="#645C5E" fontWeight="500" fontSize="14px">Links</Text> 
+                <Text></Text> 
+                {/* <Text></Text>  */}
+                {/* <Text></Text>  */}
                </Flex>
                <Divider border="1px solid #6750A4" mt="15px" />
 
           {/* -------------------------------------- Tab Info -------------------------------- */}
-          {listedCover.map((e, i) => (
+          {myInsureClaim.map((e, i) => (
          <Flex flexDir="row" justify="space-between" mt="15px" {...root2} key={nanoid()}>
           {/* -------------------------- Detail 1 ----------------------- */}
             <>
           <Flex>
-            <Avatar boxSize="30px" src={e.logo} mr="8px" />
+            <Avatar boxSize="20px" src={e.logo} mr="5px" />
             <Flex flexDir="column">
                 <Text {...font3}>{e.logoname}</Text>
                 <Flex justify={"center"} alignItems="center">
-                 <Image src={secureLogo} boxSize={"20px"} mr="4px" />
+                 <Image src={secureLogo} boxSize={"15px"} mr="2px" />
                   <Text {...font4}>{e.subtile}</Text>
                 </Flex>
             </Flex>
           </Flex>
-           {/* -------------------------- Detail 2 Total Amount ----------------------- */}
-          <Flex justify="center" alignItems="center">
-            <Text {...font5}>{e.totalAmount}</Text>
-          </Flex>
 
-           {/* -------------------------- Detail 3 Cover Bought ----------------------- */}
+              {/* -------------------------- Detail 3 Claim ID ----------------------- */}
            <Flex justify="center" alignItems="center">
-            <Text {...font5}>{e.coverBought}</Text>
+            <Text {...font5}>{e.chainId}</Text>
           </Flex>
 
-            {/* -------------------------- Detail 4 Total Profit----------------------- */}
-            <Flex justify="center" alignItems="center">
-            <Text {...font5}>{e.totalProfit}</Text>
-           </Flex>
-        
-            {/* -------------------------- Detail 5 ----------------------- */}
-            <Flex justify="center" alignItems="center">
-              <Text {...font5}>{e.dateCreated}</Text>
-            </Flex>
+           {/* -------------------------- Detail 2 Chains ----------------------- */}
+           <Flex justify="center" alignItems="center">
+            <Avatar boxSize="30px" src={e.logo2} mr="8px" />
+            <Text {...font5}>{e.chains}</Text>
+          </Flex>
+           {/* -------------------------- Detail 3 Claim Amount ----------------------- */}
+           <Flex justify="center" alignItems="center">
+            <Text {...font5}>{e.claimAmount}</Text>
+          </Flex>
 
-          {/* ----------------------------- withdrwal button ------------------- */}
-          {buttonHere ? (
-          <HStack flexDir="row" justify="space-between">                 
-                {/* -------------------------- Detail 5 ----------------------- */}
-                <Flex justify="center" alignItems="center">
-                <Text {...font6}>28 days remaining</Text>
-                </Flex>
-                 <Spacer />
-                 {/* ------------------------ Button Action here ----------------- */}
-                  <Center bg="#E4DCF9" borderRadius="100px" p="10px 15px" cursor="pointer">
-                    <Text fontSize="9px" fontWeight="600">Withdrawal in progress</Text>
-                  </Center> 
-          </HStack>
+          {/* ----------------------------- Claim Button ------------------- */}
+          {!buttonHere ? (
+             <Button borderRadius="10px" bg="#DEFFD9">
+              <Text fontSize="12px" fontWeight="500">Completed</Text>
+             </Button>
             ): (
-              <HStack flexDir="row" justify="space-between">                 
-              {/* -------------------------- Detail 5 ----------------------- */}
-               <Center  border="2px solid #9CBCED" 
-               borderRadius="100px" 
-                p="10px 15px" 
-                cursor="pointer"
-                onClick={onOpen}
-                >
-                  <Text fontSize="9px" fontWeight="600">WithDraw Profit</Text>
-                </Center> 
-               <Spacer />
-               {/* ------------------------ Button Action here ----------------- */}
-                <Center bg="#DCE7F9"
-                 borderRadius="100px" 
-                 p="10px 15px" 
-                 cursor="pointer"
-                 onClick={warningOnOpen}
-                 >
-                  <Text fontSize="9px" fontWeight="600">WithDraw Cover</Text>
-                </Center> 
-                </HStack>
+                <Button borderRadius="10px" bg="#FFDAD6">
+                <Text fontSize="12px" fontWeight="500">In Progress</Text>
+                </Button>
+
+                    //   ----------------- Rejected  Button ---------------
+                //  <Button borderRadius="10px" bg="#FFB4AB">
+                // <Text fontSize="12px" fontWeight="500">Rejected</Text>
+                // </Button>
             )}
+
+              {/* -------------------------- View Claim ----------------------- */}
+              <Flex justify="center" alignItems="center">
+                 <Text fontSize="12px" color="#201A1B" fontWeight="600">View claim</Text>
+           </Flex>
+
+           <Flex justify="center" alignItems="center">
+                 {/* <Text fontSize="12px" color="#201A1B" fontWeight="600">View claim</Text> */}
+           </Flex>
+             
           </>
              </Flex>
           ))}
+          
             </Flex>
+
 
         {/* ---------------------------------- WithDraw Profit -------------------------- */}
          <>
@@ -398,8 +394,6 @@ const Dashboard = () => {
             confirmLoadingOnClose={confirmLoadingOnClose}
             confirmLoadingOnOpen={confirmLoadingOnOpen}
            />
-
-
                      
         {/* ---------------------------------- Warning Modal -------------------------- */}
          <>
@@ -446,9 +440,7 @@ const Dashboard = () => {
         </ModalContent>
       </Modal> 
         </>
-
-
-           
+      
         {/* ---------------------------------- WithDraw Cover -------------------------- */}
          <>
         <Modal isOpen={withdrawCoverIsOpen} onClose={withdrawCoverOnClose}

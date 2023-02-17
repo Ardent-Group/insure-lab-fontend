@@ -7,19 +7,11 @@ import {
   Image, 
   HStack, 
   VStack, 
-  SimpleGrid, 
-  Center, keyframes, 
+  keyframes, 
   Skeleton, useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
-  Button,
-  Spacer,
-  Avatar,
   Stack,
   Select,
+  Divider
 } from '@chakra-ui/react'
 import Footer from '../components/Footer3';
 import Container from '../components/Container';
@@ -30,14 +22,13 @@ import '../constants/pagination.css'
 import {useParams} from "react-router-dom";
 import { motion } from 'framer-motion';
 import blockChainPartLogo from '../assets/chains.svg'
-import uniswapLogo from '../assets/uniswap 1.svg'
+import {memberList} from '../utils/dashCard';
 import useCollapse from 'react-collapsed';
-import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 
 
 const NavBar = lazy(() => import("../components/Navbar"));
-const ProposalFilter = lazy(() => import("../components/ProposalFilter"));
+const MemberFilter = lazy(() => import("../components/memberFilter"));
 
 
 const animationKeyframes = keyframes`
@@ -79,14 +70,15 @@ const Members = () => {
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
   
   return (
-    <Box w={"100%"} {...root}>
+    <Box w="100%">
        <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
       >
         <NavBar />
       </Suspense>
-      
+   
+    <Flex w={"100%"} {...root} flexDir="column">
       <Flex {...protocolBox} bgImage="url('/images/proposal-bg.png')">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
@@ -118,8 +110,8 @@ const Members = () => {
                 >
                   <Image
                     src={blockChainPartLogo}
-                    right={"60px"}
-                    bottom={"50px"}
+                    // right={"60px"}
+                    // bottom={"50px"}
                   />
                 </VStack>
 
@@ -134,103 +126,45 @@ const Members = () => {
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
       >
-         <ProposalFilter />
+         <MemberFilter />
       </Suspense>
       </Flex>
 
       <Suspense fallback={<Spinner size="sm" />}>
         <Container>
-        <Stack p="60px" flexDir="column">
+        <Stack p="60px" flexDir="column" mt="-50px">
           <Flex flexDir="column"
              bg="white"
              boxShadow="0px 4px 61px rgba(0, 0, 0, 0.1)"
              p="40px"
+             borderRadius="20px"
+             border="1px solid #6750A4"
           >
-          <Flex flexDir="row" justify="space-between" 
-            >
-            {/* -------------------------- Title & Wallet address is here ----------------------- */}
-         <>
-          <Flex>
-            <Avatar boxSize="30px" src={uniswapLogo} mr="8px" />
-            <Flex flexDir="column">
-                <Text fontSize="16px" fontWeight="600">InstadApp Insurance Claim</Text>
-                {/* --------------- wallet address ----------------- */}
-                <Text mt="8px">0x8b93...8b0F</Text>
-            </Flex>
-          </Flex>
-    
-          {/* ----------------------------- button are here ------------------- */}
-          {!buttonHere ? (
-            <HStack flexDir="row" justify="space-between">                 
-                 {/* ------------------------ Button Action here ----------------- */}
-                  <Center bg="#CCFFCB" borderRadius="10px" p="6px 10px" cursor="pointer">
-                    <Text fontSize="14px" fontWeight="400">Voting in progress</Text>
-                  </Center> 
-           </HStack>
-            ): (
-              <HStack flexDir="row" justify="space-between">                 
-               {/* ------------------------ Button Action here ----------------- */}
-                <Center bg="#FFDAD6"
-                 borderRadius="10px" 
-                 p="6px 10px" 
-                 cursor="pointer"
-                 >
-                  <Text fontSize="14px" fontWeight="400">Voting concluded</Text>
-                </Center> 
-                </HStack>
-            )}
-          </>
-         </Flex>
-            {/* ------------------------------- detail info -------------------- */}
-            <Flex flexDir="column" mt="18px">
-              <Text fontSize="14px" color="#1C1B1F" fontWeight="400">
-                Hello! I am claiming for a total of 300,000 USDC in relation to the UST
-                 de-pegging event that occurred from 5/3/22 - 5/13/22. First off,
-                  I will give a top-level outline of my claim here. Next, I will forward all 
-                  necessary and comprehensive materials regarding eligibility criteria, proof of loss, 
-                  Proofs checklist and claim amount to claims@insurace.io 
-        {/* ----------------------------- Slice moren Text here inside the getCollapseProps -------------------------- */}
-                <Text {...getCollapseProps()}
-                fontSize="14px" color="#1C1B1F" fontWeight="400"
-                >
-                 Next, I will forward all 
-                  necessary and comprehensive materials regarding eligibility criteria, proof of loss, 
-                  Proofs checklist and claim amount to claims@insurace.io 
-                </Text>
-                  <Text fontSize="14px" fontWeight="500" {...getToggleProps({
-                    onClick: () => setIsExpanded((prev) => !prev),
-                  })}>
-                     {isExpanded ? 'Collapse' : '....Read more' }
-                  </Text>
-              </Text>
-                
-                {/* --------------------- percentage laoding ----------------------- */}
-               <Flex mt="18px">
-                <Text mr="6px">Yes</Text>
-                <Progress
-                      theme={{
-                        active: {
-                          color: '#BBBAFF',
-                          height: '100px'
-                        }
-                      }}
-                   percent={79} 
-                   />
-              </Flex>
+               <Flex flexDir="row" justify="space-between" mt="30px">
+                <Text color="#352F30" fontWeight="500" fontSize="14px">ID</Text> 
+                <Text color="#352F30" fontWeight="500" fontSize="14px">Member address</Text> 
+                <Text color="#352F30" fontWeight="500" fontSize="14px">Balance</Text> 
+                <Text color="#352F30" fontWeight="500" fontSize="14px">Percentage of DAO</Text> 
+                <Text color="#352F30" fontWeight="500" fontSize="14px">Voting Power</Text> 
+                {/* <Text ></Text>  */}
+               </Flex>
 
-              <Flex mt="18px">
-                <Text mr="6px">No</Text>
-                <Progress
-                      theme={{
-                        active: {
-                          color: '#BBBAFF',
-                          height: '100px'
-                        }
-                      }}
-                   percent={21} 
-                   />
-              </Flex>
-            </Flex>
+               <>
+               {memberList.map((e, i) => (
+               <Flex flexDir="row" justify="space-between" mt="30px" key={nanoid()}
+                borderBottom="1px solid #B8D0FF"
+               >
+                <Text color="#6750A4" fontSize="16px">{e.id}</Text> 
+                <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.address}</Text> 
+                <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.balance}</Text> 
+                <Flex justify="center"alignItems="start">
+                 <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.percentage}</Text> 
+                </Flex>
+                <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.voting}</Text> 
+               </Flex>
+                 ))}
+                  {/* <Divider border="1px solid " mt="12px" /> */}
+               </>
          </Flex>
        </Stack>
           </Container>
@@ -238,6 +172,7 @@ const Members = () => {
     
        
       <Footer />
+    </Flex>
     </Box>
   )
 }
@@ -290,8 +225,8 @@ const useStyles = () => {
         md: "35vw",
       },
       h: "90%",
-      overflow: "hidden",
-      // zIndex: 3000000,
+      // overflow: "hidden",
+      // // zIndex: 3000000,
     },
     homeBox2: {
       h: "600px",

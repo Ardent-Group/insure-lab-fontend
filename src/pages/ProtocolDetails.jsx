@@ -3,7 +3,7 @@ import { Flex, Text, Box, Skeleton, Spinner, Image,
    Spacer, Select, Divider, Avatar, InputGroup, Input,
     Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Footer2 from '../components/Footer2';
 import arrowLeft from "../assets/arrow-left.svg";
 import usdcLogo from '../assets/usdc 1.png'
@@ -27,6 +27,8 @@ const ProtocolDetails = () => {
 
    const { fontBold, font, font2, root, font3, font4, font5, font6, font7 } = useStyles();
 
+   let navigate = useNavigate();
+
   return (
     <Box w={"100%"} backgroundColor="bg">
     <Suspense
@@ -37,8 +39,11 @@ const ProtocolDetails = () => {
    </Suspense>
     <Flex p={"50px"} flexDir={"column"}>
       <Flex flexDir="row" justify="space-between">
-        <Flex justify="center" alignItems="center">
-        <Link to="/protocols"><Image src={arrowLeft} boxSize="15px" /></Link> 
+        <Flex justify="center" alignItems="center"
+         onClick={() => navigate("/protocols")}
+         cursor="pointer"
+        >
+          <Image src={arrowLeft} boxSize="15px" />
         <Spacer ml="10px" />
         <Text {...fontBold}>Portfolio-based Cover Purchase</Text> 
         </Flex>

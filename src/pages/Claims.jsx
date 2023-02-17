@@ -38,30 +38,15 @@ const Claims = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { isOpen: warningIsOpen, 
-      onOpen: warningOnOpen, 
-      onClose: warningOnClose 
-     } = useDisclosure();
-
-
-    const { isOpen: withdrawCoverIsOpen,
-       onOpen: withdrawCoverOnOpen,
-       onClose: withdrawCoverOnClose
-    } = useDisclosure();
-
-    const { isOpen: confirmLoadingIsOpen, 
-         onOpen: confirmLoadingOnOpen, 
-         onClose: confirmLoadingOnClose 
-        } = useDisclosure();
-
   return (
-    <Box w={"100%"} {...root}>
-    <Suspense
-        fallback={<Spinner size="md" />}
+    <Box w="100%">
+          <Suspense
+        // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
+        fallback={<Spinner size="lg" />}
       >
         <NavBar />
       </Suspense>
-
+    <Box w={"100%"} {...root}>
       <Suspense
         fallback={<Spinner size="md" />}
       >
@@ -175,6 +160,7 @@ const Claims = () => {
 
       {/* Footer is here */}
       <Footer />
+    </Box>
     </Box>
   )
 }

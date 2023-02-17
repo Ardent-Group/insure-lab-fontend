@@ -22,6 +22,7 @@ import { nanoid } from "nanoid";
 import {navbar_data} from '../utils/navbarData';
 import  insurelabLogo from '../assets/Logo.svg'
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MobileDrawer from "./mobileDrawer/MobileDrawer";
 //connect wallet
 import { ConnectInsureLab } from "../utils/customConnect";
@@ -31,6 +32,8 @@ const Navbar = () => {
 
       const [isMenu, setIsMenu] = useState(false);
       const [isVisible, setIsVisible] = useState(false);
+
+      let navigate = useNavigate();
 
       const isDesktop = useBreakpointValue({ base: false, lg: true })
       const {isOpen, onOpen, onClose} = useDisclosure()

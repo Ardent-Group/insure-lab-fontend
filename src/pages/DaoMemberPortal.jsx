@@ -5,6 +5,7 @@ import { Flex, Box, Spinner, Text, Image, Spacer, Button,
 } from '@chakra-ui/react';
 import Footer2 from '../components/Footer2';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
 import uniswapLogo from '../assets/uniswap 1.svg'
 
@@ -13,28 +14,29 @@ const NavBar = lazy(() => import("../components/Navbar"));
 const DaoMemberPortal = () => {
 
      const {root} = useStyles();
+     let navigate = useNavigate();
 
   return (
-    <Box w={"100%"} {...root}>
+    <Box w="100%">
     <Suspense
      // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
      fallback={<Spinner size="sm" />}
    >
      <NavBar />
-   </Suspense>
-
+   </Suspense> 
+   
+    <Box w={"100%"} {...root}>
       <Flex padding={"40px 80px"} flexDir="column" mt="30px">
-       <Flex>
-          
-            <Flex justify="center" alignItems="center"> 
-            <Link to="/governance">
-            <Image src={arrowLeft} boxSize="15px" />
-             <Spacer mr="5px" />
-              <Text fontSize="18px" fontWeight="500">Back</Text> 
-              </Link>
-            </Flex> 
-            </Flex>
-     
+         
+                 <Flex flexDir="row" align="center"
+                  onClick={() => navigate("/governance")}
+                  cursor="pointer"
+                 > 
+                  <Image src={arrowLeft} boxSize="15px" mr="8px" />
+                   <Text fontSize="16px" fontWeight="500">Back</Text>
+                   </Flex> 
+           
+       
               <Flex mt="-20px" flexDir="column" p="70px">
                 <Flex flexDir="row" justify="space-between"
                   borderRadius="20px"
@@ -127,7 +129,6 @@ const DaoMemberPortal = () => {
                 </Flex>
               </Flex> 
 
-
                <Box mt="-20px" flexDir="column" p="70px">
                 <Text fontSize="20px" fontWeight="600" mb="20px">Activities</Text>
                 <Flex display="flex" flexDir="column"
@@ -191,6 +192,7 @@ const DaoMemberPortal = () => {
 
       {/* Footer here */}
       <Footer2 />
+   </Box>
    </Box>
   )
 }

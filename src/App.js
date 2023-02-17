@@ -23,6 +23,8 @@ import Claims from './pages/Claims';
 import Governance from './pages/Governance';
 import DaoMemberPortal from './pages/DaoMemberPortal';
 import Members from './pages/Members'
+import ClaimDetails from './pages/ClaimDetails';
+import DashboardInsurer from './pages/DashboardInsurer'
 
 function App() {
   return (
@@ -34,11 +36,13 @@ function App() {
             <Route path="/protocols/:id" element={<ProtocolDetails />} />
             <Route path="/create-custom-insurance" element={<UnlistedCreate />} />
             <Route path="/risk-assessor-dashboard" element={<Dashboard />} />
-            <Route path="/governance-proposals" element={<Proposals />} />
+            <Route path="/insurer-dashboard" element={<DashboardInsurer />} />
+            <Route path="/governance-claims" element={<Proposals />} />
             <Route path="/claims" element={<Claims />} />
+            <Route path="/governance-claims/:id" element={<ClaimDetails />} />
             <Route path="/governance" element={<Governance />} />
             <Route path="/dao-member-portal" element={<DaoMemberPortal />} />
-            <Route path="/members" element={<Members />} />
+            <Route path="/dao-members" element={<Members />} />
           </Routes>
         </Flex>
     </Router>
