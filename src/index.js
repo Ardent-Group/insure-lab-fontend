@@ -10,15 +10,18 @@ import { extendTheme } from '@chakra-ui/react'
 
 // Wagmi & RainbowKit setup
 import '@rainbow-me/rainbowkit/styles.css';
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiConfig, configureChains, createClient } from 'wagmi';
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import FantomLogo from "../src/assets/fantomlogo.svg"
 
 // custom chain
 const insureLabFantomTestnet = {
   id: 4002,
-  name: 'fantomTestnet',
+  name: 'Fantom',
   network: 'fantomTestnet',
+  iconUrl: FantomLogo,
+  iconBackground: '#fff',
   nativeCurrency: {
     decimals: 18,
     name: 'Fantom',
@@ -70,7 +73,7 @@ const theme = extendTheme({ colors })
 root.render(
   <StrictMode>
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider chains={chains} coolMode>
         <ChakraProvider theme={theme}>
           <SkeletonTheme baseColor="#202020" highlightColor="#444">
             <ColorModeScript />

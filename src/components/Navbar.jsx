@@ -23,15 +23,11 @@ import {navbar_data} from '../utils/navbarData';
 import  insurelabLogo from '../assets/Logo.svg'
 import { Link } from "react-router-dom";
 import MobileDrawer from "./mobileDrawer/MobileDrawer";
+//connect wallet
+import { ConnectInsureLab } from "../utils/customConnect";
 
-const CTA = "Connect Wallet"
 
 const Navbar = () => {
-     
-    const {
-        logoFont,
-        ctaFont,
-      } = useNavbarStyles();
 
       const [isMenu, setIsMenu] = useState(false);
       const [isVisible, setIsVisible] = useState(false);
@@ -103,16 +99,7 @@ const Navbar = () => {
            </HStack>
           
            <HStack>
-             <Button borderRadius="100px" 
-              bg="ctaBg" 
-              {...ctaFont}
-              _hover={{
-               bg: "linear-gradient(0deg, rgba(103, 80, 164, 0.14), rgba(103, 80, 164, 0.14)), #FFFBFE",
-               color: "black"
-              }}
-              >
-               {CTA}
-             </Button>  
+             <ConnectInsureLab />
            </HStack>
            </>
           ) : (
@@ -126,7 +113,7 @@ const Navbar = () => {
 
 export default Navbar;
 
-const useNavbarStyles = () => {
+export const useNavbarStyles = () => {
     return {
         logoFont: {
            fontSize: "22px",
