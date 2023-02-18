@@ -44,9 +44,8 @@ const ProtocolFilter = lazy(() => import("../components/ProtocolFilter"));
 
 
 const animationKeyframes = keyframes`
-  0% { transform: rotate(0); }
-  25% { transform: rotate(0); }
-  100% { transform: rotate(360deg);}
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0);}
 `;
 
 const animation = `${animationKeyframes} 4s ease-in-out infinite`;

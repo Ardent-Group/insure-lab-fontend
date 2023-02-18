@@ -114,11 +114,6 @@ export default ProtocolGrid;
 const useStyles = () => {
   return {
     root: {
-      // borderRadius: {
-      //   base: "10px",
-      //   md: "16px",
-      // },
-    //   bg: "grey",
       p: ["10px", "15px", "18px", "20px", "25px"],
       h: "345px",
     },

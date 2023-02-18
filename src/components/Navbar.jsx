@@ -86,16 +86,18 @@ const Navbar = () => {
                 </Flex>
                </MenuButton>
                <MenuList border="none" onMouseEnter={onOpen} onMouseLeave={onClose} mt={-1}>
-                <Link to="/governance">
-                  <MenuItem _hover={{bg: 'ctaBg', color: "white" }}>Governance</MenuItem>
-                </Link> 
-                <Link to="/governance-proposals">
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Proposals</MenuItem>
-                </Link>
-                <Link to="/members">
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Members</MenuItem>
-                </Link>
-                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}>Governance Profile</MenuItem>
+                  <MenuItem _hover={{bg: 'ctaBg', color: "white" }}
+                  onClick={() => navigate("/governance")}
+                   >Governance</MenuItem>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                 onClick={() => navigate("/governance-proposals")}
+                  >Proposals</MenuItem>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                 onClick={() => navigate("/members")}
+                 >Members</MenuItem>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                 onClick={() => navigate("/dao-member-portal")}
+                 >Governance Profile</MenuItem>
               </MenuList>
               </Menu>
           </Flex>
