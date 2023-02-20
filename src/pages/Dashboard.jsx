@@ -116,10 +116,10 @@ const Dashboard = () => {
                 <Text color="#645C5E" fontWeight="500" fontSize="14px">Covers bought </Text> 
                 <Text color="#645C5E" fontWeight="500" fontSize="14px">Total profit</Text> 
                 <Text color="#645C5E" fontWeight="500" fontSize="14px">Date created</Text> 
-                <Text ></Text> 
-                <Text ></Text> 
-                <Text ></Text> 
-                <Text ></Text> 
+                <Text></Text> 
+                <Text></Text> 
+                <Text></Text> 
+                {/* <Text ></Text>  */}
                </Flex>
                <Divider border="1px solid #6750A4" mt="15px" />
 
@@ -211,9 +211,9 @@ const Dashboard = () => {
                 <Text color="#645C5E" fontWeight="500" fontSize="14px">Total profit</Text> 
                 <Text color="#645C5E" fontWeight="500" fontSize="14px">Date created</Text> 
                 <Text ></Text> 
-                <Text ></Text> 
-                <Text ></Text> 
-                <Text ></Text> 
+                <Text></Text> 
+                <Text ></Text>  
+                {/* <Text ></Text>  */}
                </Flex>
                <Divider border="1px solid #6750A4" mt="15px" />
 

@@ -21,7 +21,6 @@ const style = {
     height: 300,
   };
   
-
 const ConfirmLoaderModal = ({confirmLoadingIsOpen, confirmLoadingOnClose, confirmLoadingOnOpen}) => {
 
     const [isLoading, setIsLoading] = useState(false);

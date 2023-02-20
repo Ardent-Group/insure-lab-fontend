@@ -37,7 +37,7 @@ const Footer2 = () => {
     let copyRightYear = new Date().getFullYear();
 
   return (
-    <Box w={"100%"} padding={"50px"} bgImage="url('/images/Footer-Background.png')" p="50px">
+    <Box w={"100%"} bgImage="url('/images/Footer-Background.png')" p="50px">
         <Divider  border="1px solid #3E7FDF" />
 
          {/* Footer Links is here */}

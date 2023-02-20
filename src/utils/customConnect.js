@@ -69,12 +69,22 @@ export const ConnectInsureLab = () => {
               }
 
               return (
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div style={{ display: 'flex', gap: 12, bg: "white", 
+                  boxShadow: "-2px 5px 12px rgba(100, 100, 100, 0.1)",
+                  borderRadius: "30px",
+                  p: "6px 14px",
+                  h: "48px"
+                 }}
+                  >
                   <Button
                     onClick={openChainModal}
                     style={{ display: 'flex', alignItems: 'center' }}
-                    borderRadius="3xl"
+                    borderRadius="15px"
+                    bg="white"
+                    _hover={{ bg: "none" }}
                     type="button"
+                    fontSize="11px"
+                    fontWeight="400"
                   >
                     {chain.hasIcon && (
                       <div
@@ -82,7 +92,7 @@ export const ConnectInsureLab = () => {
                           background: chain.iconBackground,
                           width: 20,
                           height: 20,
-                          borderRadius: 999,
+                          borderRadius: 15,
                           overflow: 'hidden',
                           marginRight: 4,
                         }}
@@ -102,10 +112,16 @@ export const ConnectInsureLab = () => {
                   <Button
                     onClick={openAccountModal}
                     type="button"
-                    bg="linear-gradient(0deg, rgba(103, 80, 164, 0.14), rgba(103, 80, 164, 0.14)), #FFFBFE"
-                    borderRadius="3xl"
-                    color="black"
-                    
+                    bg="#F8E8FF"
+                    borderRadius="15px"
+                    color="#645C5E"
+                    fontSize="12px"
+                    fontWeight="600"
+                    mr="10px"
+                    mt="1px"
+                    p="6px 10px"
+                    h="36px"
+                    _hover={{ bg: "#F8E8FF" }}
                   >
                     {account.displayName}
                     {account.displayBalance

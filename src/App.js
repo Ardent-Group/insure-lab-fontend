@@ -25,6 +25,7 @@ import DaoMemberPortal from './pages/DaoMemberPortal';
 import Members from './pages/Members'
 import ClaimDetails from './pages/ClaimDetails';
 import DashboardInsurer from './pages/DashboardInsurer'
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
             <Route path="/governance" element={<Governance />} />
             <Route path="/dao-member-portal" element={<DaoMemberPortal />} />
             <Route path="/dao-members" element={<Members />} />
+            {/* --------------------- 404 page ------------------ */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Flex>
     </Router>
