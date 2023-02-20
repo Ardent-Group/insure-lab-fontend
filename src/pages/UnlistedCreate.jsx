@@ -1,4 +1,5 @@
 import React, {Suspense, lazy} from 'react'
+import { useState } from 'react';
 import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     Input,
     InputRightAddon,
@@ -20,10 +21,25 @@ const UnlistedCreate = () => {
 
      const {root} = useStyles();
 
+     const [userForm, setUserForm] = useState({
+      protocolName: '',
+      domainLink: '',
+      amountCovered: '',
+      description: ''
+     })
+     const [sliderValue, setSliderValue] = useState(0)
+
+
+     const handleChange = (e) => {
+      setUserForm({...userForm, [e.target.name]: e.target.value});
+     }
+
+     console.log(sliderValue, "slider value")
+     console.log(userForm, "user form")
+
   return (
     <Box w={"100%"} {...root}>
     <Suspense
-     // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
      fallback={<Spinner size="sm" />}
    >
      <NavBar />
@@ -64,6 +80,10 @@ const UnlistedCreate = () => {
                               fontSize: "10px"
                             }}
                             _focus={{ boxShadow: "none" }}
+                            type='text'
+                            value={userForm.protocolName}
+                            name="protocolName"
+                            onChange={handleChange}
                           />
                         </InputGroup>
                 </Flex>
@@ -88,6 +108,10 @@ const UnlistedCreate = () => {
                               fontSize: "10px"
                             }}
                             _focus={{ boxShadow: "none" }}
+                            type='text'
+                            value={userForm.domainLink}
+                            name='domainLink'
+                            onChange={handleChange}
                           />
                         </InputGroup>
                 </Flex>
@@ -116,6 +140,10 @@ const UnlistedCreate = () => {
                               fontSize: "10px"
                             }}
                             _focus={{ boxShadow: "none"}}
+                            type='number'
+                            value={userForm.amountCovered}
+                            onChange={handleChange}
+                            name='amountCovered'
                           />
                           <InputRightAddon borderRadius={0} border="0" bg="footerBgColor">
                            <Text fontSize="12px" fontWeight={500}>USDC</Text>
@@ -144,27 +172,48 @@ const UnlistedCreate = () => {
                               fontSize: "10px"
                             }}
                             _focus={{ boxShadow: "none" }}
+                            text='text'
+                            value={userForm.description}
+                            onChange={handleChange}
+                            name='description'
                           />
                         </InputGroup>
                 </Flex>
 
                 </Flex>
               
-                  {/* ------------------------------- Input 4 ------------------------------- */}
+                  {/* ------------------------------- Input 5 ------------------------------- */}
                    <Flex flexDir="column" mt="30px">
                       <Text fontSize="15px" fontWeight="500">Select the risk level of the protocol</Text>
                         <Spacer />
-                        <Flex flexDir="column" mt="20px">
-                        <Text>10</Text>
-                        <Slider aria-label='slider-ex-1' defaultValue={0}
-                        onChangeEnd={(val) => console.log(val)}
+                        <Flex flexDir="column" mt="35px">
+                        <Slider aria-label='slider-ex-6' defaultValue={0} min={0} max={100} step={25}
+                        onChange={val => setSliderValue(val)}
                         >
+                          <SliderMark
+                            value={sliderValue}
+                            textAlign='center'
+                            color='black'
+                            mt='-10'
+                            ml={sliderValue === 0 ? 0 : -10}
+                            w='12'
+                          >
+                            {sliderValue}%
+                          </SliderMark>
                           <SliderTrack>
                             <SliderFilledTrack border="2px solid #837377" />
                           </SliderTrack>
-                          <SliderThumb bg="#9BFF9F" borderRadius="30px" border="1px solid #837377" />
+                          <SliderThumb
+                            bg="#9BFF9F"
+                            borderRadius="30px"
+                            border="2px solid #837377" 
+                            _focus={{ boxShadow: "none" }}
+                            w="45px"
+                            h="22px"
+                            ml={sliderValue === 0 ? 5 : -5}
+                          />
                         </Slider>
-                        <Flex flexDir="row" justify="space-between">
+                        <Flex flexDir="row" justify="space-between" mt="4">
                           <Text fontSize="10px" fontWeight={500}>Low Risk</Text>
                           <Text fontSize="10px" fontWeight={500}>High Risk</Text>
                         </Flex>
@@ -202,3 +251,4 @@ const useStyles = () => {
 
     }
 }
+
