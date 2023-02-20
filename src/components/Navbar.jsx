@@ -90,10 +90,10 @@ const Navbar = () => {
                   onClick={() => navigate("/governance")}
                    >Governance</MenuItem>
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
-                 onClick={() => navigate("/governance-proposals")}
+                 onClick={() => navigate("/governance-claims")}
                   >Proposals</MenuItem>
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
-                 onClick={() => navigate("/members")}
+                 onClick={() => navigate("/dao-members")}
                  >Members</MenuItem>
                  <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
                  onClick={() => navigate("/dao-member-portal")}

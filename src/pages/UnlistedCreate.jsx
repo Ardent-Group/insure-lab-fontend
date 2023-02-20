@@ -45,7 +45,7 @@ const UnlistedCreate = () => {
      <NavBar />
    </Suspense>
 
-      <Flex padding={"40px 80px"} flexDir="column" mt="30px">
+      <Flex p={"40px 80px"} flexDir="column" mt="30px">
        <Flex>
             <Flex justify="center" alignItems="center"> 
              <Link to="/protocols"><Image src={arrowLeft} boxSize="15px" /></Link>
@@ -57,11 +57,11 @@ const UnlistedCreate = () => {
                Please fill in the following information to list a protocol for insurance
             </Text>   
 
-              <Flex mt="20px" flexDir="column" p="40px">
+              <Flex mt="20px" flexDir="column" p="50px">
 
                 <Flex flexDir="row" justify="space-between">
                   {/* ------------------------------- Input 1 ------------------------------- */}
-                 <Flex flexDir="column">
+                 <Flex flexDir="column" w="40%">
                       <Text fontSize="15px" fontWeight="500">Protocol name</Text>
                         <Spacer />
                         <InputGroup
@@ -77,7 +77,7 @@ const UnlistedCreate = () => {
                             _placeholder={{
                               color: "#1C1B1F",
                               justifySelf: "flex-end",
-                              fontSize: "10px"
+                              fontSize: "12px"
                             }}
                             _focus={{ boxShadow: "none" }}
                             type='text'
@@ -89,7 +89,7 @@ const UnlistedCreate = () => {
                 </Flex>
 
                      {/* ------------------------------- Input 2 ------------------------------- */}
-                 <Flex flexDir="column">
+                 <Flex flexDir="column" w="40%">
                       <Text fontSize="15px" fontWeight="500">Domain link</Text>
                         <Spacer />
                         <InputGroup
@@ -105,7 +105,7 @@ const UnlistedCreate = () => {
                             _placeholder={{
                               color: "#1C1B1F",
                               justifySelf: "flex-end",
-                              fontSize: "10px"
+                              fontSize: "12px"
                             }}
                             _focus={{ boxShadow: "none" }}
                             type='text'
@@ -121,7 +121,7 @@ const UnlistedCreate = () => {
                 <Flex flexDir="row" justify="space-between" mt="30px">
                      
                   {/* ------------------------------- Input 3 ------------------------------- */}
-                  <Flex flexDir="column">
+                  <Flex flexDir="column" w="50%">
                       <Text fontSize="15px" fontWeight="500">Amount Covered</Text>
                         <Spacer />
                         <InputGroup
@@ -137,7 +137,7 @@ const UnlistedCreate = () => {
                             _placeholder={{
                               color: "#1C1B1F",
                               justifySelf: "flex-end",
-                              fontSize: "10px"
+                              fontSize: "12px"
                             }}
                             _focus={{ boxShadow: "none"}}
                             type='number'
@@ -153,7 +153,7 @@ const UnlistedCreate = () => {
                   </Flex>
 
                      {/* ------------------------------- Input 4 ------------------------------- */}
-                   <Flex flexDir="column">
+                   <Flex flexDir="column" w="40%">
                       <Text fontSize="15px" fontWeight="500">Description</Text>
                         <Spacer />
                         <InputGroup
@@ -169,7 +169,7 @@ const UnlistedCreate = () => {
                             _placeholder={{
                               color: "#1C1B1F",
                               justifySelf: "flex-end",
-                              fontSize: "10px"
+                              fontSize: "12px"
                             }}
                             _focus={{ boxShadow: "none" }}
                             text='text'
