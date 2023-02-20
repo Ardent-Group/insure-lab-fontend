@@ -9,33 +9,128 @@ import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     SliderFilledTrack,
     SliderThumb,
     SliderMark,
+    useToast
 } from '@chakra-ui/react';
 import Footer2 from '../components/Footer2';
 import { Link } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
 import walletIcon from '../assets/empty-wallet.svg';
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
+import { erc20Setup, insureLabSetup } from '../constants/interactionSetup';
+import { ethers } from 'ethers';
+import { insureLabContract } from '../constants/interactionSetup';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 
 const UnlistedCreate = () => {
+  const toast = useToast()
 
      const {root} = useStyles();
 
-     const [userForm, setUserForm] = useState({
-      protocolName: '',
-      domainLink: '',
-      amountCovered: '',
-      description: ''
-     })
+
+     const [protocolName, setProtocolName] = useState('')
+     const [domainLink, setDomainLink] = useState('')
+     const [amountCovered, setAmountCovered] = useState(0)
+     const [description, setDescription] = useState('')
      const [sliderValue, setSliderValue] = useState(0)
+     const [sliderInput, setSliderInput] = useState(0)
 
 
-     const handleChange = (e) => {
-      setUserForm({...userForm, [e.target.name]: e.target.value});
+     // approve token 
+     const { config:prepareToken } = usePrepareContractWrite({
+      ...erc20Setup,
+      functionName: "approve",
+      args: [
+        insureLabContract,
+        ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
+      ]
+     })
+
+     const { data:tokenData, isLoading:tokenLoading, write: tokenWrite } = useContractWrite(prepareToken)
+
+     const { isLoading: tokenWaitLoading} = useWaitForTransaction({
+      hash: tokenData?.hash,
+      onSuccess(){
+        createNewInsure()
+        toast({
+          title: 'Token Approved',
+          description: "Token Approved Successfully",
+          status: "success",
+          duration: 5000,
+          isClosable: true
+        })
+      },
+      onError(data){
+        toast({
+          title: "Error encountered",
+          description: data,
+          status: "error",
+          duration: 5000,
+          isClosable: true
+        })
+      }
+     })
+
+
+     const { config:prepareNewInsure } = usePrepareContractWrite({
+      ...insureLabSetup,
+      functionName: "createNewInsure",
+      args: [
+        protocolName,
+        domainLink,
+        description,
+        amountCovered,
+        sliderInput
+      ]
+     })
+
+     const { data:newInsureData, isLoading:newInsureLoading, write:createNewInsure } = useContractWrite(prepareNewInsure)
+
+     const { isLoading: InsureWaitLoading } = useWaitForTransaction({
+      hash: newInsureData?.hash,
+      onSuccess(){
+        toast({
+          title: 'Cover Created',
+          description: "You've successfully created cover",
+          status: "success",
+          duration: 5000,
+          isClosable: true
+        })
+      },
+      onError(data){
+        toast({
+          title: "Error encountered",
+          description: data,
+          status: "error",
+          duration: 5000,
+          isClosable: true
+        })
+      }
+     })
+
+     const handleSubmit = (e) => {
+      e.preventDefault();
+      tokenWrite()
      }
 
-     console.log(sliderValue, "slider value")
-     console.log(userForm, "user form")
+     const riskLevel = (percentLevel) => {
+      switch(percentLevel){
+        case 0:
+          return 0;
+        case 25:
+          return 1;
+        case 50:
+          return 2;
+        case 75:
+          return 3;
+        case 100:
+          return 4;
+        default:
+          return 0
+      }
+     }
+
+
 
   return (
     <Box w={"100%"} {...root}>
@@ -45,7 +140,7 @@ const UnlistedCreate = () => {
      <NavBar />
    </Suspense>
 
-      <Flex p={"40px 80px"} flexDir="column" mt="30px">
+      <Flex padding={"40px 140px"} flexDir="column" mt="30px">
        <Flex>
             <Flex justify="center" alignItems="center"> 
              <Link to="/protocols"><Image src={arrowLeft} boxSize="15px" /></Link>
@@ -57,7 +152,7 @@ const UnlistedCreate = () => {
                Please fill in the following information to list a protocol for insurance
             </Text>   
 
-              <Flex mt="20px" flexDir="column" p="50px">
+              <Flex mt="20px" flexDir="column" p="40px">
 
                 <Flex flexDir="row" justify="space-between">
                   {/* ------------------------------- Input 1 ------------------------------- */}
@@ -77,13 +172,12 @@ const UnlistedCreate = () => {
                             _placeholder={{
                               color: "#1C1B1F",
                               justifySelf: "flex-end",
-                              fontSize: "12px"
+                              fontSize: "10px"
                             }}
                             _focus={{ boxShadow: "none" }}
                             type='text'
-                            value={userForm.protocolName}
-                            name="protocolName"
-                            onChange={handleChange}
+                            value={protocolName}
+                            onChange={e => setProtocolName(e.target.value)}
                           />
                         </InputGroup>
                 </Flex>
@@ -105,13 +199,13 @@ const UnlistedCreate = () => {
                             _placeholder={{
                               color: "#1C1B1F",
                               justifySelf: "flex-end",
-                              fontSize: "12px"
+                              fontSize: "10px"
                             }}
                             _focus={{ boxShadow: "none" }}
                             type='text'
-                            value={userForm.domainLink}
+                            value={domainLink}
                             name='domainLink'
-                            onChange={handleChange}
+                            onChange={e => setDomainLink(e.target.value)}
                           />
                         </InputGroup>
                 </Flex>
@@ -137,12 +231,12 @@ const UnlistedCreate = () => {
                             _placeholder={{
                               color: "#1C1B1F",
                               justifySelf: "flex-end",
-                              fontSize: "12px"
+                              fontSize: "10px"
                             }}
                             _focus={{ boxShadow: "none"}}
                             type='number'
-                            value={userForm.amountCovered}
-                            onChange={handleChange}
+                            value={amountCovered}
+                            onChange={e => setAmountCovered(e.target.value)}
                             name='amountCovered'
                           />
                           <InputRightAddon borderRadius={0} border="0" bg="footerBgColor">
@@ -169,12 +263,12 @@ const UnlistedCreate = () => {
                             _placeholder={{
                               color: "#1C1B1F",
                               justifySelf: "flex-end",
-                              fontSize: "12px"
+                              fontSize: "10px"
                             }}
                             _focus={{ boxShadow: "none" }}
                             text='text'
-                            value={userForm.description}
-                            onChange={handleChange}
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
                             name='description'
                           />
                         </InputGroup>
@@ -189,6 +283,7 @@ const UnlistedCreate = () => {
                         <Flex flexDir="column" mt="35px">
                         <Slider aria-label='slider-ex-6' defaultValue={0} min={0} max={100} step={25}
                         onChange={val => setSliderValue(val)}
+                        onChangeEnd={val => setSliderInput(riskLevel(val)) }
                         >
                           <SliderMark
                             value={sliderValue}
@@ -229,6 +324,8 @@ const UnlistedCreate = () => {
               color="white"
               fontSize="14px"
               fontWeight="400"
+              type='button'
+              onClick={handleSubmit}
               >
               Confirm insurance
             </Button>

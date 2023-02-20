@@ -1,6 +1,6 @@
 import insureLabAbi from "../abi/insureAbi.json";
 import governanceAbi from "../abi/governanceAbi.json";
-import { erc20ABI } from 'wagmi'
+import ERC20 from "../abi/ERC20Abi.json";
 
 
 
@@ -27,5 +27,5 @@ export const governanceSetup = {
 
 export const erc20Setup = {
     address: mUSDT,
-    abi: erc20ABI
+    abi: ERC20
 }
