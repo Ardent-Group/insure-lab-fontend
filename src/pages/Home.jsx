@@ -84,7 +84,7 @@ const Home = () => {
                   >
                     With the increasing popularity of decentralized technologies, 
                     it has become increasingly important to ensure their security and stability.
-                     Our platform offers insurance coverage for these critical components of the decentralized ecosystem.
+                    Our platform offers insurance coverage for these critical components of the decentralized ecosystem.
                   </Text>
                   <Suspense fallback={<Spinner size="sm" />}>
                     <InsurelabButton

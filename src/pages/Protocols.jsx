@@ -115,7 +115,6 @@ const Protocols = () => {
   return (
     <Box w="100%">
       <Suspense
-        // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
       >
         <NavBar />
@@ -141,7 +140,6 @@ const Protocols = () => {
                         borderRadius: "10px",
                         fontWeight: "400"
                       }}
-                      // onCLick={unlistedOnOpen}
                     />
                     </Link>
                   </Suspense>
