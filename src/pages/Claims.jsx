@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useState, useContext} from 'react'
 import { 
   Flex, 
   Box, 
@@ -22,7 +22,9 @@ import Footer from '../components/Footer3';
 import { nanoid } from 'nanoid';
 import secureLogo from '../assets/shield-tick.svg'
 import ethereumLogo from '../assets/ethereum 1.svg'
-import uniswapLogo from '../assets/uniswap 1.svg'
+import uniswapLogo from '../assets/uniswap 1.svg';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const style = {
   height: 300,
@@ -38,7 +40,11 @@ const Claims = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+     {!isMobile ?
     <Box w="100%">
           <Suspense
         // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
@@ -162,6 +168,10 @@ const Claims = () => {
       <Footer />
     </Box>
     </Box>
+       : 
+       <StopErrorMessage />
+      }
+    </>
   )
 }
 

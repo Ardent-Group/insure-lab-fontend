@@ -24,10 +24,12 @@ import Governance from './pages/Governance';
 import DaoMemberPortal from './pages/DaoMemberPortal';
 import Members from './pages/Members'
 import ClaimDetails from './pages/ClaimDetails';
+import ClaimAssessment from './pages/ClaimAssessment';
 import DashboardInsurer from './pages/DashboardInsurer'
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
+  
   return (
     <Router>
       <Flex>
@@ -41,6 +43,7 @@ function App() {
             <Route path="/governance-claims" element={<Proposals />} />
             <Route path="/claims" element={<Claims />} />
             <Route path="/governance-claims/:id" element={<ClaimDetails />} />
+            <Route path="/claim-assessment" element={<ClaimAssessment />} />
             <Route path="/governance" element={<Governance />} />
             <Route path="/dao-member-portal" element={<DaoMemberPortal />} />
             <Route path="/dao-members" element={<Members />} />

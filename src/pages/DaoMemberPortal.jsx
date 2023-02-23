@@ -1,4 +1,4 @@
-import React, {Suspense, lazy} from 'react'
+import React, {Suspense, lazy, useContext} from 'react'
 import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     Avatar,
     Divider
@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
 import uniswapLogo from '../assets/uniswap 1.svg'
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 
@@ -16,7 +18,11 @@ const DaoMemberPortal = () => {
      const {root} = useStyles();
      let navigate = useNavigate();
 
+     const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+    {!isMobile ?
     <Box w="100%">
     <Suspense
      // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
@@ -194,6 +200,10 @@ const DaoMemberPortal = () => {
       <Footer2 />
    </Box>
    </Box>
+   : 
+   <StopErrorMessage />
+  }
+   </>
   )
 }
 

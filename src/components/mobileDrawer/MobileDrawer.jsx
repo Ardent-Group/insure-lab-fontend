@@ -1,16 +1,28 @@
 import React, {useRef} from "react";
-import { useDisclosure, Flex, Box, Button,  VStack, Icon, HStack, Link as ChakraLink } from "@chakra-ui/react";
+import { useDisclosure, 
+     Flex, 
+     Button,  
+     VStack, 
+     Menu,
+     MenuItem,
+     MenuButton,
+     MenuList,
+     Center
+    } from "@chakra-ui/react";
 import DrawerBg from "./DrawerBg";
-import {  IoMdMenu } from 'react-icons/io';
-import { Link } from 'react-scroll';
+import { IoMdMenu } from 'react-icons/io';
+import {ChevronDownIcon} from '@chakra-ui/icons'
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { navbar_data } from "../../utils/navbarData";
 import { nanoid } from "nanoid";
-
 
 export default function MobileDrawer() {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: dropIsOpen, onOpen: dropOnOpen, onClose: dropOnClose } = useDisclosure();
     const btnRef = useRef();
+    let navigate = useNavigate();
 
 return (
     <Flex >
@@ -25,10 +37,43 @@ return (
       >
         <VStack alignItems="left">
           {navbar_data.map((item) => (
-            <Link key={nanoid()}>
-              <Button variant='text' > {item.name} </Button>
+            <Link key={nanoid()} to={item.link}>
+              <Button variant='text' fontWeight="400"> {item.name} </Button>
             </Link>
           ))}
+              <Flex alignItems={'left'}>
+              <Menu isOpen={dropIsOpen}>
+               <MenuButton
+                 px={2}
+                 py={1}
+                 _hover={{ color: "ctaBg", boxShadow: 'none', fontWeight: "600"}}
+                 onMouseEnter={dropOnOpen}
+                 onMouseLeave={dropOnClose}
+                 w={{lg: "135px"}}
+               >
+                <Flex>
+                  Governance
+                  <Center>
+                    <ChevronDownIcon />
+                  </Center>
+                </Flex>
+               </MenuButton>
+               <MenuList border="none" onMouseEnter={onOpen} onMouseLeave={onClose} mt={-1}>
+                  <MenuItem _hover={{bg: 'ctaBg', color: "white" }}
+                  onClick={() => navigate("/governance")}
+                   >Governance</MenuItem>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                 onClick={() => navigate("/governance-claims")}
+                  >Proposals</MenuItem>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                 onClick={() => navigate("/dao-members")}
+                 >Members</MenuItem>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                 onClick={() => navigate("/dao-member-portal")}
+                 >Governance Profile</MenuItem>
+              </MenuList>
+              </Menu>
+          </Flex>
         </VStack>
       </DrawerBg>
     </Flex>
