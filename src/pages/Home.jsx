@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useEffect} from 'react'
+import React, {Suspense, lazy, useContext} from 'react'
 import {Flex, 
         Box, 
         Text, 
@@ -8,7 +8,7 @@ import {Flex,
         VStack,
         Image,
         keyframes,
-        Spacer
+        Spacer,
       } from "@chakra-ui/react";
 import Container from '../components/Container';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,8 @@ import MoneyDexImage from '../assets/MoneyDex.svg';
 import ClaimDexImage from '../assets/ClaimDex.svg';
 import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -51,7 +53,11 @@ const Home = () => {
 
     let navigate = useNavigate();
 
+    const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+   <>
+   {!isMobile ?
     <Box w={"100%"}>
        <Suspense
         fallback={<Spinner size="lg" />}
@@ -328,6 +334,10 @@ const Home = () => {
        <Footer />
     </Box>
     </Box>
+      : 
+        <StopErrorMessage />
+      }
+    </>
   )
 }
 

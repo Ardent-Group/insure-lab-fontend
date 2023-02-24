@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useEffect} from 'react'
+import React, {Suspense, lazy, useContext} from 'react'
 import {Flex, 
         Box, 
         Spinner, 
@@ -28,6 +28,8 @@ import Lottie from 'lottie-react';
 import loaderAnimation from '../lottie/9833-full-page-loading-spinner.json';
 import successAnimation from '../lottie/90646-payment-success.json'
 import walletIcon from '../assets/empty-wallet.svg'
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -54,7 +56,11 @@ const Governance = () => {
     const { isOpen: isOpen2, onOpen: onOpen2, onClose: onClose2 } = useDisclosure();
     const { isOpen: isOpen3, onOpen: onOpen3, onClose: onClose3 } = useDisclosure();
 
+    const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+   {!isMobile ?
     <Box>
       <Suspense
         // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
@@ -413,6 +419,10 @@ const Governance = () => {
        <Footer />
     </Box>
     </Box>
+     : 
+     <StopErrorMessage />
+    }
+    </>
   )
 }
 

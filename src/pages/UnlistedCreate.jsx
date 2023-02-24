@@ -1,5 +1,5 @@
 import React, {Suspense, lazy} from 'react'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     Input,
     InputRightAddon,
@@ -14,6 +14,8 @@ import Footer2 from '../components/Footer2';
 import { Link } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
 import walletIcon from '../assets/empty-wallet.svg';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 
@@ -37,7 +39,11 @@ const UnlistedCreate = () => {
      console.log(sliderValue, "slider value")
      console.log(userForm, "user form")
 
+     const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+    {!isMobile ?
     <Box w={"100%"} {...root}>
     <Suspense
      fallback={<Spinner size="sm" />}
@@ -238,6 +244,10 @@ const UnlistedCreate = () => {
       {/* Footer here */}
       <Footer2 />
    </Box>
+    : 
+      <StopErrorMessage />
+     }
+   </>
   )
 }
 
