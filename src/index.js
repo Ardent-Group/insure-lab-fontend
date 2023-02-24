@@ -28,8 +28,7 @@ const insureLabFantomTestnet = {
     symbol: 'FTM'
   },
   rpcUrls: {
-    public: { http: ['https://rpc.testnet.fantom.network/'] },
-    default: { http: ['https://rpc.testnet.fantom.network/'] }
+    default: 'https://endpoints.omniatech.io/v1/fantom/testnet/public'
   },
   blockExplorers: {
     etherscan: { name: 'FtmScan', url: 'https://testnet.ftmscan.com/' },

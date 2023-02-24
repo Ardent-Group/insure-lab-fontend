@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useState, useEffect} from 'react'
 import { 
   Flex, 
   Box, 
@@ -37,6 +37,9 @@ import arrowLeft from "../assets/arrow-left.svg";
 import walletIcon from '../assets/empty-wallet.svg'
 
 import TransactionLoaderModal from '../components/TransactionLoaderModal';
+import { useContractRead, useAccount } from 'wagmi';
+import { insureLabSetup } from '../constants/interactionSetup';
+import { GetProtocol } from '../hooks/getAllProtocol';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -51,6 +54,84 @@ const animationKeyframes = keyframes`
 const animation = `${animationKeyframes} 4s ease-in-out infinite`;
 
 const Protocols = () => {
+
+  // helper
+  const hexToDecimal = (hex) => parseInt(hex, 16);
+  const roundToOneDecimal = (number) => Math.round(number * 10)/10;
+
+  const decimalAbbr = (hex) => {
+    const res = hexToDecimal(hex)/1e18;
+    if(res > 999 && res < 999999){
+      return `${roundToOneDecimal(res/1000)}k`;
+    }
+    else if(res > 999999 && res < 999999999){
+      return `${roundToOneDecimal(res/1000000)}m`;
+    }
+    else if(res > 999999999 && res < 999999999999){
+      return `${roundToOneDecimal(res/1000000000)}b`;
+    }
+    else if(res > 999999999999 && res < 999999999999999){
+      return `${roundToOneDecimal(res/1000000000000)}t`;
+    }
+    else if(res > 999999999999999){
+      return `${roundToOneDecimal(res/1000000000000000)}z`;
+    }
+    else{
+      return `${roundToOneDecimal(res)}`;
+    }
+  }
+
+  const getCoverCost = (riskLevel) => {
+    switch(riskLevel){
+      case 0:
+        return `2.5%`;
+      case 1:
+        return `4.5%`;
+      case 2:
+        return `6.5%`;
+      case 3:
+        return `8.5%`;
+      case 4:
+        return `10.5%`;
+      default:
+        return `2.5%`;
+    }
+  }
+
+  const getRiskLevel = (riskLevel) => {
+    switch(riskLevel){
+      case 0:
+        return <Text color='green.700' fontWeight="semibold">Very low</Text>;
+      case 1:
+        return <Text color='green.700' fontWeight="semibold">Low</Text>;
+      case 2:
+        return <Text color='yellow.700' fontWeight="semibold">Medium</Text>;
+      case 3:
+        return <Text color="#BA1A1A">High</Text>;
+      case 4:
+        return <Text color="#BA1A1A">Very high</Text>;
+      default:
+        return <Text color='green.700' fontWeight="semibold">Very low</Text>;
+    }
+  }
+
+  const { data:getId } = useContractRead({
+    ...insureLabSetup,
+    functionName: "id"
+  })
+
+  let protocolsData = [];
+
+  console.log(protocolsData, "protocols")
+
+  function getAllProtocolData(){
+    for(let i = 1; i < getId; i++){
+      const { data:getProtocolData } = GetProtocol(i);
+      protocolsData.push(getProtocolData);
+    }
+  }
+
+  getAllProtocolData()
 
     const {
      root,
@@ -79,30 +160,30 @@ const Protocols = () => {
 
     const [skeletonLoading, setSeletonLoading] = useState(false);
 
-    const [protocolCard, setProtocolCard] = useState(protocolCardData.slice(0, 30));
+    const [protocolCard, setProtocolCard] = useState(protocolsData.slice(0, 30));
+
     //state holding page of the pagination
     const [pageNumber, setPageNumber] = useState(0);
 
     const protocolCardPerPage = 15
     const pagesVisited = pageNumber * protocolCardPerPage;
 
-    const  displayProtocolCard = protocolCard
-    .slice(pagesVisited, pagesVisited + protocolCardPerPage)
-    .map((e) => {
-      return (
-        <ProtocolGrid 
-        key={nanoid()}
-        onClick={e.onclick}
-        // icon={e.icon({
-        //   color: "",
-        // })}
-        link={e.id}
-        icon={""}
-        cardName={e.label}
-        onOpen={onOpen}
-      />
-      )
-    }) 
+    const displayProtocolCards = protocolCard
+      .slice(pagesVisited, pagesVisited + protocolCardPerPage)
+      .map((item, index) => {
+        return (
+          <ProtocolGrid
+            key={nanoid()}
+            link={index}
+            protocolName={item[4]}
+            protocolLink={item[5]}
+            protocolCap={decimalAbbr(item[1]._hex)}
+            coverCost={getCoverCost(item[7])}
+            riskLevel={getRiskLevel(item[7])}
+            onOpen={onOpen}
+          />
+        )
+      })
 
     const pageCount = Math.ceil(protocolCard.length / protocolCardPerPage);
 
@@ -110,6 +191,7 @@ const Protocols = () => {
     const changePage = ({selected}) => {
        setPageNumber(selected);
     }
+
 
   return (
     <Box w="100%">
@@ -183,6 +265,8 @@ const Protocols = () => {
                     Buy insurance cover from protocols that are protected 
                     by us or create a custom protocol cover!
                   </Text>
+                  <Text>
+                  </Text>
                 </Flex>
 
             </HStack>
@@ -211,7 +295,7 @@ const Protocols = () => {
                 w={"100%"}
               >
                 <Suspense fallback={<Spinner boxSize="lg" />}>
-                  {displayProtocolCard}
+                  {displayProtocolCards}
                 </Suspense>
               </SimpleGrid>
               )}
