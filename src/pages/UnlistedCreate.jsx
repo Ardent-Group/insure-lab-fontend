@@ -15,29 +15,40 @@ import Footer2 from '../components/Footer2';
 import { Link } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
 import walletIcon from '../assets/empty-wallet.svg';
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
+import { useContractWrite, useWaitForTransaction, useAccount, useContractRead } from 'wagmi';
 import { erc20Setup, insureLabSetup } from '../constants/interactionSetup';
 import { ethers } from 'ethers';
 import { insureLabContract } from '../constants/interactionSetup';
+import { ConnectInsureLab } from '../utils/customConnect';
+import { useNavigate } from 'react-router-dom';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 
 const UnlistedCreate = () => {
   const toast = useToast()
+  const navigate = useNavigate();
+
+
 
      const {root} = useStyles();
 
 
      const [protocolName, setProtocolName] = useState('')
      const [domainLink, setDomainLink] = useState('')
-     const [amountCovered, setAmountCovered] = useState(0)
+     const [amountCovered, setAmountCovered] = useState('')
      const [description, setDescription] = useState('')
      const [sliderValue, setSliderValue] = useState(0)
      const [sliderInput, setSliderInput] = useState(0)
 
+     const {address} = useAccount();
 
-     // approve token 
-     const { config:prepareToken } = usePrepareContractWrite({
+     const hexToDecimal = (hex) => parseInt(hex, 16);
+
+
+     // approve token
+     
+     const { data:tokenData, isLoading:tokenLoading, write: tokenWrite } = useContractWrite({
+      mode: "recklesslyUnprepared",
       ...erc20Setup,
       functionName: "approve",
       args: [
@@ -46,45 +57,46 @@ const UnlistedCreate = () => {
       ]
      })
 
-     const { data:tokenData, isLoading:tokenLoading, write: tokenWrite } = useContractWrite(prepareToken)
 
-     const { isLoading: tokenWaitLoading} = useWaitForTransaction({
+     const { isLoading: tokenWaitLoading } = useWaitForTransaction({
       hash: tokenData?.hash,
       onSuccess(){
-        createNewInsure()
+        createNewInsure();
         toast({
           title: 'Token Approved',
-          description: "Token Approved Successfully",
+          description: "You've successfully approved token",
           status: "success",
           duration: 5000,
-          isClosable: true
+          isClosable: true,
+          position: "top-right"
         })
+
       },
       onError(data){
+        console.log("on error error", data);
         toast({
           title: "Error encountered",
           description: data,
           status: "error",
           duration: 5000,
-          isClosable: true
+          isClosable: true,
+          position: "top-right"
         })
       }
      })
 
-
-     const { config:prepareNewInsure } = usePrepareContractWrite({
+     const { data:newInsureData, isLoading:newInsureLoading, write:createNewInsure } = useContractWrite({
+      mode: "recklesslyUnprepared",
       ...insureLabSetup,
       functionName: "createNewInsure",
       args: [
         protocolName,
         domainLink,
         description,
-        amountCovered,
+        ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0"),
         sliderInput
       ]
      })
-
-     const { data:newInsureData, isLoading:newInsureLoading, write:createNewInsure } = useContractWrite(prepareNewInsure)
 
      const { isLoading: InsureWaitLoading } = useWaitForTransaction({
       hash: newInsureData?.hash,
@@ -94,8 +106,10 @@ const UnlistedCreate = () => {
           description: "You've successfully created cover",
           status: "success",
           duration: 5000,
-          isClosable: true
+          isClosable: true,
+          position: "top-right"
         })
+        navigate(-1);
       },
       onError(data){
         toast({
@@ -103,14 +117,41 @@ const UnlistedCreate = () => {
           description: data,
           status: "error",
           duration: 5000,
-          isClosable: true
+          isClosable: true,
+          position: "top-right"
         })
       }
      })
 
+     const { data:tokenReadData} = useContractRead({
+      ...erc20Setup,
+      functionName: "allowance",
+      args: [
+        address,
+        insureLabContract
+      ]
+     })
+     
+
+
+
+
+     function tokenAuthorization(){
+      let amountInput = ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
+      console.log(hexToDecimal(tokenReadData?._hex), "allowance check")
+      console.log(hexToDecimal(amountInput?._hex), "input amount check");
+      if( hexToDecimal(tokenReadData?._hex) >= hexToDecimal(amountInput?._hex)){
+        createNewInsure()
+      }
+      else{
+        tokenWrite()
+      }
+     }
+
+
      const handleSubmit = (e) => {
       e.preventDefault();
-      tokenWrite()
+      tokenAuthorization()
      }
 
      const riskLevel = (percentLevel) => {
@@ -318,17 +359,23 @@ const UnlistedCreate = () => {
               </Flex> 
               
           <Flex justifyContent={"center"} align="center">
-            <Button bg="#3E7FDF"
-              borderRadius="20px"
-              p="10px 140px"
-              color="white"
-              fontSize="14px"
-              fontWeight="400"
-              type='button'
-              onClick={handleSubmit}
+            {
+              address ?
+              <Button
+                bg="#3E7FDF"
+                borderRadius="20px"
+                p="10px 140px"
+                color="white"
+                fontSize="14px"
+                fontWeight="400"
+                type='button'
+                onClick={handleSubmit}
+                disabled={ tokenLoading || tokenWaitLoading || newInsureLoading || InsureWaitLoading }
               >
-              Confirm insurance
-            </Button>
+                {(tokenLoading || tokenWaitLoading || newInsureLoading || InsureWaitLoading) ? "Loading..." : "Confirm Insurance"}
+              </Button> :
+              <ConnectInsureLab />
+            }
           </Flex>
       </Flex>
 
