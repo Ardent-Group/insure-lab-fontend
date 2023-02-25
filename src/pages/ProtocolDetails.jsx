@@ -1,7 +1,7 @@
 import React, {Suspense, lazy, useState} from 'react'
 import { Flex, Text, Box, Skeleton, Spinner, Image, 
    Spacer, Select, Divider, Avatar, InputGroup, Input,
-    Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, IconButton, Tooltip, } from '@chakra-ui/react'
+    Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, IconButton, Tooltip, useToast } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import Footer2 from '../components/Footer2';
@@ -14,11 +14,11 @@ import walletLogo from '../assets/empty-wallet.svg'
 import calendarLogo from '../assets/calendar.svg'
 import highRiskIcon from '../assets/Frame 95.svg';
 import { MdArrowDropDown } from "react-icons/md";
-import { useAccount, useContractRead, useContractWrite } from 'wagmi';
-import { insureLabSetup } from '../constants/interactionSetup';
+import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { erc20Setup, insureLabContract, insureLabSetup } from '../constants/interactionSetup';
 import { GetCalculatedCover } from '../hooks/getCoverCalculations';
 import { ethers } from 'ethers';
-import { DecimalAbbr, GetCoverCost, GetRiskLevel} from '../hooks/helpers';
+import { DecimalAbbr, GetCoverCost, GetRiskLevel, HexToDecimal} from '../hooks/helpers';
 import { ConnectInsureLab } from '../utils/customConnect';
 
 const NavBar = lazy(() => import("../components/Navbar"));
@@ -33,6 +33,8 @@ const ProtocolDetails = () => {
    const { fontBold, font, font2, root, font3, font4, font5, font6, font7 } = useStyles();
 
    let navigate = useNavigate();
+
+   let toast = useToast()
 
    const [coverAddress, setCoverAddress] = useState('');
    const [coverAmount, setCoverAmount] = useState('');
@@ -72,6 +74,105 @@ const ProtocolDetails = () => {
   }
 
   getCoverCost()
+
+
+
+  const { data:approveCover, isLoading:coverLoading, write:coverWrite} = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...erc20Setup,
+    functionName: "approve",
+    args: [
+      insureLabContract,
+      ethers.utils.parseEther(getCalculation[0] ? HexToDecimal(getCalculation[0]._hex).toString() : "0")
+    ]
+  })
+
+  const { isLoading:tokenWaitLoading } = useWaitForTransaction({
+    hash: approveCover?.hash,
+    onSuccess(){
+      buyCoverWrite();
+      toast({
+        title: 'Token Approved',
+        description: "You've successfully approved token",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right"
+      })
+    },
+    onError(data){
+      console.log("on error error", data);
+      toast({
+        title: "Error encountered",
+        description: data,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right"
+      })
+    }
+  })
+
+
+  const { data:buyCoverData, isLoading:buyCoverLoading, write:buyCoverWrite} = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...insureLabSetup,
+    functionName: "buyCover",
+    args: [
+      id,
+      coverPeriod,
+      ethers.utils.parseEther(coverAmount ? coverAmount.toString() : "0")
+    ]
+  })
+
+  const { isLoading:buyCoverWaiting } = useWaitForTransaction({
+    hash: buyCoverData?.hash,
+    onSuccess(){
+      toast({
+        title: 'Bought Cover',
+        description: "You've successfully bought cover",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right"
+      })
+    },
+    onError(data){
+      toast({
+        title: "Error encountered",
+        description: data,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right"
+      })
+    }
+  })
+
+  const { data:tokenReadData} = useContractRead({
+    ...erc20Setup,
+    functionName: "allowance",
+    args: [
+      address,
+      insureLabContract
+    ]
+   })
+
+  function tokenAuthorization(){
+      let cover = ethers.utils.parseEther(getCalculation[0] ? HexToDecimal(getCalculation[0]._hex).toString() : "0")
+      if( HexToDecimal(tokenReadData?._hex) >= HexToDecimal(cover?._hex)){
+        buyCoverWrite()
+      }
+      else{
+        coverWrite()
+      }
+  }
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    tokenAuthorization()
+  }
 
 
 
@@ -282,6 +383,8 @@ const ProtocolDetails = () => {
              </Checkbox>
              </Flex>
              <Suspense fallback={<Spinner size="sm" />}>
+              {
+                agree ?
                 <InsurelabButton
                   name={"Confirm insurance"}
                   rest={{
@@ -293,7 +396,24 @@ const ProtocolDetails = () => {
                     fontWeight: "400",
                     px: "10rem"
                   }}
-                />
+                  onCLick={handleSubmit}
+                /> :
+                <Button
+                  color="white"
+                  width="40%"
+                  bg="rgba(62, 127, 223, 0.6)"
+                  fontWeight="400"
+                  height="50px"
+                  mt= {{ base: null, md: "10px"}}
+                  px="10rem"
+                  borderRadius="100px"
+                  lineHeight="20px"
+                  letterSpacing="0.2px"
+                  disabled={true}
+                >
+                  Confirm Insurance
+                </Button>
+              }
              </Suspense>
             </Flex>
           </HStack>
