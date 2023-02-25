@@ -21,6 +21,7 @@ import { ethers } from 'ethers';
 import { insureLabContract } from '../constants/interactionSetup';
 import { ConnectInsureLab } from '../utils/customConnect';
 import { useNavigate } from 'react-router-dom';
+import { HexToDecimal, RiskLevel } from '../hooks/helpers';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 
@@ -41,8 +42,6 @@ const UnlistedCreate = () => {
      const [sliderInput, setSliderInput] = useState(0)
 
      const {address} = useAccount();
-
-     const hexToDecimal = (hex) => parseInt(hex, 16);
 
 
      // approve token
@@ -138,9 +137,7 @@ const UnlistedCreate = () => {
 
      function tokenAuthorization(){
       let amountInput = ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
-      console.log(hexToDecimal(tokenReadData?._hex), "allowance check")
-      console.log(hexToDecimal(amountInput?._hex), "input amount check");
-      if( hexToDecimal(tokenReadData?._hex) >= hexToDecimal(amountInput?._hex)){
+      if( HexToDecimal(tokenReadData?._hex) >= HexToDecimal(amountInput?._hex)){
         createNewInsure()
       }
       else{
@@ -152,23 +149,6 @@ const UnlistedCreate = () => {
      const handleSubmit = (e) => {
       e.preventDefault();
       tokenAuthorization()
-     }
-
-     const riskLevel = (percentLevel) => {
-      switch(percentLevel){
-        case 0:
-          return 0;
-        case 25:
-          return 1;
-        case 50:
-          return 2;
-        case 75:
-          return 3;
-        case 100:
-          return 4;
-        default:
-          return 0
-      }
      }
 
 
@@ -324,7 +304,7 @@ const UnlistedCreate = () => {
                         <Flex flexDir="column" mt="35px">
                         <Slider aria-label='slider-ex-6' defaultValue={0} min={0} max={100} step={25}
                         onChange={val => setSliderValue(val)}
-                        onChangeEnd={val => setSliderInput(riskLevel(val)) }
+                        onChangeEnd={val => setSliderInput(RiskLevel(val)) }
                         >
                           <SliderMark
                             value={sliderValue}

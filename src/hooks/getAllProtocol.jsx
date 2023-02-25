@@ -1,4 +1,3 @@
-import React from "react";
 import { useContractRead } from "wagmi";
 import { insureLabSetup } from "../constants/interactionSetup";
 

@@ -28,7 +28,6 @@ import ProtocolGrid from '../components/ProtocolGrid';
 import { nanoid } from 'nanoid';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-import { protocolCardData } from '../utils/protocolGrid'
 import ReactPaginate from 'react-paginate';
 import '../constants/pagination.css'
 import {useParams} from "react-router-dom";
@@ -40,6 +39,7 @@ import TransactionLoaderModal from '../components/TransactionLoaderModal';
 import { useContractRead, useAccount } from 'wagmi';
 import { insureLabSetup } from '../constants/interactionSetup';
 import { GetProtocol } from '../hooks/getAllProtocol';
+import { DecimalAbbr, GetRiskLevel, GetCoverCost } from '../hooks/helpers';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -54,66 +54,6 @@ const animationKeyframes = keyframes`
 const animation = `${animationKeyframes} 4s ease-in-out infinite`;
 
 const Protocols = () => {
-
-  // helper
-  const hexToDecimal = (hex) => parseInt(hex, 16);
-  const roundToOneDecimal = (number) => Math.round(number * 10)/10;
-
-  const decimalAbbr = (hex) => {
-    const res = hexToDecimal(hex)/1e18;
-    if(res > 999 && res < 999999){
-      return `${roundToOneDecimal(res/1000)}k`;
-    }
-    else if(res > 999999 && res < 999999999){
-      return `${roundToOneDecimal(res/1000000)}m`;
-    }
-    else if(res > 999999999 && res < 999999999999){
-      return `${roundToOneDecimal(res/1000000000)}b`;
-    }
-    else if(res > 999999999999 && res < 999999999999999){
-      return `${roundToOneDecimal(res/1000000000000)}t`;
-    }
-    else if(res > 999999999999999){
-      return `${roundToOneDecimal(res/1000000000000000)}z`;
-    }
-    else{
-      return `${roundToOneDecimal(res)}`;
-    }
-  }
-
-  const getCoverCost = (riskLevel) => {
-    switch(riskLevel){
-      case 0:
-        return `2.5%`;
-      case 1:
-        return `4.5%`;
-      case 2:
-        return `6.5%`;
-      case 3:
-        return `8.5%`;
-      case 4:
-        return `10.5%`;
-      default:
-        return `2.5%`;
-    }
-  }
-
-  const getRiskLevel = (riskLevel) => {
-    switch(riskLevel){
-      case 0:
-        return <Text color='green.700' fontWeight="semibold">Very low</Text>;
-      case 1:
-        return <Text color='green.700' fontWeight="semibold">Low</Text>;
-      case 2:
-        return <Text color='yellow.700' fontWeight="semibold">Medium</Text>;
-      case 3:
-        return <Text color="#BA1A1A">High</Text>;
-      case 4:
-        return <Text color="#BA1A1A">Very high</Text>;
-      default:
-        return <Text color='green.700' fontWeight="semibold">Very low</Text>;
-    }
-  }
 
   const { data:getId } = useContractRead({
     ...insureLabSetup,
@@ -156,7 +96,6 @@ const Protocols = () => {
       onClose: transactionLoadingOnClose
     } = useDisclosure();
 
-    const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 
     const [skeletonLoading, setSeletonLoading] = useState(false);
 
@@ -177,9 +116,9 @@ const Protocols = () => {
             link={index}
             protocolName={item[4]}
             protocolLink={item[5]}
-            protocolCap={decimalAbbr(item[1]._hex)}
-            coverCost={getCoverCost(item[7])}
-            riskLevel={getRiskLevel(item[7])}
+            protocolCap={DecimalAbbr(item[1]._hex)}
+            coverCost={GetCoverCost(item[7])}
+            riskLevel={GetRiskLevel(item[7])}
             onOpen={onOpen}
           />
         )
