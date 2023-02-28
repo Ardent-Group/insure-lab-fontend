@@ -65,9 +65,11 @@ const Protocols = () => {
   console.log(protocolsData, "protocols")
 
   function getAllProtocolData(){
-    for(let i = 1; i < getId; i++){
-      const { data:getProtocolData } = GetProtocol(i);
-      protocolsData.push(getProtocolData);
+    if(getId){
+      for(let i = 1; i < getId; i++){
+        const { data:getProtocolData } = GetProtocol(i);
+        protocolsData.push(getProtocolData);
+      }
     }
   }
 
@@ -114,11 +116,11 @@ const Protocols = () => {
           <ProtocolGrid
             key={nanoid()}
             link={index}
-            protocolName={item[4]}
-            protocolLink={item[5]}
-            protocolCap={DecimalAbbr(item[1]._hex)}
-            coverCost={GetCoverCost(item[7])}
-            riskLevel={GetRiskLevel(item[7])}
+            protocolName={item ? item[4] : " "}
+            protocolLink={item ? item[5]: " "}
+            protocolCap={item ? DecimalAbbr(item[1]._hex): ""}
+            coverCost={item ? GetCoverCost(item[7]): ""}
+            riskLevel={item ? GetRiskLevel(item[7]): ""}
             onOpen={onOpen}
           />
         )

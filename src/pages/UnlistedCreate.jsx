@@ -9,7 +9,14 @@ import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     SliderFilledTrack,
     SliderThumb,
     SliderMark,
-    useToast
+    useToast,
+    useDisclosure,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalOverlay,
+    Avatar,
+    ModalFooter
 } from '@chakra-ui/react';
 import Footer2 from '../components/Footer2';
 import { Link } from 'react-router-dom';
@@ -21,13 +28,25 @@ import { ethers } from 'ethers';
 import { insureLabContract } from '../constants/interactionSetup';
 import { ConnectInsureLab } from '../utils/customConnect';
 import { useNavigate } from 'react-router-dom';
-import { HexToDecimal, RiskLevel } from '../hooks/helpers';
+import { HexToDecimal, NumbAbbr, RiskLevel } from '../hooks/helpers';
+import Lottle from "lottie-react"
+import loadingAnimation from '../lottie/98194-loading.json'
+import SecureLogo from "../assets/SecureDex.svg";
+import { ExternalLinkIcon } from '@chakra-ui/icons'
+
 
 const NavBar = lazy(() => import("../components/Navbar"));
+
+
+const style = {
+  height: 300,
+};
 
 const UnlistedCreate = () => {
   const toast = useToast()
   const navigate = useNavigate();
+
+  const { onOpen, isOpen, onClose } = useDisclosure()
 
 
 
@@ -55,6 +74,8 @@ const UnlistedCreate = () => {
         ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
       ]
      })
+
+     console.log(tokenData, "data")
 
 
      const { isLoading: tokenWaitLoading } = useWaitForTransaction({
@@ -149,6 +170,7 @@ const UnlistedCreate = () => {
      const handleSubmit = (e) => {
       e.preventDefault();
       tokenAuthorization()
+      onOpen()
      }
 
 
@@ -339,7 +361,7 @@ const UnlistedCreate = () => {
               </Flex> 
               
           <Flex justifyContent={"center"} align="center">
-            {
+            {/* {
               address ?
               <Button
                 bg="#3E7FDF"
@@ -355,7 +377,112 @@ const UnlistedCreate = () => {
                 {(tokenLoading || tokenWaitLoading || newInsureLoading || InsureWaitLoading) ? "Loading..." : "Confirm Insurance"}
               </Button> :
               <ConnectInsureLab />
+            } */}
+            {
+              address ?
+              <Button
+                bg="#3E7FDF"
+                borderRadius="20px"
+                p="10px 140px"
+                color="white"
+                fontSize="14px"
+                fontWeight="400"
+                type='button'
+                onClick={handleSubmit}
+                disabled={ tokenLoading || tokenWaitLoading || newInsureLoading || InsureWaitLoading }
+              >
+                Confirm Insurance
+              </Button> :
+              <ConnectInsureLab />
             }
+{/*********************************Transaction Loading Modal ***************************************/}
+            <Modal
+              isOpen={isOpen}
+              onClose={onClose}
+              isCentered
+              blockScrollOnMount={true}
+              scrollBehavior={"inside"}
+              motionPreset="slideInBottom"
+            >
+              <ModalOverlay bg="#00000020" backdropFilter="auto" backdropBlur="2px" />
+              <ModalContent w={{base: "90vw", md: "60vw" }} borderRadius={0}>
+                <ModalBody p="30px 60px">
+                  {/* -------------------------Loading Animation ------------------------ */}
+                  <Lottle
+                    animationData={loadingAnimation}
+                    style={style}
+                  />
+                  {/* -------------------------ends of Loading Animation ------------------------ */}
+                  <Flex flexDir="column" justify="center">
+                        <Text fontSize="18px" textAlign={'center'} fontWeight={600}>Transaction Processing...</Text>
+                        <Text fontSize="13px" textAlign={'center'}>Your request is being processed, please be patient</Text>
+
+                        <Flex
+                        flexDir="row"
+                        justify="space-between"
+                        mt="1.5rem"
+                        >
+                            <Text fontSize="18px" fontWeight={500}>Product name</Text>
+                            <Flex justify="center" alignItems="center" gap={2}>
+                              <Avatar src={SecureLogo} size="xs" />
+                              <Text color="#645C%E" fontSize="16px" fontWeight={400}>{protocolName}</Text>
+                            </Flex>
+                        </Flex>
+
+                        <Flex flexDir="row" justify="space-between" mt="1.5rem">
+                            <Text fontSize="18px" fontWeight={500}>Amount Covered</Text>
+                            <Flex justify="center" alignItems="center">
+                                <Text color="#645C5E" fontSize="16px" fontWeight={600}>
+                                    {NumbAbbr(amountCovered)} USDC
+                                </Text>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                </ModalBody>
+              
+                <ModalFooter>
+                {
+                  (tokenLoading || tokenWaitLoading) ?
+                  <Button
+                  w="100%"
+                  bg="#3a7cdf"
+                  borderRadius="15px"
+                  color="white"
+                  _hover={{
+                    "backgroundColor": "#91b6ed"
+                  }}
+                  >
+                    Awaiting User Approval <Spinner size="xs" mx="2px"/>
+                  </Button>:
+                  (InsureWaitLoading ) ?
+                  <Button as="a"
+                      href={`https://testnet.ftmscan.com/tx/${newInsureData?.hash}`}
+                      target="_blank"
+                      w="100%"
+                      bg="#3a7cdf"
+                      borderRadius="15px"
+                      color="white"
+                      _hover={{
+                        "backgroundColor": "#91b6ed"
+                      }}
+                    >
+                      View Transaction <ExternalLinkIcon mx='2px' />
+                    </Button>:
+                    <Button
+                    w="100%"
+                    bg="#3a7cdf"
+                    borderRadius="15px"
+                    color="white"
+                    _hover={{
+                      "backgroundColor": "#91b6ed"
+                    }}
+                    >
+                    Processing <Spinner size="xs" mx="2px" />
+                    </Button>
+                }
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Flex>
       </Flex>
 

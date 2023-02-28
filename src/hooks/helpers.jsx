@@ -33,6 +33,29 @@ export const DecimalAbbr = (hex) => {
     }
 }
 
+export const NumbAbbr = (num) => {
+  const roundToOneDecimal = (number) => Math.round(number * 10)/10;
+  if(num > 999 && num < 999999){
+    return `${roundToOneDecimal(num/1000)}k`;
+  }
+  else if(num > 999999 && num < 999999999){
+    return `${roundToOneDecimal(num/1000000)}m`;
+  }
+  else if(num > 999999999 && num < 999999999999){
+    return `${roundToOneDecimal(num/1000000000)}b`;
+  }
+  else if(num > 999999999999 && num < 999999999999999){
+    return `${roundToOneDecimal(num/1000000000000)}t`;
+  }
+  else if(num > 999999999999999){
+    return `${roundToOneDecimal(num/1000000000000000)}z`;
+  }
+  else{
+    return `${roundToOneDecimal(num)}`;
+  }
+
+}
+
 export const GetCoverCost = (riskLevel) => {
     switch(riskLevel){
         case 0:
