@@ -121,3 +121,7 @@ export const GetEpoch = (months) => {
     console.log(epochInMilli+inputDays)
     return epochInMilli + inputDays
 }
+
+export const ShortAddress = (address) => {
+  return `${address.slice(0, 4)}...${address.slice(38, 42)}`
+}
