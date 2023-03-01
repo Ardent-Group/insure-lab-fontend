@@ -29,10 +29,14 @@ import { insureLabContract } from '../constants/interactionSetup';
 import { ConnectInsureLab } from '../utils/customConnect';
 import { useNavigate } from 'react-router-dom';
 import { HexToDecimal, NumbAbbr, RiskLevel } from '../hooks/helpers';
-import Lottle from "lottie-react"
+import Lottie from "lottie-react";
 import loadingAnimation from '../lottie/98194-loading.json'
 import SecureLogo from "../assets/SecureDex.svg";
 import { ExternalLinkIcon } from '@chakra-ui/icons'
+import successAnimation from '../lottie/90646-payment-success.json'
+import errorAnimation from "../lottie/97670-tomato-error.json"
+import { ArrowBackIcon } from '@chakra-ui/icons';
+
 
 
 const NavBar = lazy(() => import("../components/Navbar"));
@@ -65,7 +69,7 @@ const UnlistedCreate = () => {
 
      // approve token
      
-     const { data:tokenData, isLoading:tokenLoading, write: tokenWrite } = useContractWrite({
+     const { data:tokenData, isLoading:tokenLoading, write:tokenWrite } = useContractWrite({
       mode: "recklesslyUnprepared",
       ...erc20Setup,
       functionName: "approve",
@@ -74,8 +78,6 @@ const UnlistedCreate = () => {
         ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
       ]
      })
-
-     console.log(tokenData, "data")
 
 
      const { isLoading: tokenWaitLoading } = useWaitForTransaction({
@@ -118,7 +120,7 @@ const UnlistedCreate = () => {
       ]
      })
 
-     const { isLoading: InsureWaitLoading } = useWaitForTransaction({
+     const { isLoading:InsureWaitLoading, isSuccess:insureSuccess, isError:insureError } = useWaitForTransaction({
       hash: newInsureData?.hash,
       onSuccess(){
         toast({
@@ -129,9 +131,13 @@ const UnlistedCreate = () => {
           isClosable: true,
           position: "top-right"
         })
-        navigate(-1);
+        setTimeout(() => {
+          onClose()
+          navigate(-1)
+        }, 6000);
       },
       onError(data){
+        console.log("on error error", data);
         toast({
           title: "Error encountered",
           description: data,
@@ -179,9 +185,9 @@ const UnlistedCreate = () => {
     <Box w={"100%"} {...root}>
     <Suspense
      fallback={<Spinner size="sm" />}
-   >
-     <NavBar />
-   </Suspense>
+    >
+      <NavBar />
+    </Suspense>
 
       <Flex padding={"40px 140px"} flexDir="column" mt="30px">
        <Flex>
@@ -191,9 +197,15 @@ const UnlistedCreate = () => {
               <Text fontSize="18px" fontWeight="600">Create insurance cover for unlisted protocol</Text> 
             </Flex>  
             </Flex>
-            <Text fontSize="14px" fontWeight={500} mt="8px">
-               Please fill in the following information to list a protocol for insurance
-            </Text>   
+            <Flex gap={10}>
+              <Text fontSize="14px" fontWeight={500} mt="8px">
+                Please fill in the following information to list a protocol for insurance
+              </Text>
+              {
+                (tokenLoading || tokenWaitLoading || newInsureLoading || InsureWaitLoading) ?
+                <Text as="u" onClick={onOpen} fontStyle="italic" fontWeight="bold" mt="8px" fontSize="14px" cursor="pointer">Check Transaction Process</Text> : ""
+              }
+            </Flex>  
 
               <Flex mt="20px" flexDir="column" p="40px">
 
@@ -361,23 +373,6 @@ const UnlistedCreate = () => {
               </Flex> 
               
           <Flex justifyContent={"center"} align="center">
-            {/* {
-              address ?
-              <Button
-                bg="#3E7FDF"
-                borderRadius="20px"
-                p="10px 140px"
-                color="white"
-                fontSize="14px"
-                fontWeight="400"
-                type='button'
-                onClick={handleSubmit}
-                disabled={ tokenLoading || tokenWaitLoading || newInsureLoading || InsureWaitLoading }
-              >
-                {(tokenLoading || tokenWaitLoading || newInsureLoading || InsureWaitLoading) ? "Loading..." : "Confirm Insurance"}
-              </Button> :
-              <ConnectInsureLab />
-            } */}
             {
               address ?
               <Button
@@ -395,7 +390,7 @@ const UnlistedCreate = () => {
               </Button> :
               <ConnectInsureLab />
             }
-{/*********************************Transaction Loading Modal ***************************************/}
+{/*********************************Transaction Modal ***************************************/}
             <Modal
               isOpen={isOpen}
               onClose={onClose}
@@ -404,23 +399,50 @@ const UnlistedCreate = () => {
               scrollBehavior={"inside"}
               motionPreset="slideInBottom"
             >
-              <ModalOverlay bg="#00000020" backdropFilter="auto" backdropBlur="2px" />
+              <ModalOverlay
+                bg="#00000020" 
+                backdropFilter="auto" 
+                backdropBlur="2px"
+              />
               <ModalContent w={{base: "90vw", md: "60vw" }} borderRadius={0}>
                 <ModalBody p="30px 60px">
-                  {/* -------------------------Loading Animation ------------------------ */}
-                  <Lottle
-                    animationData={loadingAnimation}
-                    style={style}
-                  />
-                  {/* -------------------------ends of Loading Animation ------------------------ */}
+                  {
+                    insureSuccess ?
+                    <Lottie
+                      animationData={successAnimation}
+                      style={style}
+                    /> :
+                    insureError ?
+                    < Lottie
+                      animationData={errorAnimation}
+                      style={style}
+                    /> :
+                    <Lottie
+                      animationData={loadingAnimation}
+                      style={style}
+                    />
+                  }
                   <Flex flexDir="column" justify="center">
+                    {
+                      insureSuccess ?
+                      <>
+                        <Text fontSize="18px" textAlign="center" fontWeight={600}>Transaction Completed</Text>
+                        <Text fontSize="13px" textAlign={'center'}>Your have successfully created an insurance cover</Text>
+                      </> :
+                      insureError ?
+                      <>
+                        <Text fontSize="18px" textAlign="center" fontWeight={600}>Error</Text>
+                        <Text fontSize="13px" textAlign={'center'}>There is an error in your ransaction</Text>
+                      </> :
+                      <>
                         <Text fontSize="18px" textAlign={'center'} fontWeight={600}>Transaction Processing...</Text>
                         <Text fontSize="13px" textAlign={'center'}>Your request is being processed, please be patient</Text>
-
+                      </>
+                    }
                         <Flex
-                        flexDir="row"
-                        justify="space-between"
-                        mt="1.5rem"
+                          flexDir="row"
+                          justify="space-between"
+                          mt="1.5rem"
                         >
                             <Text fontSize="18px" fontWeight={500}>Product name</Text>
                             <Flex justify="center" alignItems="center" gap={2}>
@@ -452,9 +474,12 @@ const UnlistedCreate = () => {
                     "backgroundColor": "#91b6ed"
                   }}
                   >
-                    Awaiting User Approval <Spinner size="xs" mx="2px"/>
+                    <Flex gap={2}>
+                      Awaiting User Approval 
+                      <Spinner size="sm"/>
+                    </Flex>
                   </Button>:
-                  (InsureWaitLoading ) ?
+                  (InsureWaitLoading || insureSuccess ) ?
                   <Button as="a"
                       href={`https://testnet.ftmscan.com/tx/${newInsureData?.hash}`}
                       target="_blank"
@@ -466,7 +491,7 @@ const UnlistedCreate = () => {
                         "backgroundColor": "#91b6ed"
                       }}
                     >
-                      View Transaction <ExternalLinkIcon mx='2px' />
+                      View Transaction <ExternalLinkIcon ml='2px' />
                     </Button>:
                     <Button
                     w="100%"
@@ -477,7 +502,7 @@ const UnlistedCreate = () => {
                       "backgroundColor": "#91b6ed"
                     }}
                     >
-                    Processing <Spinner size="xs" mx="2px" />
+                    Processing <Spinner size="xs" ml="2px" />
                     </Button>
                 }
                 </ModalFooter>
@@ -485,7 +510,6 @@ const UnlistedCreate = () => {
             </Modal>
           </Flex>
       </Flex>
-
       {/* Footer here */}
       <Footer2 />
    </Box>

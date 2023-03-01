@@ -65,11 +65,9 @@ const Protocols = () => {
   console.log(protocolsData, "protocols")
 
   function getAllProtocolData(){
-    if(getId){
-      for(let i = 1; i < getId; i++){
-        const { data:getProtocolData } = GetProtocol(i);
-        protocolsData.push(getProtocolData);
-      }
+    for(let i = 1; i < getId; i++){
+      const { data:getProtocolData } = GetProtocol(i);
+      protocolsData.push(getProtocolData);
     }
   }
 
