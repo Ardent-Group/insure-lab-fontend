@@ -1,7 +1,13 @@
 import React, {Suspense, lazy, useState} from 'react'
 import { Flex, Text, Box, Skeleton, Spinner, Image, 
    Spacer, Select, Divider, Avatar, InputGroup, Input,
-    Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, IconButton, Tooltip, useToast } from '@chakra-ui/react'
+    Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, IconButton, Tooltip, useToast, useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  ModalFooter
+  } from '@chakra-ui/react'
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import Footer2 from '../components/Footer2';
@@ -20,11 +26,26 @@ import { GetCalculatedCover } from '../hooks/getCoverCalculations';
 import { ethers } from 'ethers';
 import { DecimalAbbr, GetCoverCost, GetRiskLevel, HexToDecimal} from '../hooks/helpers';
 import { ConnectInsureLab } from '../utils/customConnect';
+import successAnimation from '../lottie/90646-payment-success.json'
+import errorAnimation from "../lottie/97670-tomato-error.json"
+import Lottie from "lottie-react";
+import loadingAnimation from '../lottie/98194-loading.json'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
+
+
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 
+
+const style = {
+  height: 300,
+};
+
+
 const ProtocolDetails = () => {
+
+  const { isOpen, onOpen, onClose} = useDisclosure()
 
    const {id} = useParams();
 
@@ -58,7 +79,6 @@ const ProtocolDetails = () => {
   let getCalculation = [];
 
 
-  function getCoverCost(){
     if(protocolDetails){
       const { data:getCalc } = GetCalculatedCover(
         protocolDetails[7].toString(),
@@ -70,14 +90,10 @@ const ProtocolDetails = () => {
         getCalculation.push(getCalc)
       }
     }
-    
-  }
-
-  getCoverCost()
 
 
 
-  const { data:approveCover, isLoading:coverLoading, write:coverWrite} = useContractWrite({
+  const { data:approveCover, isLoading:approveCoverLoading, write:coverWrite} = useContractWrite({
     mode: "recklesslyUnprepared",
     ...erc20Setup,
     functionName: "approve",
@@ -125,7 +141,7 @@ const ProtocolDetails = () => {
     ]
   })
 
-  const { isLoading:buyCoverWaiting } = useWaitForTransaction({
+  const { isLoading:buyCoverWaiting, isSuccess:buyCoverSuccess, isError:buyCoverError } = useWaitForTransaction({
     hash: buyCoverData?.hash,
     onSuccess(){
       toast({
@@ -136,6 +152,10 @@ const ProtocolDetails = () => {
         isClosable: true,
         position: "top-right"
       })
+      setTimeout(() => {
+        onClose()
+        navigate(-1)
+      }, 6000);
     },
     onError(data){
       toast({
@@ -172,6 +192,7 @@ const ProtocolDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     tokenAuthorization()
+    onOpen()
   }
 
 
@@ -228,7 +249,7 @@ const ProtocolDetails = () => {
           <Flex>
             <Avatar boxSize="30px" src={SecureLogo} mr="8px" />
             <Flex flexDir="column">
-                <Text {...font3}>InstaDapp</Text>
+                <Text {...font3}>{protocolDetails?protocolDetails[4]: ""}</Text>
                 <Flex justify={"center"} alignItems="center">
                  <Image src={webLogo} boxSize={"20px"} mr="4px" />
                   <Text {...font4}>Smart contract vulnerability</Text>
@@ -351,7 +372,7 @@ const ProtocolDetails = () => {
               </Flex>
 
               <Flex flexDir="column" textAlign="right" gap={2}>
-                <Text {...font6}>{DecimalAbbr(protocolDetails?protocolDetails[2]._hex: "0.00")} USDC</Text>
+                <Text {...font6}>{protocolDetails ? DecimalAbbr(protocolDetails[2]._hex): "0.00"} USDC</Text>
                 <Text {...font6} mt='10px'>{GetCoverCost(protocolDetails?protocolDetails[7]: "0%")}</Text>
                 <Flex justify="right" alignItems="center" mt='10px'>
                   <Text {...font3}> {GetRiskLevel(protocolDetails?protocolDetails[7]: "Low")}</Text>
@@ -363,7 +384,12 @@ const ProtocolDetails = () => {
               {/*  connect your wallet */}
               {
                 address ? 
-                "":
+                <>
+                  {
+                    (tokenWaitLoading || buyCoverLoading || approveCoverLoading || buyCoverWaiting) ?
+                    <Text as="u" onClick={onOpen} fontStyle="italic" fontWeight="bold" mt="8px" fontSize="14px" cursor="pointer">Check Transaction Process</Text> : ""
+                  }
+                </>:
                 <Box 
                   w='100%' p={4} mt="17px" borderRadius="4px" bg="white"
                   boxShadow="0px 4px 8px 3px rgba(0, 0, 0, 0.15)">
@@ -384,7 +410,7 @@ const ProtocolDetails = () => {
              </Flex>
              <Suspense fallback={<Spinner size="sm" />}>
               {
-                agree ?
+                agree && address ?
                 <InsurelabButton
                   name={"Confirm insurance"}
                   rest={{
@@ -397,6 +423,7 @@ const ProtocolDetails = () => {
                     px: "10rem"
                   }}
                   onCLick={handleSubmit}
+                  isDisabled={approveCoverLoading || tokenWaitLoading || buyCoverLoading || buyCoverWaiting}
                 /> :
                 <Button
                   color="white"
@@ -417,7 +444,131 @@ const ProtocolDetails = () => {
              </Suspense>
             </Flex>
           </HStack>
+          <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            isCentered
+            blockScrollOnMount={true}
+            scrollBehavior={"inside"}
+            motionPreset="slideInBottom"
+          >
+            <ModalOverlay
+              bg="#00000020" 
+              backdropFilter="auto" 
+              backdropBlur="2px"
+            />
+            <ModalContent w={{base: "90vw", md: "60vw" }} borderRadius={0}>
+              <ModalBody p="30px 60px">
+                {
+                  buyCoverSuccess ?
+                  <Lottie
+                    animationData={successAnimation}
+                    style={style}
+                  /> :
+                  buyCoverError ?
+                  < Lottie
+                      animationData={errorAnimation}
+                      style={style}
+                    /> :
+                    <Lottie
+                      animationData={loadingAnimation}
+                      style={style}
+                    />
+                }
+                <Flex flexDir="column" justify="center">
+                    {
+                      buyCoverSuccess ?
+                      <>
+                        <Text fontSize="18px" textAlign="center" fontWeight={600}>Transaction Completed</Text>
+                        <Text fontSize="13px" textAlign={'center'}>Your have successfully bought cover for {}</Text>
+                      </> :
+                      buyCoverError ?
+                      <>
+                        <Text fontSize="18px" textAlign="center" fontWeight={600}>Error</Text>
+                        <Text fontSize="13px" textAlign={'center'}>There is an error in your transaction</Text>
+                      </> :
+                      <>
+                        <Text fontSize="18px" textAlign={'center'} fontWeight={600}>Transaction Processing...</Text>
+                        <Text fontSize="13px" textAlign={'center'}>Your request is being processed, please be patient</Text>
+                      </>
+                    }
+                        <Flex
+                          flexDir="row"
+                          justify="space-between"
+                          mt="1.5rem"
+                        >
+                            <Text fontSize="18px" fontWeight={500}>Protocol name</Text>
+                            <Flex justify="center" alignItems="center" gap={2}>
+                              <Avatar src={SecureLogo} size="xs" />
+                              <Text color="#645C%E" fontSize="16px" fontWeight={400}>{protocolDetails?protocolDetails[4]: ""}</Text>
+                            </Flex>
+                        </Flex>
 
+                        <Flex flexDir="row" justify="space-between" mt="1.5rem">
+                            <Text fontSize="18px" fontWeight={500}>Cover Bought</Text>
+                            <Flex justify="center" alignItems="center">
+                                <Text color="#645C5E" fontSize="16px" fontWeight={600}>
+                                {DecimalAbbr(getCalculation[0] ? getCalculation[0]._hex : "0.00")} USDC
+                                </Text>
+                            </Flex>
+                        </Flex>
+
+                        <Flex flexDir="row" justify="space-between" mt="1.5rem">
+                            <Text fontSize="18px" fontWeight={500}>Risk Level</Text>
+                            <Flex justify="center" alignItems="center">
+                                <Text color="#645C5E" fontSize="16px" fontWeight={600}>
+                                  {GetRiskLevel(protocolDetails?protocolDetails[7]: "Low")}
+                                </Text>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+              </ModalBody>
+              <ModalFooter>
+                {
+                  (approveCoverLoading || tokenWaitLoading) ?
+                  <Button
+                  w="100%"
+                  bg="#3a7cdf"
+                  borderRadius="15px"
+                  color="white"
+                  _hover={{
+                    "backgroundColor": "#91b6ed"
+                  }}
+                  >
+                    <Flex gap={2}>
+                      Awaiting User Approval 
+                      <Spinner size="sm"/>
+                    </Flex>
+                  </Button>:
+                  (buyCoverWaiting || buyCoverSuccess ) ?
+                  <Button as="a"
+                      href={`https://testnet.ftmscan.com/tx/${buyCoverData?.hash}`}
+                      target="_blank"
+                      w="100%"
+                      bg="#3a7cdf"
+                      borderRadius="15px"
+                      color="white"
+                      _hover={{
+                        "backgroundColor": "#91b6ed"
+                      }}
+                    >
+                      View Transaction <ExternalLinkIcon ml='2px' />
+                    </Button>:
+                    <Button
+                    w="100%"
+                    bg="#3a7cdf"
+                    borderRadius="15px"
+                    color="white"
+                    _hover={{
+                      "backgroundColor": "#91b6ed"
+                    }}
+                    >
+                    Processing <Spinner size="xs" ml="2px" />
+                    </Button>
+                }
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
     </Flex>
 
       {/* Footer Two */}

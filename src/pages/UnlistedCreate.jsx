@@ -35,7 +35,6 @@ import SecureLogo from "../assets/SecureDex.svg";
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import successAnimation from '../lottie/90646-payment-success.json'
 import errorAnimation from "../lottie/97670-tomato-error.json"
-import { ArrowBackIcon } from '@chakra-ui/icons';
 
 
 
@@ -444,7 +443,7 @@ const UnlistedCreate = () => {
                           justify="space-between"
                           mt="1.5rem"
                         >
-                            <Text fontSize="18px" fontWeight={500}>Product name</Text>
+                            <Text fontSize="18px" fontWeight={500}>Protocol name</Text>
                             <Flex justify="center" alignItems="center" gap={2}>
                               <Avatar src={SecureLogo} size="xs" />
                               <Text color="#645C%E" fontSize="16px" fontWeight={400}>{protocolName}</Text>
@@ -480,7 +479,7 @@ const UnlistedCreate = () => {
                     </Flex>
                   </Button>:
                   (InsureWaitLoading || insureSuccess ) ?
-                  <Button as="a"
+                    <Button as="a"
                       href={`https://testnet.ftmscan.com/tx/${newInsureData?.hash}`}
                       target="_blank"
                       w="100%"
