@@ -60,14 +60,21 @@ const Protocols = () => {
     functionName: "id"
   })
 
+  console.log(getId, "see id")
+
   let protocolsData = [];
 
   console.log(protocolsData, "protocols")
 
-    for(let i = 1; i < getId; i++){
-      const { data:getProtocolData } = GetProtocol(i);
-      protocolsData.push(getProtocolData);
+
+    function getAllProtocols() {
+      for(let i = 1; i < getId; i++){
+        const { data:getProtocolData } = GetProtocol(i);
+        protocolsData.push(getProtocolData);
+      }
     }
+
+    getAllProtocols()
 
 
     const {
@@ -104,6 +111,7 @@ const Protocols = () => {
     const protocolCardPerPage = 15
     const pagesVisited = pageNumber * protocolCardPerPage;
 
+
     const displayProtocolCards = protocolCard
       .slice(pagesVisited, pagesVisited + protocolCardPerPage)
       .map((item, index) => {
@@ -120,6 +128,8 @@ const Protocols = () => {
           />
         )
       })
+
+    
 
     const pageCount = Math.ceil(protocolCard.length / protocolCardPerPage);
 
