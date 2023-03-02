@@ -35,7 +35,6 @@ import SecureLogo from "../assets/SecureDex.svg";
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import successAnimation from '../lottie/90646-payment-success.json'
 import errorAnimation from "../lottie/97670-tomato-error.json"
-import { insureLabSetup } from '../constants/interactionSetup';
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
 
@@ -182,17 +181,6 @@ const UnlistedCreate = () => {
 
 
 
-     const { config } = usePrepareContractWrite({
-      ...insureLabSetup,
-      functionName: "createNewInsure",
-      args: [
-        userForm.protocolName,
-        userForm.domainLink,
-        userForm.description,
-        userForm.amountCovered,
-        sliderValue
-      ]
-     })
      const { isMobile } = useContext(StopScreenMessageContext);
 
   return (

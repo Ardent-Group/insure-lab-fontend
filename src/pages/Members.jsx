@@ -22,7 +22,7 @@ import { motion } from 'framer-motion';
 import blockChainPartLogo from '../assets/chains.svg'
 import {memberList} from '../utils/dashCard';
 import useCollapse from 'react-collapsed';
-import "react-sweet-progress/lib/style.css";
+// import "react-sweet-progress/lib/style.css";
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
 

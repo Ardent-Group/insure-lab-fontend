@@ -24,8 +24,8 @@ import {useParams} from "react-router-dom";
 import { votersList } from '../utils/dashCard';
 import uniswapLogo from '../assets/uniswap 1.svg'
 import useCollapse from 'react-collapsed';
-import { Progress } from 'react-sweet-progress';
-import "react-sweet-progress/lib/style.css";
+// import { Progress } from 'react-sweet-progress';
+// import "react-sweet-progress/lib/style.css";
 import arrowLeft from '../assets/arrow-left.svg'
 import EthereumLogo from '../assets/ethereum 1.svg';
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
@@ -275,7 +275,7 @@ const ClaimDetails = () => {
            
                 <Flex flexDir="column">
                 <Text fontSize="16px" fontWeight="500">Yes</Text>
-                <Progress
+                {/* <Progress
                   type="circle"
                   strokeWidth={5}
                   width={70}
@@ -285,14 +285,14 @@ const ClaimDetails = () => {
                       color: '#BBBAFF',
                     }
                   }}
-                />
+                /> */}
                  <Text mt="5px" fontSize="16px" fontWeight="600">1,205 votes</Text>
               </Flex>
                 
                    {/* ------------------------ Progress Action here ----------------- */}
               <Flex flexDir="column" ml="40px">
               <Text fontSize="15px" fontWeight="500">No</Text>
-                <Progress
+                {/* <Progress
                   type="circle"
                   strokeWidth={5}
                   width={70}
@@ -302,7 +302,7 @@ const ClaimDetails = () => {
                       color: '#BBBAFF',
                     }
                   }}
-                />
+                /> */}
                  <Text mt="5px" fontSize="16px" fontWeight="600">208 Votes</Text>
               </Flex>
             </Flex>
