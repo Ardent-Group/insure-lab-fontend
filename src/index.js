@@ -28,7 +28,7 @@ const insureLabFantomTestnet = {
     symbol: 'FTM'
   },
   rpcUrls: {
-    default: 'https://rpc.ankr.com/fantom_testnet'
+    default: 'https://fantom-testnet.public.blastapi.io'
   },
   blockExplorers: {
     etherscan: { name: 'FtmScan', url: 'https://testnet.ftmscan.com/' },

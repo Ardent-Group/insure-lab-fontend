@@ -39,7 +39,6 @@ import { governanceSetup } from '../constants/interactionSetup';
 import { HexToDecimal, NumbAbbr, ShortAddress } from '../hooks/helpers';
 import SecureLogo from "../assets/SecureDex.svg"
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -54,8 +53,8 @@ const Governance = () => {
   const { address } = useAccount()
   const toast = useToast()
   const [amountStaked, setAmountStaked ] = useState("");
-  const navigate = useNavigate()
 
+  console.log(amountStaked, "sdln")
 
   // approve token
 
@@ -91,7 +90,6 @@ const Governance = () => {
         isClosable: true,
         position: "top-right"
       })
-      onClose3()
     }
   })
 
@@ -115,7 +113,6 @@ const Governance = () => {
         isClosable: true,
         position: "top-right"
       })
-      onClose3()
     },
     onError(data){
       toast({
@@ -126,11 +123,6 @@ const Governance = () => {
         isClosable: true,
         position: "top-right"
       })
-
-      setTimeout(() => {
-        onClose3()
-        navigate("/dao-member-portal")
-      }, 6000)
     }
   })
 
@@ -368,7 +360,7 @@ const Governance = () => {
                         _hover={{
                             color: "white"
                         }}
-                        onClick={() => {onOpen2(); onClose()}}
+                        onClick={onOpen2}
                       >
                         Continue
                       </Button> :
@@ -390,16 +382,13 @@ const Governance = () => {
             <ModalContent w={{ base: "90vw", md: "60vw" }} borderRadius={0} >
               <ModalCloseButton />
           <ModalBody padding={"40px 80px"}>
-            <Flex gap={6}>
               <Text fontSize="16px" fontWeight={600}>
-                  Enter the following details to proceed
-                </Text>
-                {
-                  (tokenLoading || tokenWaitLoading || governanceLoading || governanceWaitLoading) ?
-                  <Text as="u" onClick={onOpen3} fontStyle="italic" fontSize="14px" mt="2px" fontWeight="bold" cursor="pointer">Check Transaction Process</Text> : ""
-                }
-            </Flex>
-              
+                Enter the following details to proceed
+              </Text>
+              {
+                (tokenLoading || tokenWaitLoading || governanceLoading || governanceWaitLoading) ?
+                <Text as="u" onClick={onOpen3} fontStyle="italic" fontWeight="bold" mt="8px" fontSize="14px" cursor="pointer">Check Transaction Process</Text> : ""
+              }
               <Flex mt="20px" flexDir="column" p="20px">
 
                   {/* ------------------------------- Input ------------------------------- */}
@@ -509,7 +498,7 @@ const Governance = () => {
                   <Flex flexDir="row" justify="space-between" mt="10px">
                     <Text fontSize="18px" fontWeight={500}>Wallet address</Text>
                     <Flex justify="center" alignItems="center">
-                        <Text color="#645C5E" fontSize="16px" fontWeight={600}>{address?ShortAddress(address): ""}</Text>
+                        <Text color="#645C5E" fontSize="16px" fontWeight={600}>{ShortAddress(address)}</Text>
                   </Flex>
                 </Flex>
               </Flex>

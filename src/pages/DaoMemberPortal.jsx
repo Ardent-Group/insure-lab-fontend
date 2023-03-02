@@ -16,8 +16,6 @@ const DaoMemberPortal = () => {
      const {root} = useStyles();
      let navigate = useNavigate();
 
-
-
   return (
     <Box w="100%">
     <Suspense

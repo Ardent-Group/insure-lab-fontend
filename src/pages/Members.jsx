@@ -25,9 +25,6 @@ import blockChainPartLogo from '../assets/chains.svg'
 import {memberList} from '../utils/dashCard';
 import useCollapse from 'react-collapsed';
 import "react-sweet-progress/lib/style.css";
-import { useAccount, useContractRead } from 'wagmi';
-import { governanceSetup } from '../constants/interactionSetup';
-import { DecimalAbbr, HexToDecimal, LeadingZero, ShortAddress } from '../hooks/helpers';
 
 
 const NavBar = lazy(() => import("../components/Navbar"));
@@ -71,22 +68,11 @@ const Members = () => {
     const [buttonHere, setButtonHere] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
-
-
-
-    const { address } = useAccount()
-
-
-    const { data:daoMembers } = useContractRead({
-     ...governanceSetup,
-     functionName: "viewAllDAOMembers",
-    })
-
-    console.log(daoMembers, "kdsj")
   
   return (
     <Box w="100%">
        <Suspense
+        // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
       >
         <NavBar />
@@ -137,6 +123,7 @@ const Members = () => {
       {/* ---------------------------- Search and Filter area -------------------------- */}
       <Flex w={"100%"}>
          <Suspense
+        // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="sm" />}
       >
          <MemberFilter />
@@ -163,7 +150,7 @@ const Members = () => {
                </Flex>
 
                <>
-               {/* {memberList.map((e, i) => (
+               {memberList.map((e, i) => (
                <Flex flexDir="row" justify="space-between" mt="30px" key={nanoid()}
                 borderBottom="1px solid #B8D0FF"
                >
@@ -175,22 +162,8 @@ const Members = () => {
                 </Flex>
                 <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.voting}</Text> 
                </Flex>
-                 ))} */}
-                 {
-                  daoMembers?.map((e, i) => (
-                    <Flex flexDir="row" justify="space-between" mt="30px" key={nanoid()}
-                      borderBottom="1px solid #B8D0FF"
-                    >
-                      <Text color="#6750A4" fontSize="16px">#{LeadingZero(i+1)}</Text> 
-                      <Text fontWeight="600" color="#645C5E" fontSize="16px">{/*e?ShortAddress(e[5]):""*/}..</Text> 
-                      <Text fontWeight="600" color="#645C5E" fontSize="16px">{e?DecimalAbbr(e[0]._hex): ""} USDT</Text> 
-                      <Flex justify="center"alignItems="start">
-                      <Text fontWeight="600" color="#645C5E" fontSize="16px">0.00</Text> 
-                      </Flex>
-                      <Text fontWeight="600" color="#645C5E" fontSize="16px">{e?HexToDecimal(e[1]._hex): ""}</Text> 
-                    </Flex>
-                  ))
-                 }
+                 ))}
+                  {/* <Divider border="1px solid " mt="12px" /> */}
                </>
          </Flex>
        </Stack>

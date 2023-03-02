@@ -21,8 +21,8 @@ import Container from '../components/Container';
 import Footer from '../components/Footer3';
 import { nanoid } from 'nanoid';
 import secureLogo from '../assets/shield-tick.svg'
+import ethereumLogo from '../assets/ethereum 1.svg'
 import uniswapLogo from '../assets/uniswap 1.svg'
-import fantomLogo from "../assets/fantomlogo.svg"
 
 const style = {
   height: 300,
@@ -92,8 +92,8 @@ const Claims = () => {
             <>
           <Flex>
            <Flex justify="center" alignItems="center">
-            <Avatar boxSize="30px" src={fantomLogo} mr="8px" />
-            <Text {...font5}>Fantom</Text>
+            <Avatar boxSize="30px" src={ethereumLogo} mr="8px" />
+            <Text {...font5}>Ethereum</Text>
           </Flex>
           </Flex>
            {/* -------------------------- Detail 2 Claim ID ----------------------- */}
@@ -105,7 +105,7 @@ const Claims = () => {
           <Flex>
           <Avatar boxSize="30px" src={uniswapLogo} mr="8px" />
             <Flex flexDir="column">
-                <Text {...font3}>Uniswap</Text>
+                <Text {...font3}>InstaDapp</Text>
                 <Flex justify={"center"} alignItems="center">
                  <Image src={secureLogo} boxSize={"20px"} mr="4px" />
                   <Text {...font4}>Bundled cover</Text>
