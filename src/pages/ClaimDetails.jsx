@@ -17,10 +17,8 @@ import {
 import Footer from '../components/Footer3';
 import Container from '../components/Container';
 import { nanoid } from 'nanoid';
-import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import '../constants/pagination.css'
-import {useParams} from "react-router-dom";
 import { votersList } from '../utils/dashCard';
 import uniswapLogo from '../assets/uniswap 1.svg'
 import useCollapse from 'react-collapsed';
@@ -32,43 +30,30 @@ import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
-const ProposalFilter = lazy(() => import("../components/ProposalFilter"));
 
-const animationKeyframes = keyframes`
-  0% { transform: rotate(360deg); }
-  100% { transform: rotate(0);}
-`;
+// const animationKeyframes = keyframes`
+//   0% { transform: rotate(360deg); }
+//   100% { transform: rotate(0);}
+// `;
 
-const animation = `${animationKeyframes} 3s ease-in-out infinite`;
+// const animation = `${animationKeyframes} 3s ease-in-out infinite`;
 
 const ClaimDetails = () => {
 
     const {
      root,
-     protocolBox,
-     protocol,
-     protocolWelcomeText,
-     joinText,
-     protocolInnerBox2,
-     protocolInnerBox1,
-     outerBox,
-     fontBold
     } = useStyles();
-
-    let navigate = useNavigate();
-    const {id} = useParams();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     // ------------------ useDisclosure for TransactionLoaderModal component
-    const {
-      isOpen: transactionLoadingIsOpen,
-      onOpen: transactionLoadingOnOpen,
-      onClose: transactionLoadingOnClose
-    } = useDisclosure();
+    // const {
+    //   isOpen: transactionLoadingIsOpen,
+    //   onOpen: transactionLoadingOnOpen,
+    //   onClose: transactionLoadingOnClose
+    // } = useDisclosure();
 
-    const [isTransactionLoading, setIsTransactionLoading] = useState(false);
+    // const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 
-    const [buttonHere, setButtonHere] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
 

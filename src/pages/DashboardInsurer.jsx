@@ -6,7 +6,6 @@ import {
   Spinner, 
   Image, 
   HStack, 
-  VStack, 
   SimpleGrid, 
   Stack,
   Divider,
@@ -25,7 +24,6 @@ import {
   InputRightAddon,
   InputGroup,
 } from "@chakra-ui/react"
-import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import Footer from '../components/Footer2';
 import { dashCardData, myInsureCover, myInsureClaim } from '../utils/dashCard';
@@ -47,7 +45,7 @@ const DashboardCardItem = lazy(() => import("../components/DashboardCardItem/ind
 
 const Dashboard = () => {
 
-    const { root, root2, font2, font3, font4, font5, font6 } = useStyles();
+    const { root, root2, font3, font4, font5 } = useStyles();
 
     const [buttonHere, setButtonHere] = useState(false);
 

@@ -7,13 +7,10 @@ import {
   Text, 
   Image, 
   useBreakpointValue, 
-  Box,
   Menu,
   MenuItem,
   MenuButton,
-  Avatar,
   MenuList,
-  MenuDivider,
   useDisclosure,
   Center
 } from '@chakra-ui/react';
@@ -29,9 +26,6 @@ import { ConnectInsureLab } from "../utils/customConnect";
 
 
 const Navbar = () => {
-
-      const [isMenu, setIsMenu] = useState(false);
-      const [isVisible, setIsVisible] = useState(false);
 
       let navigate = useNavigate();
 

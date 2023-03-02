@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { Flex,
     Modal,
     ModalOverlay,
@@ -23,8 +23,6 @@ const style = {
   
 
 const TransactionLoaderModal = ({transactionLoadingIsOpen, transactionLoadingOnClose}) => {
-
-    const [isLoading, setIsLoading] = useState(false);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 

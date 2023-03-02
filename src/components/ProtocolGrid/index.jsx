@@ -1,5 +1,5 @@
-import { Heading, Spacer, Stack, Flex, Text, Avatar, Image, Box, Button } from "@chakra-ui/react";
-import React, { lazy, FC, MouseEventHandler } from "react";
+import { Stack, Flex, Text, Avatar, Image, Button } from "@chakra-ui/react";
+import React from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import webLogo from '../../assets/link-2.svg'
 import FantomLogo from "../../assets/fantomlogo.svg"

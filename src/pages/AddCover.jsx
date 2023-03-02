@@ -1,5 +1,5 @@
 import React, {Suspense, lazy} from 'react'
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     Input,
     InputRightAddon,
@@ -108,8 +108,6 @@ const AddCover = ({...rest}) => {
           errors,
           touched,
           handleBlur,
-          isValid,
-          dirty
         } = formik;
         return (
               <Flex mt="20px" flexDir="column" p="50px">

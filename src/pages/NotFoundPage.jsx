@@ -1,7 +1,5 @@
 import React, {Suspense, lazy} from 'react'
-import { Flex, Box, Spinner, Text, Image, Spacer, Button,
-    Avatar,
-    Divider,
+import { Flex, Box, Spinner, Text, Image, Spacer,
     HStack,
     Center
 } from '@chakra-ui/react';
@@ -13,7 +11,6 @@ import notfound404Animation from '../lottie/109070-error-404-landing-page.json';
 import { useNavigate } from 'react-router-dom';
 
 const NavBar = lazy(() => import("../components/Navbar"));
-const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 
 const style = {
     height: 300,

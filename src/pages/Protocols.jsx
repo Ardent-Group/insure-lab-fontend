@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState, useEffect, useContext} from 'react'
+import React, {Suspense, lazy, useState, useContext} from 'react'
 import { 
   Flex, 
   Box, 
@@ -26,19 +26,18 @@ import Container from '../components/Container';
 import rockTypeImage from '../assets/Rock.svg';
 import ProtocolGrid from '../components/ProtocolGrid';
 import { nanoid } from 'nanoid';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import '../constants/pagination.css'
-import {useParams} from "react-router-dom";
+// import {useParams} from "react-router-dom";
 import { motion } from 'framer-motion';
 import arrowLeft from "../assets/arrow-left.svg";
 import walletIcon from '../assets/empty-wallet.svg'
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
-
 import TransactionLoaderModal from '../components/TransactionLoaderModal';
-import { useContractRead, useAccount } from 'wagmi';
+import { useContractRead } from 'wagmi';
 import { insureLabSetup } from '../constants/interactionSetup';
 import { GetProtocol } from '../hooks/getAllProtocol';
 import { DecimalAbbr, GetRiskLevel, GetCoverCost } from '../hooks/helpers';
@@ -74,7 +73,6 @@ const Protocols = () => {
     const {
      root,
      protocolBox,
-     protocol,
      protocolWelcomeText,
      joinText,
      protocolInnerBox2,
@@ -82,9 +80,6 @@ const Protocols = () => {
      outerBox,
      fontBold
     } = useStyles();
-
-    let navigate = useNavigate();
-    const {id} = useParams();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     // ------------------ useDisclosure for TransactionLoaderModal component

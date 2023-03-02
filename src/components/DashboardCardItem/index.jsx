@@ -1,5 +1,5 @@
-import { Heading, Spacer, Stack, Text, Flex } from "@chakra-ui/react";
-import React, { lazy, FC, MouseEventHandler } from "react";
+import { Spacer, Stack, Text } from "@chakra-ui/react";
+import React from "react";
 import { nanoid } from "nanoid";
 
 

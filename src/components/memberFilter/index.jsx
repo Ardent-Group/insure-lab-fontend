@@ -1,26 +1,20 @@
 // @flow
-import { memo, useRef } from "react";
+import { memo } from "react";
 import {
-  Box,
   Flex,
   HStack,
   Text,
   Select,
-  Input,
   InputGroup,
-  InputLeftElement,
-  Icon,
   Image,
-  Spacer
 } from "@chakra-ui/react";
-import { FaSearch, FaAngleDown } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import arrowLeft from '../../assets/arrow-left.svg';
 
 const ProposalFilter = () => {
 
 
-  const { root, popFont } = useStyles();
+  const { popFont } = useStyles();
 
   // const allMaterials = [];
 

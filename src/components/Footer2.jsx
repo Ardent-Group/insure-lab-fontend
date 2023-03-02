@@ -1,5 +1,5 @@
 import React from 'react'
-import {Flex, Box, Divider, Text, Stack, chakra, useColorModeValue, VisuallyHidden } from '@chakra-ui/react'
+import {Box, Divider, Text, Stack, chakra, useColorModeValue, VisuallyHidden } from '@chakra-ui/react'
 import Container from './Container'
 import { FaGithub, FaDiscord, FaTwitter } from 'react-icons/fa';
 

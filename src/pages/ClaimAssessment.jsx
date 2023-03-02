@@ -8,7 +8,7 @@ import React, {Suspense, lazy, useContext} from 'react'
 //   StepStatus,
 //   StepDescription,
 // } from "react-progress-stepper";
-import { VStack, Flex, Box, Button, Text, Spinner, Heading, Image } from "@chakra-ui/react";
+import { Flex, Box, Text, Spinner, Image } from "@chakra-ui/react";
 import Footer2 from '../components/Footer2';
 import { useNavigate } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
