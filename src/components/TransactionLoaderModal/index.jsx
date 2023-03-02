@@ -106,7 +106,7 @@ const TransactionLoaderModal = ({transactionLoadingIsOpen, transactionLoadingOnC
       </Modal> 
 
 
-     {/* ------------------------------ Tran saction Completed ---------------------------- */}
+     {/* ------------------------------ Transaction Completed ---------------------------- */}
 
       <>
       <Modal isOpen={isOpen} onClose={onClose}m
@@ -123,7 +123,7 @@ const TransactionLoaderModal = ({transactionLoadingIsOpen, transactionLoadingOnC
             <Lottie
               animationData={successAnimation}
               style={style}
-              />
+            />
               {/* --------------- ends of Loading animation -------------------- */}
               <Flex flexDir="column" justify="center">
                  <Text fontSize="18px" textAlign={"center"} 

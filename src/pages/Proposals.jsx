@@ -25,8 +25,8 @@ import { motion } from 'framer-motion';
 import blockChainPartLogo from '../assets/chains.svg'
 import uniswapLogo from '../assets/uniswap 1.svg'
 import useCollapse from 'react-collapsed';
-import { Progress } from 'react-sweet-progress';
-import "react-sweet-progress/lib/style.css";
+// import { Progress } from 'react-sweet-progress';
+// import "react-sweet-progress/lib/style.css";
 import arrowLeft from '../assets/arrow-left.svg';
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
@@ -217,7 +217,7 @@ const Proposals = () => {
                 {/* --------------------- percentage laoding ----------------------- */}
                <Flex mt="18px">
                 <Text mr="6px">Yes</Text>
-                <Progress
+                {/* <Progress
                       theme={{
                         active: {
                           color: '#BBBAFF',
@@ -225,12 +225,12 @@ const Proposals = () => {
                         }
                       }}
                    percent={79} 
-                   />
+                   /> */}
               </Flex>
 
               <Flex mt="18px">
                 <Text mr="6px">No</Text>
-                <Progress
+                {/* <Progress
                       theme={{
                         active: {
                           color: '#BBBAFF',
@@ -238,7 +238,7 @@ const Proposals = () => {
                         }
                       }}
                    percent={21} 
-                   />
+                   /> */}
               </Flex>
             </Flex>
          </Flex>

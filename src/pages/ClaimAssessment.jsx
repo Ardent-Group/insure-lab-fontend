@@ -1,13 +1,13 @@
 import React, {Suspense, lazy, useContext} from 'react'
-import {
-  Stepper,
-  Step,
-  useStepper,
-  StepNumber,
-  StepTitle,
-  StepStatus,
-  StepDescription,
-} from "react-progress-stepper";
+// import {
+//   Stepper,
+//   Step,
+//   useStepper,
+//   StepNumber,
+//   StepTitle,
+//   StepStatus,
+//   StepDescription,
+// } from "react-progress-stepper";
 import { VStack, Flex, Box, Button, Text, Spinner, Heading, Image } from "@chakra-ui/react";
 import Footer2 from '../components/Footer2';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +34,7 @@ const ClaimAssessment = () => {
   const { root } = useStyles();
   let navigate = useNavigate();
 
-  const { step, incrementStep, decrementStep } = useStepper(2, 9);
+  // const { step, incrementStep, decrementStep } = useStepper(2, 9);
 
   const { isMobile } = useContext(StopScreenMessageContext);
 
@@ -61,7 +61,7 @@ const ClaimAssessment = () => {
            
 
     <Flex flexDir="column" width="100%" p="60px" mt="-40px">
-      <Stepper step={step}>
+      {/* <Stepper step={step}>
         <Step>
           <StepTitle>
             <Text fontSize="14px">Submitted</Text>
@@ -115,13 +115,13 @@ const ClaimAssessment = () => {
           <StepStatus />
           <StepDescription>Description</StepDescription>
         </Step>
-      </Stepper>
+      </Stepper> */}
     </Flex>
 
-    <Flex mt="40px" p="70px">
+    {/* <Flex mt="40px" p="70px">
       <Button onClick={decrementStep}>Prev</Button>
       <Button onClick={incrementStep}>Next</Button>
-   </Flex>
+   </Flex> */}
    
    </Box>
     <Footer2 />

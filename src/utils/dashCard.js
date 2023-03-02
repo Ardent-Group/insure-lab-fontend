@@ -199,7 +199,6 @@ export const myInsureClaim = [
    id: "2",
    logo: uniswapLogo,
    logo2: ethereumLogo,
-   logoname: "InstaDapp",
    chainId: "002",
    logoname: "InstaDapp",
    subtile: "Smart contract vulnerability",

@@ -7,7 +7,6 @@ import * as serviceWorker from './serviceWorker';
 import { ChakraProvider } from '@chakra-ui/react'
 import { SkeletonTheme } from 'react-loading-skeleton'
 import { extendTheme } from '@chakra-ui/react'
-import { StepsTheme as Steps } from 'chakra-ui-steps';
 import { AnimatePresence } from 'framer-motion';
 import { StopScreenMessageProvider } from './constants/stopScreenMessage';
 
@@ -31,8 +30,7 @@ const insureLabFantomTestnet = {
     symbol: 'FTM'
   },
   rpcUrls: {
-    public: { http: ['https://rpc.testnet.fantom.network/'] },
-    default: { http: ['https://rpc.testnet.fantom.network/'] }
+    default: 'https://fantom-testnet.public.blastapi.io'
   },
   blockExplorers: {
     etherscan: { name: 'FtmScan', url: 'https://testnet.ftmscan.com/' },
@@ -72,7 +70,7 @@ const colors = {
 
 const theme = extendTheme({
   components: {
-    Steps,
+    // Steps,
   },
   colors
 });

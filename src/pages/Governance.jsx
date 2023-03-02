@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useContext} from 'react'
+import React, {Suspense, lazy, useEffect, useState, useContext} from 'react'
 import {Flex, 
         Box, 
         Spinner, 
@@ -17,6 +17,8 @@ import {Flex,
         Input,
         InputRightAddon,
         InputGroup,
+        useToast,
+        Avatar
       } from "@chakra-ui/react";
 import Container from '../components/Container';
 import Footer from '../components/Footer';
@@ -27,9 +29,20 @@ import { Link } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import loaderAnimation from '../lottie/9833-full-page-loading-spinner.json';
 import successAnimation from '../lottie/90646-payment-success.json'
+import errorAnimation from '../lottie/97670-tomato-error.json'
 import walletIcon from '../assets/empty-wallet.svg'
+import { ConnectInsureLab } from '../utils/customConnect';
+import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { erc20Setup, governanceContract } from '../constants/interactionSetup';
+import { ethers } from 'ethers';
+import { governanceSetup } from '../constants/interactionSetup';
+import { HexToDecimal, NumbAbbr, ShortAddress } from '../hooks/helpers';
+import SecureLogo from "../assets/SecureDex.svg"
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
+
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -40,6 +53,111 @@ const style = {
 
 
 const Governance = () => {
+
+  const { address } = useAccount()
+  const toast = useToast()
+  const [amountStaked, setAmountStaked ] = useState("");
+
+  console.log(amountStaked, "sdln")
+
+  // approve token
+
+  const { data:tokenData, isLoading:tokenLoading, write:tokenWrite } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...erc20Setup,
+    functionName: "approve",
+    args: [
+      governanceContract,
+      ethers.utils.parseEther(amountStaked ? amountStaked.toString() : "0")
+    ]
+  })
+
+  const { isLoading:tokenWaitLoading } = useWaitForTransaction({
+    hash: tokenData?.hash,
+    onSuccess(){
+      governanceWrite()
+      toast({
+        title: 'Token Approved',
+        description: "You've successfully approved token",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right"
+      })
+    },
+    onError(data){
+      toast({
+        title: "Error encountered",
+        description: data,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right"
+      })
+    }
+  })
+
+  const { data:governanceData, isLoading:governanceLoading, write:governanceWrite } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...governanceSetup,
+    functionName: "joinDAO",
+    args: [
+      ethers.utils.parseEther(amountStaked ? amountStaked.toString() : "0")
+    ]
+  })
+
+  const { isLoading:governanceWaitLoading, isSuccess:governanceSuccess, isError:governanceError} = useWaitForTransaction({
+    hash: governanceData?.hash,
+    onSuccess(){
+      toast({
+        title: 'Joined',
+        description: "You've successfully joined Insurelab Governance",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right"
+      })
+    },
+    onError(data){
+      toast({
+        title: "Error encountered",
+        description: data,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right"
+      })
+    }
+  })
+
+  const { data:tokenReadData } = useContractRead({
+    ...erc20Setup,
+    functionName: "allowance",
+    args: [
+      address,
+      governanceContract
+    ]
+  })
+
+
+
+
+  function tokenAuthorization(){
+    let amountInput = ethers.utils.parseEther(amountStaked ? amountStaked.toString(): "0")
+    if(HexToDecimal(tokenReadData?._hex) >= HexToDecimal(amountInput?._hex)){
+      governanceWrite()
+    }
+    else{
+      tokenWrite()
+    }
+  }
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    tokenAuthorization();
+    onOpen3()
+  }
 
     const {
       root,
@@ -63,7 +181,6 @@ const Governance = () => {
    {!isMobile ?
     <Box>
       <Suspense
-        // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
         fallback={<Spinner size="lg" />}
       >
         <NavBar />
@@ -208,57 +325,61 @@ const Governance = () => {
               {/* =--------------------------------- Joining Modal ---------------------- */}
             <>
             <Modal isOpen={isOpen} onClose={onClose}
-        isCentered
-        blockScrollOnMount={true}
-        scrollBehavior={"inside"}
-        motionPreset="slideInBottom"
-        >
-        <ModalOverlay bg="#00000020" backdropFilter="auto" backdropBlur="2px" />
-        <ModalContent w={{ base: "90vw", md: "60vw" }} borderRadius={0}>
-          <ModalCloseButton />
-          <ModalBody p="40px 80px">
-            {/*  ---------------------- Loading animation ------------------------ */}
-            <Lottie
-              animationData={loaderAnimation}
-              style={style}
-              />
-              {/* --------------- ends of Loading animation -------------------- */}
-              <Flex flexDir="column" justify="center">
-                 <Text fontSize="20px" textAlign={"center"} 
-                 fontWeight={600}>Welcome to Insurelab’s Governance DAO!</Text>    
-                
-                  
-                <Text fontSize="16px" textAlign={"center"} 
-                 fontWeight={400} mt="8px">
-                  To join the DAO, you must meet the following conditions:
-                    You must have maximum of 10,000 usd and a minimum of 1000 usd
-                 </Text> 
-                
-                </Flex> 
- 
-          </ModalBody>
+              isCentered
+              blockScrollOnMount={true}
+              scrollBehavior={"inside"}
+              motionPreset="slideInBottom"
+              >
+                <ModalOverlay bg="#00000020" backdropFilter="auto" backdropBlur="2px" />
+                <ModalContent w={{ base: "90vw", md: "60vw" }} borderRadius={0}>
+                  <ModalCloseButton />
+                  <ModalBody p="40px 80px">
+                    {/*  ---------------------- Loading animation ------------------------ */}
+                    <Lottie
+                      animationData={loaderAnimation}
+                      style={style}
+                      />
+                      {/* --------------- ends of Loading animation -------------------- */}
+                      <Flex flexDir="column" justify="center">
+                        <Text fontSize="20px" textAlign={"center"} 
+                        fontWeight={600}>Welcome to Insurelab’s Governance DAO!</Text>    
+                        
+                          
+                        <Text fontSize="16px" textAlign={"center"} 
+                        fontWeight={500} mt="8px">
+                          To join the DAO, you must meet the following conditions:
+                            You must have maximum of 10,000 usd and a minimum of 1000 usd
+                        </Text> 
+                        
+                        </Flex> 
+        
+                  </ModalBody>
 
-          <ModalFooter justifyContent="center" align="center">
-            <Button 
-             bg="#3E7FDF"
-             borderRadius="20px" 
-             color="white"
-             fontSize="14px"
-             fontWeight={400}
-             p="10px 100px"
-             _hover={{
-                color: "white"
-             }}
-             onClick={onOpen2}
-             >
-              Connect Wallet
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+                  <ModalFooter justifyContent="center" align="center">
+                    {
+                      address ?
+                      <Button 
+                        bg="#3E7FDF"
+                        borderRadius="20px" 
+                        color="white"
+                        fontSize="14px"
+                        fontWeight={400}
+                        p="10px 100px"
+                        _hover={{
+                            color: "white"
+                        }}
+                        onClick={onOpen2}
+                      >
+                        Continue
+                      </Button> :
+                      <ConnectInsureLab />
+                    }
+                  </ModalFooter>
+              </ModalContent>
             </Modal>  
             </>
 
-          {/* ------------------------------ Prceed with this Details ------------------------- */}
+          {/* ------------------------------ Proceed with this Details ------------------------- */}
           <Modal isOpen={isOpen2} onClose={onClose2} size='3xl'
             isCentered
             blockScrollOnMount={true}
@@ -272,33 +393,13 @@ const Governance = () => {
               <Text fontSize="16px" fontWeight={600}>
                 Enter the following details to proceed
               </Text>
-
+              {
+                (tokenLoading || tokenWaitLoading || governanceLoading || governanceWaitLoading) ?
+                <Text as="u" onClick={onOpen3} fontStyle="italic" fontWeight="bold" mt="8px" fontSize="14px" cursor="pointer">Check Transaction Process</Text> : ""
+              }
               <Flex mt="20px" flexDir="column" p="20px">
-                 {/* ------------------------------- Input 1 ------------------------------- */}
-                 <Flex flexDir="column">
-                      <Text fontSize="15px" fontWeight="500">Name (Your identitiy will be kept anonymous)</Text>
-                        <Spacer />
-                        <InputGroup
-                          _focus={{ boxShadow: "none" }}
-                          as="button"
-                          w={"100%"}
-                        >
-                          <Input
-                            placeholder="Enter name"
-                            borderRadius="0"
-                            border="0"
-                            borderBottom="1px solid #49454F"
-                            _placeholder={{
-                              color: "#1C1B1F",
-                              justifySelf: "flex-end",
-                              fontSize: "12px"
-                            }}
-                            _focus={{ boxShadow: "none" }}
-                          />
-                        </InputGroup>
-                </Flex>
 
-                  {/* ------------------------------- Input 2 ------------------------------- */}
+                  {/* ------------------------------- Input ------------------------------- */}
                   <Flex flexDir="column" mt="30px">
                       <Text fontSize="15px" fontWeight="500">Amount Staked</Text>
                         <Spacer />
@@ -318,6 +419,8 @@ const Governance = () => {
                               fontSize: "12px"
                             }}
                             _focus={{ boxShadow: "none"}}
+                            value={amountStaked}
+                            onChange={e => setAmountStaked(e.target.value)}
                           />
                           <InputRightAddon borderRadius={0} border="0" bg="footerBgColor">
                            <Text fontSize="12px" fontWeight={500}>USDC</Text>
@@ -335,8 +438,8 @@ const Governance = () => {
               color="white"
               fontSize="14px"
               fontWeight="400"
-              // onClick={transactionLoadingOnOpen}
-              onClick={onOpen3}
+
+              onClick={handleSubmit}
               >
                 Proceed
             </Button>
@@ -345,7 +448,7 @@ const Governance = () => {
           </Modal>
 
           
-     {/* ------------------------------ Tran saction Completed ---------------------------- */}
+     {/* ------------------------------ Transaction Completed ---------------------------- */}
 
       <>
       <Modal isOpen={isOpen3} onClose={onClose3}
@@ -358,59 +461,100 @@ const Governance = () => {
         <ModalContent w={{ base: "90vw", md: "60vw" }} borderRadius={0}>
           <ModalCloseButton />
           <ModalBody p="40px 80px">
-            {/*  ---------------------- Success animation ------------------------ */}
-            <Lottie
-              animationData={successAnimation}
-              style={style}
+            {
+              governanceSuccess ?
+              <Lottie
+                animationData={successAnimation}
+                style={style}
+              /> :
+              governanceError ?
+              <Lottie
+                animationData={errorAnimation}
+                style={style}
+              /> :
+              <Lottie
+                animationData={loaderAnimation}
+                style={style}
               />
+            }
               {/* --------------- ends of Loading animation -------------------- */}
               <Flex flexDir="column" justify="center">
-                 <Text fontSize="18px" textAlign={"center"} 
-                 fontWeight={600}>Transaction Completed</Text>
+                {
+                  governanceSuccess ?
+                  <>
+                    <Text fontSize="18px" textAlign="center" fontWeight={600}>Transaction Completed</Text>
+                    <Text fontSize="13px" textAlign={'center'}>Your have successfully created an insurance cover</Text>
+                  </> :
+                  governanceError ?
+                  <>
+                    <Text fontSize="18px" textAlign="center" fontWeight={600}>Error</Text>
+                    <Text fontSize="13px" textAlign={'center'}>There is an error in your ransaction</Text>
+                  </> :
+                  <>
+                    <Text fontSize="18px" textAlign={'center'} fontWeight={600}>Transaction Processing...</Text>
+                    <Text fontSize="13px" textAlign={'center'}>Your request is being processed, please be patient</Text>
+                  </>
+                }
 
-                 <Flex flexDir="row" justify="space-between" mt="15px">
-                        <Text fontSize="18px" fontWeight={500}>Amount Staked</Text>
-                        <Flex justify="center" alignItems="center">
-                            {/* <Image src={uniswapLOGO} boxSize="25px" /> */}
-                            <Text color="#645C5E" fontSize="16px"
-                             fontWeight={600}
-                              >
-                                8,000 USDC
-                              </Text>
-                        </Flex>
-                 </Flex>
+                  <Flex flexDir="row" justify="space-between" mt="1.5rem">
+                    <Text fontSize="18px" fontWeight={500}>Amount Staked</Text>
+                    <Flex justify="center" alignItems="center" gap={2}>
+                      <Avatar src={SecureLogo} size="xs" />
+                      <Text color="#645C5E" fontSize="16px" fontWeight={600}>{NumbAbbr(amountStaked)} USDC</Text>
+                    </Flex>
+                  </Flex>
+                  <Flex flexDir="row" justify="space-between" mt="10px">
+                    <Text fontSize="18px" fontWeight={500}>Wallet address</Text>
+                    <Flex justify="center" alignItems="center">
+                        <Text color="#645C5E" fontSize="16px" fontWeight={600}>{ShortAddress(address)}</Text>
+                  </Flex>
+                </Flex>
               </Flex>
-
-
-              <Flex flexDir="row" justify="space-between" mt="10px">
-                        <Text fontSize="18px" fontWeight={500}>Wallet address</Text>
-                        <Flex justify="center" alignItems="center">
-                            <Text color="#645C5E" fontSize="16px"
-                             fontWeight={600}
-                             >
-                                0x8b93...8b0F
-                                </Text>
-                        </Flex>
-                 </Flex>
-           
           </ModalBody>
 
           <ModalFooter justifyContent="center" align="center">
-            <Link to="/dao-member-portal">
-            <Button 
-             bg="#3E7FDF"
-             borderRadius="20px" 
-             color="white"
-             fontSize="14px"
-             fontWeight={400}
-             p="10px 100px"
-             _hover={{
-                color: "white"
-             }}
-             >
-              Veiw Profile
-            </Button>
-            </Link>
+            {
+              (tokenLoading || tokenWaitLoading) ?
+              <Button
+                w="100%"
+                bg="#3a7cdf"
+                borderRadius="15px"
+                color="white"
+                _hover={{
+                  "backgroundColor": "#91b6ed"
+                }}
+              >
+                <Flex gap={2}>
+                  Awaiting User Approval 
+                  <Spinner size="sm"/>
+                </Flex>
+              </Button>:
+              (governanceWaitLoading || governanceSuccess ) ?
+              <Button as="a"
+                href={`https://testnet.ftmscan.com/tx/${governanceData?.hash}`}
+                target="_blank"
+                w="100%"
+                bg="#3a7cdf"
+                borderRadius="15px"
+                color="white"
+                _hover={{
+                  "backgroundColor": "#91b6ed"
+                }}
+              >
+                View Transaction <ExternalLinkIcon ml='2px' />
+              </Button>:
+              <Button
+              w="100%"
+              bg="#3a7cdf"
+              borderRadius="15px"
+              color="white"
+              _hover={{
+                "backgroundColor": "#91b6ed"
+              }}
+              >
+                Processing <Spinner size="xs" ml="2px" />
+              </Button>
+            }
           </ModalFooter>
         </ModalContent>
       </Modal> 
