@@ -77,9 +77,9 @@ const ConfirmLoaderModal = ({confirmLoadingIsOpen, confirmLoadingOnClose, confir
                         <Flex justify="center" alignItems="center">
                             <Text color="#645C5E" fontSize="16px"
                              fontWeight={600}
-                             >
-                                0x8b93...8b0F
-                                </Text>
+                            >
+                              0x8b93...8b0F
+                            </Text>
                         </Flex>
                  </Flex>
            
@@ -97,7 +97,7 @@ const ConfirmLoaderModal = ({confirmLoadingIsOpen, confirmLoadingOnClose, confir
                 color: "white"
              }}
              onClick={onOpen}
-             >
+            >
               Close
             </Button>
           </ModalFooter>

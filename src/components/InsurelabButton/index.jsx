@@ -15,7 +15,7 @@ const InsurelabButton = ({
   return (
     <>
       <Button
-        isDisabled={isDisabled}
+        disabled={isDisabled}
         as={"button"}
         isLoading={isLoading}
         onClick={onCLick}

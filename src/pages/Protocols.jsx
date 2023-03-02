@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState, useContext} from 'react'
+import React, {Suspense, lazy, useState, useEffect, useContext} from 'react'
 import { 
   Flex, 
   Box, 
@@ -28,7 +28,6 @@ import ProtocolGrid from '../components/ProtocolGrid';
 import { nanoid } from 'nanoid';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-import { protocolCardData } from '../utils/protocolGrid'
 import ReactPaginate from 'react-paginate';
 import '../constants/pagination.css'
 import {useParams} from "react-router-dom";
@@ -39,6 +38,10 @@ import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
 
 import TransactionLoaderModal from '../components/TransactionLoaderModal';
+import { useContractRead, useAccount } from 'wagmi';
+import { insureLabSetup } from '../constants/interactionSetup';
+import { GetProtocol } from '../hooks/getAllProtocol';
+import { DecimalAbbr, GetRiskLevel, GetCoverCost } from '../hooks/helpers';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -52,6 +55,21 @@ const animationKeyframes = keyframes`
 const animation = `${animationKeyframes} 4s ease-in-out infinite`;
 
 const Protocols = () => {
+
+  const { data:getId } = useContractRead({
+    ...insureLabSetup,
+    functionName: "id"
+  })
+
+  let protocolsData = [];
+
+  console.log(protocolsData, "protocols")
+
+    for(let i = 1; i < getId; i++){
+      const { data:getProtocolData } = GetProtocol(i);
+      protocolsData.push(getProtocolData);
+    }
+
 
     const {
      root,
@@ -76,34 +94,33 @@ const Protocols = () => {
       onClose: transactionLoadingOnClose
     } = useDisclosure();
 
-    const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 
     const [skeletonLoading, setSeletonLoading] = useState(false);
 
-    const [protocolCard, setProtocolCard] = useState(protocolCardData.slice(0, 30));
+    const [protocolCard, setProtocolCard] = useState(protocolsData.slice(0, 30));
+
     //state holding page of the pagination
     const [pageNumber, setPageNumber] = useState(0);
 
     const protocolCardPerPage = 15
     const pagesVisited = pageNumber * protocolCardPerPage;
 
-    const  displayProtocolCard = protocolCard
-    .slice(pagesVisited, pagesVisited + protocolCardPerPage)
-    .map((e) => {
-      return (
-        <ProtocolGrid 
-        key={nanoid()}
-        onClick={e.onclick}
-        // icon={e.icon({
-        //   color: "",
-        // })}
-        link={e.id}
-        icon={""}
-        cardName={e.label}
-        onOpen={onOpen}
-      />
-      )
-    }) 
+    const displayProtocolCards = protocolCard
+      .slice(pagesVisited, pagesVisited + protocolCardPerPage)
+      .map((item, index) => {
+        return (
+          <ProtocolGrid
+            key={nanoid()}
+            link={index}
+            protocolName={item ? item[4] : " "}
+            protocolLink={item ? item[5]: " "}
+            protocolCap={item ? DecimalAbbr(item[1]._hex): ""}
+            coverCost={item ? GetCoverCost(item[7]): ""}
+            riskLevel={item ? GetRiskLevel(item[7]): ""}
+            onOpen={onOpen}
+          />
+        )
+      })
 
     const pageCount = Math.ceil(protocolCard.length / protocolCardPerPage);
 
@@ -111,6 +128,7 @@ const Protocols = () => {
     const changePage = ({selected}) => {
        setPageNumber(selected);
     }
+
 
     const { isMobile } = useContext(StopScreenMessageContext);
 
@@ -194,6 +212,8 @@ const Protocols = () => {
                     Buy insurance cover from protocols that are protected 
                     by us or create a custom protocol cover!
                   </Text>
+                  <Text>
+                  </Text>
                 </Flex>
 
             </HStack>
@@ -222,7 +242,7 @@ const Protocols = () => {
                 w={"100%"}
               >
                 <Suspense fallback={<Spinner boxSize="lg" />}>
-                  {displayProtocolCard}
+                  {displayProtocolCards}
                 </Suspense>
               </SimpleGrid>
               )}
