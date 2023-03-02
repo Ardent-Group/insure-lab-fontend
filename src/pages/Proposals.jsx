@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useState, useContext} from 'react'
 import { 
   Flex, 
   Box, 
@@ -27,7 +27,9 @@ import uniswapLogo from '../assets/uniswap 1.svg'
 import useCollapse from 'react-collapsed';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
-import arrowLeft from '../assets/arrow-left.svg'
+import arrowLeft from '../assets/arrow-left.svg';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 
 const NavBar = lazy(() => import("../components/Navbar"));
@@ -72,8 +74,12 @@ const Proposals = () => {
     const [buttonHere, setButtonHere] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+
+    const { isMobile } = useContext(StopScreenMessageContext);
   
   return (
+    <>
+      {!isMobile ?
     <Box w="100%">
        <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
@@ -245,6 +251,10 @@ const Proposals = () => {
       <Footer />
     </Flex>
     </Box>
+     : 
+     <StopErrorMessage />
+    }
+    </>
   )
 }
 

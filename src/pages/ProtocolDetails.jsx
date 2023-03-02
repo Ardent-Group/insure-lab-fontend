@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useContext} from 'react'
 import { Flex, Text, Box, Skeleton, Spinner, Image, 
    Spacer, Select, Divider, Avatar, InputGroup, Input,
     Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, } from '@chakra-ui/react'
@@ -17,6 +17,9 @@ import calendarLogo from '../assets/calendar.svg'
 import deleteIcon from '../assets/delete 1.svg'
 import { FaPlus } from 'react-icons/fa';
 import highRiskIcon from '../assets/Frame 95.svg';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
+
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
@@ -29,7 +32,11 @@ const ProtocolDetails = () => {
 
    let navigate = useNavigate();
 
+   const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+     {!isMobile ?
     <Box w={"100%"} backgroundColor="bg">
     <Suspense
     //  fallback={<Skeleton isLoaded={false} w={"100%"} h={"48px"}></Skeleton>}
@@ -233,6 +240,10 @@ const ProtocolDetails = () => {
       {/* Footer Two */}
       <Footer2 /> 
     </Box>
+      : 
+      <StopErrorMessage />
+     }
+    </>
   )
 }
 

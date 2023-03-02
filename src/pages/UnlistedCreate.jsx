@@ -1,5 +1,5 @@
 import React, {Suspense, lazy} from 'react'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     Input,
     InputRightAddon,
@@ -16,6 +16,8 @@ import arrowLeft from '../assets/arrow-left.svg';
 import walletIcon from '../assets/empty-wallet.svg';
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { insureLabSetup } from '../constants/interactionSetup';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 
@@ -51,8 +53,11 @@ const UnlistedCreate = () => {
         sliderValue
       ]
      })
+     const { isMobile } = useContext(StopScreenMessageContext);
 
   return (
+    <>
+    {!isMobile ?
     <Box w={"100%"} {...root}>
     <Suspense
      fallback={<Spinner size="sm" />}
@@ -253,6 +258,10 @@ const UnlistedCreate = () => {
       {/* Footer here */}
       <Footer2 />
    </Box>
+    : 
+      <StopErrorMessage />
+     }
+   </>
   )
 }
 

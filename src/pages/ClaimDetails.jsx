@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useState, useContext} from 'react'
 import { 
   Flex, 
   Box, 
@@ -6,20 +6,12 @@ import {
   Spinner, 
   Image, 
   HStack, 
-  VStack, 
-  SimpleGrid, 
-  Center, keyframes, 
-  Skeleton, useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
+  Center,
+  keyframes, 
+  useDisclosure,
   Button,
-  Spacer,
   Avatar,
   Stack,
-  Select,
   Divider,
 } from '@chakra-ui/react'
 import Footer from '../components/Footer3';
@@ -35,12 +27,12 @@ import useCollapse from 'react-collapsed';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 import arrowLeft from '../assets/arrow-left.svg'
-import EthereumLogo from '../assets/ethereum 1.svg'
-
+import EthereumLogo from '../assets/ethereum 1.svg';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const ProposalFilter = lazy(() => import("../components/ProposalFilter"));
-
 
 const animationKeyframes = keyframes`
   0% { transform: rotate(360deg); }
@@ -79,8 +71,12 @@ const ClaimDetails = () => {
     const [buttonHere, setButtonHere] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+
+    const { isMobile } = useContext(StopScreenMessageContext);
   
   return (
+    <>
+     {!isMobile ?
     <Box w={"100%"}>
         <Suspense
         // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
@@ -373,6 +369,10 @@ const ClaimDetails = () => {
       <Footer />
     </Box>
     </Box>
+       : 
+       <StopErrorMessage />
+      }
+    </>
   )
 }
 

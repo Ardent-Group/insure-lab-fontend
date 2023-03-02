@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useState, useContext} from 'react'
 import { 
   Flex, 
   Box, 
@@ -35,13 +35,14 @@ import {useParams} from "react-router-dom";
 import { motion } from 'framer-motion';
 import arrowLeft from "../assets/arrow-left.svg";
 import walletIcon from '../assets/empty-wallet.svg'
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 import TransactionLoaderModal from '../components/TransactionLoaderModal';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 const ProtocolFilter = lazy(() => import("../components/ProtocolFilter"));
-
 
 const animationKeyframes = keyframes`
   0% { transform: rotate(360deg); }
@@ -111,14 +112,24 @@ const Protocols = () => {
        setPageNumber(selected);
     }
 
+    const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+     {!isMobile ?
     <Box w="100%">
       <Suspense
         fallback={<Spinner size="sm" />}
       >
         <NavBar />
       </Suspense>
-    <Flex w={"100%"} {...root} flexDir="column">     
+    <Flex w={"100%"} {...root} flexDir="column"
+    as={motion.div}
+    initial={{ y: "100%" }}
+    animate={{ y: "0%" }}
+    transition={{ duration: 0.75, ease: "easeOut" }}
+    exit={{ opacity: 1 }}
+    >     
       <Flex {...protocolBox} bgImage="url('/images/Header-banner.png')">
          <Suspense fallback={<Spinner size="sm" />}>
           <Container>
@@ -361,6 +372,10 @@ const Protocols = () => {
       <Footer />
     </Flex>
     </Box>
+      : 
+      <StopErrorMessage />
+      }
+    </>
   )
 }
 

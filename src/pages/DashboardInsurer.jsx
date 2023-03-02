@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useState, useContext} from 'react'
 import { 
   Flex, 
   Box, 
@@ -35,6 +35,8 @@ import walletIcon from '../assets/empty-wallet.svg'
 import ConfirmLoaderModal from '../components/ConfirmLoaderModal';
 import Lottie from "lottie-react"
 import warningAnimation from '../lottie/88003-blue-warning.json';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const style = {
   height: 300,
@@ -66,7 +68,11 @@ const Dashboard = () => {
          onClose: confirmLoadingOnClose 
         } = useDisclosure();
 
+    const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+   {!isMobile ?
     <Box w="100%">
        <Suspense
         // fallback={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
@@ -550,6 +556,10 @@ const Dashboard = () => {
       <Footer />
     </Box>
     </Box>
+      : 
+      <StopErrorMessage />
+     }
+    </>
   )
 }
 
