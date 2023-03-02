@@ -40,6 +40,10 @@ import { HexToDecimal, NumbAbbr, ShortAddress } from '../hooks/helpers';
 import SecureLogo from "../assets/SecureDex.svg"
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
+
+
 const NavBar = lazy(() => import("../components/Navbar"));
 const InsurelabButton = lazy(() => import("../components/InsurelabButton"));
 
@@ -170,7 +174,11 @@ const Governance = () => {
     const { isOpen: isOpen2, onOpen: onOpen2, onClose: onClose2 } = useDisclosure();
     const { isOpen: isOpen3, onOpen: onOpen3, onClose: onClose3 } = useDisclosure();
 
+    const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+   {!isMobile ?
     <Box>
       <Suspense
         fallback={<Spinner size="lg" />}
@@ -555,6 +563,10 @@ const Governance = () => {
        <Footer />
     </Box>
     </Box>
+     : 
+     <StopErrorMessage />
+    }
+    </>
   )
 }
 

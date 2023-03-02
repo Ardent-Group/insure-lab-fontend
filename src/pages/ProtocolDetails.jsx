@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useContext} from 'react'
 import { Flex, Text, Box, Skeleton, Spinner, Image, 
    Spacer, Select, Divider, Avatar, InputGroup, Input,
     Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, IconButton, Tooltip, useToast, useDisclosure,
@@ -19,6 +19,7 @@ import qrCodeLogo from '../assets/qr-wallet 1.svg'
 import walletLogo from '../assets/empty-wallet.svg'
 import calendarLogo from '../assets/calendar.svg'
 import highRiskIcon from '../assets/Frame 95.svg';
+
 import { MdArrowDropDown } from "react-icons/md";
 import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
 import { erc20Setup, insureLabContract, insureLabSetup } from '../constants/interactionSetup';
@@ -31,7 +32,8 @@ import errorAnimation from "../lottie/97670-tomato-error.json"
 import Lottie from "lottie-react";
 import loadingAnimation from '../lottie/98194-loading.json'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 
 const NavBar = lazy(() => import("../components/Navbar"));
@@ -194,10 +196,12 @@ const ProtocolDetails = () => {
     tokenAuthorization()
     onOpen()
   }
-
-
+  
+   const { isMobile } = useContext(StopScreenMessageContext);
 
   return (
+    <>
+     {!isMobile ?
     <Box w={"100%"} backgroundColor="bg">
     <Suspense
      fallback={<Spinner size="sm" />}
@@ -574,6 +578,10 @@ const ProtocolDetails = () => {
       {/* Footer Two */}
       <Footer2 /> 
     </Box>
+      : 
+      <StopErrorMessage />
+     }
+    </>
   )
 }
 

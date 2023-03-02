@@ -1,5 +1,5 @@
 import React, {Suspense, lazy} from 'react'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     Input,
     InputRightAddon,
@@ -35,8 +35,9 @@ import SecureLogo from "../assets/SecureDex.svg";
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import successAnimation from '../lottie/90646-payment-success.json'
 import errorAnimation from "../lottie/97670-tomato-error.json"
-
-
+import { insureLabSetup } from '../constants/interactionSetup';
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 
@@ -180,7 +181,23 @@ const UnlistedCreate = () => {
 
 
 
+
+     const { config } = usePrepareContractWrite({
+      ...insureLabSetup,
+      functionName: "createNewInsure",
+      args: [
+        userForm.protocolName,
+        userForm.domainLink,
+        userForm.description,
+        userForm.amountCovered,
+        sliderValue
+      ]
+     })
+     const { isMobile } = useContext(StopScreenMessageContext);
+
   return (
+    <>
+    {!isMobile ?
     <Box w={"100%"} {...root}>
     <Suspense
      fallback={<Spinner size="sm" />}
@@ -210,7 +227,7 @@ const UnlistedCreate = () => {
 
                 <Flex flexDir="row" justify="space-between">
                   {/* ------------------------------- Input 1 ------------------------------- */}
-                 <Flex flexDir="column" w="40%">
+                 <Flex flexDir="column">
                       <Text fontSize="15px" fontWeight="500">Protocol name</Text>
                         <Spacer />
                         <InputGroup
@@ -237,7 +254,7 @@ const UnlistedCreate = () => {
                 </Flex>
 
                      {/* ------------------------------- Input 2 ------------------------------- */}
-                 <Flex flexDir="column" w="40%">
+                 <Flex flexDir="column">
                       <Text fontSize="15px" fontWeight="500">Domain link</Text>
                         <Spacer />
                         <InputGroup
@@ -269,7 +286,7 @@ const UnlistedCreate = () => {
                 <Flex flexDir="row" justify="space-between" mt="30px">
                      
                   {/* ------------------------------- Input 3 ------------------------------- */}
-                  <Flex flexDir="column" w="50%">
+                  <Flex flexDir="column">
                       <Text fontSize="15px" fontWeight="500">Amount Covered</Text>
                         <Spacer />
                         <InputGroup
@@ -301,7 +318,7 @@ const UnlistedCreate = () => {
                   </Flex>
 
                      {/* ------------------------------- Input 4 ------------------------------- */}
-                   <Flex flexDir="column" w="40%">
+                   <Flex flexDir="column">
                       <Text fontSize="15px" fontWeight="500">Description</Text>
                         <Spacer />
                         <InputGroup
@@ -512,6 +529,10 @@ const UnlistedCreate = () => {
       {/* Footer here */}
       <Footer2 />
    </Box>
+    : 
+      <StopErrorMessage />
+     }
+   </>
   )
 }
 

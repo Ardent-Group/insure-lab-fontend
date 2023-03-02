@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useState} from 'react'
+import React, {Suspense, lazy, useState, useContext} from 'react'
 import { 
   Flex, 
   Box, 
@@ -8,10 +8,8 @@ import {
   HStack, 
   VStack, 
   keyframes, 
-  Skeleton, useDisclosure,
+  useDisclosure,
   Stack,
-  Select,
-  Divider
 } from '@chakra-ui/react'
 import Footer from '../components/Footer3';
 import Container from '../components/Container';
@@ -25,7 +23,8 @@ import blockChainPartLogo from '../assets/chains.svg'
 import {memberList} from '../utils/dashCard';
 import useCollapse from 'react-collapsed';
 import "react-sweet-progress/lib/style.css";
-
+import { StopScreenMessageContext } from '../constants/stopScreenMessage';
+import StopErrorMessage from '../components/StopErrorMessage';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const MemberFilter = lazy(() => import("../components/memberFilter"));
@@ -68,8 +67,12 @@ const Members = () => {
     const [buttonHere, setButtonHere] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+
+    const { isMobile } = useContext(StopScreenMessageContext);
   
   return (
+    <>
+      {!isMobile ?
     <Box w="100%">
        <Suspense
         // fallbac k={<Skeleton isLoaded={true} w={"100%"} h={"48px"}></Skeleton>}
@@ -174,6 +177,10 @@ const Members = () => {
       <Footer />
     </Flex>
     </Box>
+      : 
+      <StopErrorMessage />
+     }
+    </>
   )
 }
 

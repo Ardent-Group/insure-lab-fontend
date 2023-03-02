@@ -1,7 +1,8 @@
 import React from 'react';
 import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent,
-  DrawerCloseButton, Flex, Text
+  DrawerCloseButton, Flex, Text, HStack
 } from "@chakra-ui/react";
+import { ConnectInsureLab } from '../../utils/customConnect';
 
 export default function DrawerBg({
   p = 15,
@@ -26,7 +27,10 @@ export default function DrawerBg({
         <DrawerContent alignItems="center">
           <DrawerCloseButton alignSelf="end" mx={p} my={p} />
           <DrawerHeader my={p}>
-            <Text as="p"> {title} </Text>
+            {/* <Text as="p"> {title} </Text> */}
+            <HStack>
+             <ConnectInsureLab />
+           </HStack>
           </DrawerHeader>
           <DrawerBody>{children}</DrawerBody>
           <DrawerFooter>{footer}</DrawerFooter>

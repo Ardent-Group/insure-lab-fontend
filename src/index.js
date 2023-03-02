@@ -7,6 +7,9 @@ import * as serviceWorker from './serviceWorker';
 import { ChakraProvider } from '@chakra-ui/react'
 import { SkeletonTheme } from 'react-loading-skeleton'
 import { extendTheme } from '@chakra-ui/react'
+import { StepsTheme as Steps } from 'chakra-ui-steps';
+import { AnimatePresence } from 'framer-motion';
+import { StopScreenMessageProvider } from './constants/stopScreenMessage';
 
 // Wagmi & RainbowKit setup
 import '@rainbow-me/rainbowkit/styles.css';
@@ -66,21 +69,30 @@ const colors = {
    footerBgColor: "linear-gradient(0deg, rgba(103, 80, 164, 0.05), rgba(103, 80, 164, 0.05)), #FFFBFE;",
 }
 
-
-const theme = extendTheme({ colors })
+const theme = extendTheme({
+  components: {
+    Steps,
+  },
+  colors
+});
+// const theme = extendTheme({ colors })
 
 root.render(
   <StrictMode>
+    <StopScreenMessageProvider>
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} coolMode>
+      <AnimatePresence initial={false} mode="wait">
         <ChakraProvider theme={theme}>
           <SkeletonTheme baseColor="#202020" highlightColor="#444">
             <ColorModeScript />
             <App />
           </SkeletonTheme>
         </ChakraProvider>
+        </AnimatePresence>
       </RainbowKitProvider>
     </WagmiConfig>
+    </StopScreenMessageProvider>
   </StrictMode>
 );
 
