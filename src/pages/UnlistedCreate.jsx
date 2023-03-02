@@ -103,6 +103,7 @@ const UnlistedCreate = () => {
           isClosable: true,
           position: "top-right"
         })
+        onClose()
       }
      })
 
@@ -145,6 +146,7 @@ const UnlistedCreate = () => {
           isClosable: true,
           position: "top-right"
         })
+        onClose()
       }
      })
 
@@ -177,8 +179,6 @@ const UnlistedCreate = () => {
       tokenAuthorization()
       onOpen()
      }
-
-
 
   return (
     <Box w={"100%"} {...root}>
