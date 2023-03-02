@@ -109,7 +109,7 @@ const TransactionLoaderModal = ({transactionLoadingIsOpen, transactionLoadingOnC
      {/* ------------------------------ Tran saction Completed ---------------------------- */}
 
       <>
-      <Modal isOpen={isOpen} onClose={onClose}
+      <Modal isOpen={isOpen} onClose={onClose}m
         isCentered
         blockScrollOnMount={true}
         scrollBehavior={"inside"}

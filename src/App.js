@@ -23,6 +23,7 @@ import Claims from './pages/Claims';
 import Governance from './pages/Governance';
 import DaoMemberPortal from './pages/DaoMemberPortal';
 import Members from './pages/Members'
+import AddCover from './pages/AddCover';
 import ClaimDetails from './pages/ClaimDetails';
 import ClaimAssessment from './pages/ClaimAssessment';
 import DashboardInsurer from './pages/DashboardInsurer'
@@ -37,6 +38,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/protocols" element={<Protocols />} />
             <Route path="/protocols/:id" element={<ProtocolDetails />} />
+            <Route path="/addCover/:id" element={<AddCover />} />
             <Route path="/create-custom-insurance" element={<UnlistedCreate />} />
             <Route path="/risk-assessor-dashboard" element={<Dashboard />} />
             <Route path="/insurer-dashboard" element={<DashboardInsurer />} />
