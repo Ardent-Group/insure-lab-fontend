@@ -2,8 +2,6 @@ import { ColorModeScript } from '@chakra-ui/react';
 import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-import * as serviceWorker from './serviceWorker';
 import { ChakraProvider } from '@chakra-ui/react'
 import { SkeletonTheme } from 'react-loading-skeleton'
 import { extendTheme } from '@chakra-ui/react'
@@ -30,7 +28,7 @@ const insureLabFantomTestnet = {
     symbol: 'FTM'
   },
   rpcUrls: {
-    default: 'https://fantom-testnet.public.blastapi.io'
+    default: 'https://rpc.ankr.com/fantom_testnet'
   },
   blockExplorers: {
     etherscan: { name: 'FtmScan', url: 'https://testnet.ftmscan.com/' },
@@ -51,7 +49,7 @@ const { connectors } = getDefaultWallets({
 });
 
 const wagmiClient = createClient({
-  autoConnect: false,
+  autoConnect: true,
   connectors,
   provider
 });
@@ -77,7 +75,6 @@ const theme = extendTheme({
 // const theme = extendTheme({ colors })
 
 root.render(
-  <StrictMode>
     <StopScreenMessageProvider>
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} coolMode>
@@ -92,15 +89,4 @@ root.render(
       </RainbowKitProvider>
     </WagmiConfig>
     </StopScreenMessageProvider>
-  </StrictMode>
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
-serviceWorker.unregister();
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

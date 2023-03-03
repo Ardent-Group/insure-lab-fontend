@@ -103,6 +103,7 @@ const UnlistedCreate = () => {
           isClosable: true,
           position: "top-right"
         })
+        onClose()
       }
      })
 
@@ -145,6 +146,7 @@ const UnlistedCreate = () => {
           isClosable: true,
           position: "top-right"
         })
+        onClose()
       }
      })
 
@@ -215,9 +217,9 @@ const UnlistedCreate = () => {
 
                 <Flex flexDir="row" justify="space-between">
                   {/* ------------------------------- Input 1 ------------------------------- */}
-                 <Flex flexDir="column">
+                 <Flex flexDir="column" w="25rem">
                       <Text fontSize="15px" fontWeight="500">Protocol name</Text>
-                        <Spacer />
+                        <Spacer  />
                         <InputGroup
                           _focus={{ boxShadow: "none" }}
                           as="button"
@@ -242,7 +244,7 @@ const UnlistedCreate = () => {
                 </Flex>
 
                      {/* ------------------------------- Input 2 ------------------------------- */}
-                 <Flex flexDir="column">
+                 <Flex flexDir="column" w="25rem">
                       <Text fontSize="15px" fontWeight="500">Domain link</Text>
                         <Spacer />
                         <InputGroup
@@ -274,7 +276,7 @@ const UnlistedCreate = () => {
                 <Flex flexDir="row" justify="space-between" mt="30px">
                      
                   {/* ------------------------------- Input 3 ------------------------------- */}
-                  <Flex flexDir="column">
+                  <Flex flexDir="column" w="31.5rem">
                       <Text fontSize="15px" fontWeight="500">Amount Covered</Text>
                         <Spacer />
                         <InputGroup
@@ -306,7 +308,7 @@ const UnlistedCreate = () => {
                   </Flex>
 
                      {/* ------------------------------- Input 4 ------------------------------- */}
-                   <Flex flexDir="column">
+                   <Flex flexDir="column" w="25rem">
                       <Text fontSize="15px" fontWeight="500">Description</Text>
                         <Spacer />
                         <InputGroup

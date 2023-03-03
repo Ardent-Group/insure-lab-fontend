@@ -64,10 +64,17 @@ const Protocols = () => {
 
   console.log(protocolsData, "protocols")
 
+  function getAllProtocol(){
     for(let i = 1; i < getId; i++){
       const { data:getProtocolData } = GetProtocol(i);
       protocolsData.push(getProtocolData);
     }
+  }
+
+
+  getAllProtocol()
+
+    
 
 
     const {
