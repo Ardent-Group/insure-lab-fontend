@@ -73,9 +73,8 @@ const Protocols = () => {
   }
 
 
-  useEffect(() => {
-    getAllProtocol()
-  }, []);
+  getAllProtocol()
+
     
 
 
