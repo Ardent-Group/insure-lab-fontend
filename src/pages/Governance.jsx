@@ -374,7 +374,7 @@ const Governance = () => {
                         _hover={{
                             color: "white"
                         }}
-                        onClick={onOpen2}
+                        onClick={() => {onOpen2(); onClose()}}
                       >
                         Continue
                       </Button> :
@@ -396,13 +396,16 @@ const Governance = () => {
             <ModalContent w={{ base: "90vw", md: "60vw" }} borderRadius={0} >
               <ModalCloseButton />
           <ModalBody padding={"40px 80px"}>
+            <Flex gap={10}>
               <Text fontSize="16px" fontWeight={600}>
-                Enter the following details to proceed
-              </Text>
-              {
-                (tokenLoading || tokenWaitLoading || governanceLoading || governanceWaitLoading) ?
-                <Text as="u" onClick={onOpen3} fontStyle="italic" fontWeight="bold" mt="8px" fontSize="14px" cursor="pointer">Check Transaction Process</Text> : ""
-              }
+                  Enter the following details to proceed
+                </Text>
+                {
+                  (tokenLoading || tokenWaitLoading || governanceLoading || governanceWaitLoading) ?
+                  <Text as="u" onClick={onOpen3} fontStyle="italic" fontWeight="bold" mt="1px" fontSize="14px" cursor="pointer">Check Transaction Process</Text> : ""
+                }
+            </Flex>
+              
               <Flex mt="20px" flexDir="column" p="20px">
 
                   {/* ------------------------------- Input ------------------------------- */}
