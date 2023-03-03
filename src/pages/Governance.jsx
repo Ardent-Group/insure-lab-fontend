@@ -84,6 +84,9 @@ const Governance = () => {
         isClosable: true,
         position: "top-right"
       })
+      setTimeout(() => {
+        onClose3()
+      }, 6000);
     },
     onError(data){
       toast({
@@ -94,6 +97,7 @@ const Governance = () => {
         isClosable: true,
         position: "top-right"
       })
+      onClose3()
     }
   })
 
@@ -117,6 +121,7 @@ const Governance = () => {
         isClosable: true,
         position: "top-right"
       })
+      onClose3()
     },
     onError(data){
       toast({
@@ -127,6 +132,7 @@ const Governance = () => {
         isClosable: true,
         position: "top-right"
       })
+      onClose3()
     }
   })
 
