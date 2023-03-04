@@ -21,6 +21,7 @@ export default function MobileDrawer() {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: dropIsOpen, onOpen: dropOnOpen, onClose: dropOnClose } = useDisclosure();
+    const {isOpen: profileIsOpen, onOpen: profileOnOpen, onClose: profileOnClose} = useDisclosure()
     const btnRef = useRef();
     let navigate = useNavigate();
 
@@ -74,6 +75,34 @@ return (
               </MenuList>
               </Menu>
           </Flex>
+
+          <Flex>
+            <Menu isOpen={profileIsOpen}>
+               <MenuButton
+                 px={2}
+                 py={1}
+                 _hover={{ color: "ctaBg", boxShadow: 'none', fontWeight: "600"}}
+                 onMouseEnter={profileOnOpen}
+                 onMouseLeave={profileOnClose}
+                 w={{lg: "135px"}}
+               >
+                <Flex>
+                  Profile
+                  <Center>
+                    <ChevronDownIcon />
+                  </Center>
+                </Flex>
+               </MenuButton>
+               <MenuList border="none" onMouseEnter={profileOnOpen} onMouseLeave={profileOnClose} mt={-1}>
+                  <MenuItem _hover={{bg: 'ctaBg', color: "white" }}
+                  onClick={() => navigate("/risk-assessor-dashboard")}
+                   >Dashboard</MenuItem>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                 onClick={() => navigate("/insurer-dashboard")}
+                  >Insurer Dashboard</MenuItem>
+              </MenuList>
+              </Menu>
+            </Flex>
         </VStack>
       </DrawerBg>
     </Flex>

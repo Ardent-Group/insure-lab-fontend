@@ -6,17 +6,13 @@ import {
   Spinner, 
   Image, 
   HStack, 
-  VStack, 
-  SimpleGrid, 
   Stack,
   Divider,
-  Spacer,
   Avatar,
   Center,
   useDisclosure,
   Select
 } from "@chakra-ui/react"
-import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import Footer from '../components/Footer3';
 import { nanoid } from 'nanoid';
@@ -26,15 +22,11 @@ import uniswapLogo from '../assets/uniswap 1.svg';
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
 
-const style = {
-  height: 300,
-};
-
 const NavBar = lazy(() => import("../components/Navbar"));
 
 const Claims = () => {
 
-    const { root, root2, font2, font3, font4, font5, font6 } = useStyles();
+    const { root, root2, font3, font4, font5  } = useStyles();
 
     const [buttonHere, setButtonHere] = useState(false);
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Flex, Text, Input, Button, Divider, Box, Center, Image, Link, useColorModeValue,
+import { Flex, Text, Input, Button, Divider, Box, Image, Link, useColorModeValue,
   VisuallyHidden, Stack, chakra, } from '@chakra-ui/react'
 import Container from './Container';
-import { footerIcons, footerLinks } from '../constants/dummyJSON';
+import { footerLinks } from '../constants/dummyJSON';
 import { nanoid } from 'nanoid';
 import { FaGithub, FaDiscord, FaTwitter } from 'react-icons/fa';
 import  insurelabLogo from '../assets/Logo.svg'
@@ -46,7 +46,6 @@ const Footer = () => {
         footerDesc,
         linksStyle,
         ctaFont,
-        footerBox
     } = useStyles();
 
     let copyRightYear = new Date().getFullYear();

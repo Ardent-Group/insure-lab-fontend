@@ -4,7 +4,6 @@ import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     Divider
 } from '@chakra-ui/react';
 import Footer2 from '../components/Footer2';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
 import uniswapLogo from '../assets/uniswap 1.svg'

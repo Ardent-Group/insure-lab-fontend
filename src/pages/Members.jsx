@@ -14,10 +14,7 @@ import {
 import Footer from '../components/Footer3';
 import Container from '../components/Container';
 import { nanoid } from 'nanoid';
-import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
 import '../constants/pagination.css'
-import {useParams} from "react-router-dom";
 import { motion } from 'framer-motion';
 import blockChainPartLogo from '../assets/chains.svg'
 import {memberList} from '../utils/dashCard';
@@ -42,29 +39,23 @@ const Members = () => {
     const {
      root,
      protocolBox,
-     protocol,
      protocolWelcomeText,
-     joinText,
      protocolInnerBox2,
      protocolInnerBox1,
      outerBox,
-     fontBold
     } = useStyles();
 
-    let navigate = useNavigate();
-    const {id} = useParams();
-
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    // const { isOpen, onOpen, onClose } = useDisclosure();
     // ------------------ useDisclosure for TransactionLoaderModal component
-    const {
-      isOpen: transactionLoadingIsOpen,
-      onOpen: transactionLoadingOnOpen,
-      onClose: transactionLoadingOnClose
-    } = useDisclosure();
+    // const {
+    //   isOpen: transactionLoadingIsOpen,
+    //   onOpen: transactionLoadingOnOpen,
+    //   onClose: transactionLoadingOnClose
+    // } = useDisclosure();
 
-    const [isTransactionLoading, setIsTransactionLoading] = useState(false);
+    // const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 
-    const [buttonHere, setButtonHere] = useState(false);
+    // const [buttonHere, setButtonHere] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
 

@@ -2,7 +2,6 @@ import React, {Suspense, lazy, useContext} from 'react'
 import {Flex, 
         Box, 
         Text, 
-        Skeleton, 
         Spinner, 
         HStack, 
         VStack,
@@ -12,7 +11,6 @@ import {Flex,
       } from "@chakra-ui/react";
 import Container from '../components/Container';
 import { useNavigate } from 'react-router-dom';
-import Images_Icons from '../constants/icons-images';
 import blockchainLogo from '../assets/Rectangle 1.svg';
 import LockDexImage from '../assets/LockDex.svg'
 import SecureDexImage from '../assets/SecureDex.svg';
@@ -39,7 +37,6 @@ const Home = () => {
 
     const {
       root,
-      home,
       homeBox,
       outerBox,
       joinText,
@@ -47,7 +44,6 @@ const Home = () => {
       homeInnerBox2,
       homeInnerBox3,
       homeWelcomeText,
-      homeBox2,
       outerBox2
     } = useStyles();
 

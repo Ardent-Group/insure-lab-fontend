@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent,
-  DrawerCloseButton, Flex, Text, HStack
+  DrawerCloseButton, Flex, HStack
 } from "@chakra-ui/react";
 import { ConnectInsureLab } from '../../utils/customConnect';
 
@@ -12,7 +12,7 @@ export default function DrawerBg({
   children,
   onClose,
   btnRef,
-  title = "Menu",
+  // title = "Menu",
   footer,
 }) {
   return (

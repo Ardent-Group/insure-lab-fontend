@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { Flex,
     Modal,
     ModalOverlay,
@@ -12,7 +12,6 @@ import { Flex,
     useDisclosure,
 } from '@chakra-ui/react'
 import Lottie from "lottie-react";
-import { Link } from 'react-router-dom';
 import loadingAnimation from '../../lottie/98194-loading.json'
 import successAnimation from '../../lottie/90646-payment-success.json'
 import uniswapLOGO from '../../assets/uniswap 1.svg'
@@ -23,10 +22,7 @@ const style = {
   
 const ConfirmLoaderModal = ({confirmLoadingIsOpen, confirmLoadingOnClose, confirmLoadingOnOpen}) => {
 
-    const [isLoading, setIsLoading] = useState(false);
-
     const { isOpen, onOpen, onClose } = useDisclosure();
-
 
   return (
     <>

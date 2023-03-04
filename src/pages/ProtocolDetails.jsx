@@ -1,7 +1,8 @@
 import React, {Suspense, lazy, useContext, useState} from 'react'
-import { Flex, Text, Box, Skeleton, Spinner, Image, 
+import { Flex, Text, Box,  Spinner, Image, 
    Spacer, Select, Divider, Avatar, InputGroup, Input,
-    Center, InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, IconButton, Tooltip, useToast, useDisclosure,
+  InputRightAddon, InputLeftAddon, Button, HStack, Checkbox, Tooltip, useDisclosure,
+  useToast,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -18,7 +19,6 @@ import FantomLogo from "../assets/fantomlogo.svg"
 import qrCodeLogo from '../assets/qr-wallet 1.svg'
 import walletLogo from '../assets/empty-wallet.svg'
 import calendarLogo from '../assets/calendar.svg'
-import highRiskIcon from '../assets/Frame 95.svg';
 
 import { MdArrowDropDown } from "react-icons/md";
 import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';

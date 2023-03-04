@@ -55,7 +55,6 @@ const UnlistedCreate = () => {
 
      const {root} = useStyles();
 
-
      const [protocolName, setProtocolName] = useState('')
      const [domainLink, setDomainLink] = useState('')
      const [amountCovered, setAmountCovered] = useState('')
@@ -64,10 +63,7 @@ const UnlistedCreate = () => {
      const [sliderInput, setSliderInput] = useState(0)
 
      const {address} = useAccount();
-
-
-     // approve token
-     
+     // approve token     
      const { data:tokenData, isLoading:tokenLoading, write:tokenWrite } = useContractWrite({
       mode: "recklesslyUnprepared",
       ...erc20Setup,
@@ -77,7 +73,6 @@ const UnlistedCreate = () => {
         ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
       ]
      })
-
 
      const { isLoading: tokenWaitLoading } = useWaitForTransaction({
       hash: tokenData?.hash,
@@ -159,10 +154,6 @@ const UnlistedCreate = () => {
       ]
      })
      
-
-
-
-
      function tokenAuthorization(){
       let amountInput = ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
       if( HexToDecimal(tokenReadData?._hex) >= HexToDecimal(amountInput?._hex)){
@@ -173,15 +164,11 @@ const UnlistedCreate = () => {
       }
      }
 
-
      const handleSubmit = (e) => {
       e.preventDefault();
       tokenAuthorization()
       onOpen()
      }
-
-
-
 
      const { isMobile } = useContext(StopScreenMessageContext);
 
@@ -212,7 +199,7 @@ const UnlistedCreate = () => {
                 <Text as="u" onClick={onOpen} fontStyle="italic" fontWeight="bold" mt="8px" fontSize="14px" cursor="pointer">Check Transaction Process</Text> : ""
               }
             </Flex>  
-
+         
               <Flex mt="20px" flexDir="column" p="40px">
 
                 <Flex flexDir="row" justify="space-between">
@@ -235,7 +222,7 @@ const UnlistedCreate = () => {
                               justifySelf: "flex-end",
                               fontSize: "10px"
                             }}
-                            _focus={{ boxShadow: "none" }}
+                            _focus={{ boxShadow: "none", borderBottomColor: "black" }}
                             type='text'
                             value={protocolName}
                             onChange={e => setProtocolName(e.target.value)}
@@ -377,7 +364,7 @@ const UnlistedCreate = () => {
                  </Flex>
         
               </Flex> 
-              
+          
           <Flex justifyContent={"center"} align="center">
             {
               address ?

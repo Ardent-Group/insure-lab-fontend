@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useEffect, useState, useContext} from 'react'
+import React, {Suspense, lazy, useState, useContext} from 'react'
 import {Flex, 
         Box, 
         Spinner, 
@@ -146,8 +146,6 @@ const Governance = () => {
   })
 
 
-
-
   function tokenAuthorization(){
     let amountInput = ethers.utils.parseEther(amountStaked ? amountStaked.toString(): "0")
     if(HexToDecimal(tokenReadData?._hex) >= HexToDecimal(amountInput?._hex)){
@@ -167,12 +165,9 @@ const Governance = () => {
 
     const {
       root,
-      home,
       homeBox,
-      outerBox,
       textDesign,
       homeInnerBox1,
-      homeInnerBox2,
       homeInnerBox3,
     } = useStyles();
 

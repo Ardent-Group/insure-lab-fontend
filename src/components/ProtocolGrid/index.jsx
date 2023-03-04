@@ -1,6 +1,6 @@
-import { Heading, Spacer, Stack, Flex, Text, Avatar, Image, Box, Button } from "@chakra-ui/react";
-import React, { lazy, FC, MouseEventHandler } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Stack, Flex, Text, Avatar, Image, Button } from "@chakra-ui/react";
+import React from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import webLogo from '../../assets/link-2.svg'
 import FantomLogo from "../../assets/fantomlogo.svg"
 import SecureLogo from "../../assets/SecureDex.svg"
@@ -18,6 +18,7 @@ const ProtocolGrid = ({
   const { root, title, subTitle, title2 } = useStyles();
 
   let navigate = useNavigate()
+  const {id} = useParams();
 
   return (
     <Stack
@@ -83,7 +84,7 @@ const ProtocolGrid = ({
         <Flex flexDir="column">
          <Button color="black" borderRadius="100px" bg="#DCE7F9"
           fontSize="14px" fontWeight={500}
-          onClick={onOpen}
+          onClick={() => navigate(`/addCover/${id}`)}
          >
             Add cover
         </Button>

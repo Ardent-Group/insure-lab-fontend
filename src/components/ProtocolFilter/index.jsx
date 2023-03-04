@@ -1,8 +1,6 @@
 // @flow
-import { memo, useRef } from "react";
+import { memo } from "react";
 import {
-  Box,
-  Flex,
   HStack,
   Text,
   Select,
@@ -11,12 +9,12 @@ import {
   InputLeftElement,
   Icon,
 } from "@chakra-ui/react";
-import { FaSearch, FaAngleDown } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
 const ProtocolFilter = () => {
 
 
-  const { root, popFont } = useStyles();
+  const { popFont } = useStyles();
 
   // const allMaterials = [];
 
