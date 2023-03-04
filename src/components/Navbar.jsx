@@ -1,10 +1,8 @@
-import {useState} from "react";
 import {  
   Flex,
   Button, 
   HStack, 
-  chakra, 
-  Text, 
+  chakra,  
   Image, 
   useBreakpointValue, 
   Menu,
@@ -31,6 +29,7 @@ const Navbar = () => {
 
       const isDesktop = useBreakpointValue({ base: false, lg: true })
       const {isOpen, onOpen, onClose} = useDisclosure()
+      const {isOpen: profileIsOpen, onOpen: profileOnOpen, onClose: profileOnClose} = useDisclosure()
 
   return (
     <chakra.header id="header">
@@ -95,6 +94,33 @@ const Navbar = () => {
               </MenuList>
               </Menu>
           </Flex>
+            <Flex>
+            <Menu isOpen={profileIsOpen}>
+               <MenuButton
+                 px={2}
+                 py={1}
+                 _hover={{ color: "ctaBg", boxShadow: 'none', fontWeight: "600"}}
+                 onMouseEnter={profileOnOpen}
+                 onMouseLeave={profileOnClose}
+                 w={{lg: "135px"}}
+               >
+                <Flex>
+                  Profile
+                  <Center>
+                    <ChevronDownIcon />
+                  </Center>
+                </Flex>
+               </MenuButton>
+               <MenuList border="none" onMouseEnter={profileOnOpen} onMouseLeave={profileOnClose} mt={-1}>
+                  <MenuItem _hover={{bg: 'ctaBg', color: "white" }}
+                  onClick={() => navigate("/risk-assessor-dashboard")}
+                   >Dashboard</MenuItem>
+                 <MenuItem _hover={{ bg: 'ctaBg', color:"white" }}
+                 onClick={() => navigate("/insurer-dashboard")}
+                  >Insurer Dashboard</MenuItem>
+              </MenuList>
+              </Menu>
+            </Flex>
            </HStack>
           
            <HStack>
