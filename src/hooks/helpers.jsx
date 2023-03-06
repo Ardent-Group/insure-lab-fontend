@@ -122,7 +122,9 @@ export const GetEpoch = (months) => {
 }
 
 export const ShortAddress = (address) => {
-  return `${address.slice(0, 4)}...${address.slice(38, 42)}`
+  if(address){
+    return `${address.slice(0, 4)}...${address.slice(38, 42)}`
+  }
 }
 
 export const leadingZero = (number, len) => {
