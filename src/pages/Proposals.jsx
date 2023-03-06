@@ -157,7 +157,7 @@ const Proposals = () => {
           <Flex>
             <Avatar boxSize="30px" src={uniswapLogo} mr="8px" />
             <Flex flexDir="column">
-                <Text fontSize="16px" fontWeight="600">InstadApp Insurance Claim</Text>
+                <Text fontSize="16px" fontWeight="600">Uniswap protocol Claim</Text>
                 {/* --------------- wallet address ----------------- */}
                 <Text mt="8px">0x8b93...8b0F</Text>
             </Flex>

@@ -77,9 +77,6 @@ const DaoMemberPortal = () => {
                 </Flex>
 
                      {/* ------------------------------- Input 2 ------------------------------- */}
-                 {/* <Flex flexDir="column">
-                      <Text fontSize="15px" fontWeight="500">Domain link</Text>
-                </Flex> */}
                 <Flex flexDir={"column"}>
                  <Flex flexDir="row" justify="space-between">
                         <Text fontSize="18px" fontWeight={500}>Balance</Text>

@@ -91,19 +91,19 @@ const Claims = () => {
           <Flex>
            <Flex justify="center" alignItems="center">
             <Avatar boxSize="30px" src={ethereumLogo} mr="8px" />
-            <Text {...font5}>Ethereum</Text>
+            <Text {...font5}>Fantom</Text>
           </Flex>
           </Flex>
            {/* -------------------------- Detail 2 Claim ID ----------------------- */}
           <Flex justify="center" alignItems="center">
-            <Text {...font5}>64</Text>
+            <Text {...font5}>01</Text>
           </Flex>
 
             {/* -------------------------- Detail 3 Product----------------------- */}
           <Flex>
           <Avatar boxSize="30px" src={uniswapLogo} mr="8px" />
             <Flex flexDir="column">
-                <Text {...font3}>InstaDapp</Text>
+                <Text {...font3}>Uniswap</Text>
                 <Flex justify={"center"} alignItems="center">
                  <Image src={secureLogo} boxSize={"20px"} mr="4px" />
                   <Text {...font4}>Bundled cover</Text>
