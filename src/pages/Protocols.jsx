@@ -125,7 +125,7 @@ const Protocols = () => {
         )
       })
 
-    const pageCount = Math.ceil(getProtocols.length / protocolCardPerPage);
+    const pageCount = Math.ceil(getProtocols?.length / protocolCardPerPage);
 
     //selected is the pageNumber selected 
     const changePage = ({selected}) => {
