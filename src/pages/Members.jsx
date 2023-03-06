@@ -22,6 +22,9 @@ import useCollapse from 'react-collapsed';
 // import "react-sweet-progress/lib/style.css";
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
+import { useContractRead } from 'wagmi';
+import { governanceSetup } from '../constants/interactionSetup';
+import { DecimalAbbr, HexToDecimal, ShortAddress, leadingZero } from '../hooks/helpers';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 const MemberFilter = lazy(() => import("../components/memberFilter"));
@@ -60,6 +63,14 @@ const Members = () => {
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
 
     const { isMobile } = useContext(StopScreenMessageContext);
+
+
+    const { data:daoMembers } = useContractRead({
+      ...governanceSetup,
+      functionName: "viewAllDAOMembers",
+    })
+
+    console.log(daoMembers, "dao members")
   
   return (
     <>
@@ -137,27 +148,24 @@ const Members = () => {
                <Flex flexDir="row" justify="space-between" mt="30px">
                 <Text color="#352F30" fontWeight="500" fontSize="14px">ID</Text> 
                 <Text color="#352F30" fontWeight="500" fontSize="14px">Member address</Text> 
-                <Text color="#352F30" fontWeight="500" fontSize="14px">Balance</Text> 
-                <Text color="#352F30" fontWeight="500" fontSize="14px">Percentage of DAO</Text> 
+                <Text color="#352F30" fontWeight="500" fontSize="14px">Balance</Text>
                 <Text color="#352F30" fontWeight="500" fontSize="14px">Voting Power</Text> 
                 {/* <Text ></Text>  */}
                </Flex>
 
                <>
-               {memberList.map((e, i) => (
-               <Flex flexDir="row" justify="space-between" mt="30px" key={nanoid()}
-                borderBottom="1px solid #B8D0FF"
-               >
-                <Text color="#6750A4" fontSize="16px">{e.id}</Text> 
-                <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.address}</Text> 
-                <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.balance}</Text> 
-                <Flex justify="center"alignItems="start">
-                 <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.percentage}</Text> 
-                </Flex>
-                <Text fontWeight="600" color="#645C5E" fontSize="16px">{e.voting}</Text> 
-               </Flex>
-                 ))}
-                  {/* <Divider border="1px solid " mt="12px" /> */}
+                {
+                  daoMembers?.map((item, index) => (
+                    <Flex flexDir="row" justify="space-between" mt="30px" key={nanoid()}
+                    borderBottom="1px solid #B8D0FF"
+                    >
+                      <Text color="#6750A4" fontSize="16px">#{leadingZero((index+1), 4)}</Text>
+                      <Text fontWeight="600" color="#645C5E" fontSize="16px">{item?ShortAddress(item[5]):""}</Text>
+                      <Text fontWeight="600" color="#645C5E" fontSize="16px">{item?DecimalAbbr(item[0]._hex):""}</Text>
+                      <Text fontWeight="600" color="#645C5E" fontSize="16px">{item?HexToDecimal(item[1]._hex):""}</Text> 
+                    </Flex>
+                  ))
+                }
                </>
          </Flex>
        </Stack>

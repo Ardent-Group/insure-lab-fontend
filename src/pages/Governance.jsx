@@ -122,6 +122,7 @@ const Governance = () => {
         position: "top-right"
       })
       onClose3()
+      onClose2()
     },
     onError(data){
       toast({

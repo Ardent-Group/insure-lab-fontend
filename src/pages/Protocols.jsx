@@ -39,7 +39,6 @@ import StopErrorMessage from '../components/StopErrorMessage';
 import TransactionLoaderModal from '../components/TransactionLoaderModal';
 import { useContractRead } from 'wagmi';
 import { insureLabSetup } from '../constants/interactionSetup';
-import { GetProtocol } from '../hooks/getAllProtocol';
 import { DecimalAbbr, GetRiskLevel, GetCoverCost } from '../hooks/helpers';
 
 const NavBar = lazy(() => import("../components/Navbar"));
@@ -55,24 +54,12 @@ const animation = `${animationKeyframes} 4s ease-in-out infinite`;
 
 const Protocols = () => {
 
-  const { data:getId } = useContractRead({
+  const { data:getProtocols } = useContractRead({
     ...insureLabSetup,
-    functionName: "id"
+    functionName: "getAllProtocolData",
   })
 
-  let protocolsData = [];
-
-  console.log(protocolsData, "protocols")
-
-  function getAllProtocol(){
-    for(let i = 1; i < getId; i++){
-      const { data:getProtocolData } = GetProtocol(i);
-      protocolsData.push(getProtocolData);
-    }
-  }
-
-
-  getAllProtocol()
+  console.log(getProtocols, "sdhj")
 
     
 
@@ -99,7 +86,7 @@ const Protocols = () => {
 
     const [skeletonLoading, setSeletonLoading] = useState(false);
 
-    const [protocolCard, setProtocolCard] = useState(protocolsData.slice(0, 30));
+    // const [protocolCard, setProtocolCard] = useState(protocolsData.slice(0, 30));
 
     //state holding page of the pagination
     const [pageNumber, setPageNumber] = useState(0);
@@ -107,24 +94,38 @@ const Protocols = () => {
     const protocolCardPerPage = 15
     const pagesVisited = pageNumber * protocolCardPerPage;
 
-    const displayProtocolCards = protocolCard
-      .slice(pagesVisited, pagesVisited + protocolCardPerPage)
+    const displayProtocolCards = getProtocols ?
+      getProtocols.slice(pagesVisited, pagesVisited + protocolCardPerPage)
       .map((item, index) => {
         return (
           <ProtocolGrid
             key={nanoid()}
             link={index}
-            protocolName={item ? item[4] : " "}
-            protocolLink={item ? item[5]: " "}
-            protocolCap={item ? DecimalAbbr(item[1]._hex): ""}
-            coverCost={item ? GetCoverCost(item[7]): ""}
-            riskLevel={item ? GetRiskLevel(item[7]): ""}
+            protocolName={item ? item[3] : " "}
+            protocolLink={item ? item[4]: " "}
+            protocolCap={item ? DecimalAbbr(item[0]._hex): ""}
+            coverCost={item ? GetCoverCost(item[6]): ""}
+            riskLevel={item ? GetRiskLevel(item[6]): ""}
+            onOpen={onOpen}
+          />
+        )
+      }):
+      getProtocols.map((item, index) => {
+        return (
+          <ProtocolGrid
+            key={nanoid()}
+            link={index}
+            protocolName={item ? item[3] : " "}
+            protocolLink={item ? item[4]: " "}
+            protocolCap={item ? DecimalAbbr(item[0]._hex): ""}
+            coverCost={item ? GetCoverCost(item[6]): ""}
+            riskLevel={item ? GetRiskLevel(item[6]): ""}
             onOpen={onOpen}
           />
         )
       })
 
-    const pageCount = Math.ceil(protocolCard.length / protocolCardPerPage);
+    const pageCount = Math.ceil(getProtocols.length / protocolCardPerPage);
 
     //selected is the pageNumber selected 
     const changePage = ({selected}) => {

@@ -25,7 +25,7 @@ import useCollapse from 'react-collapsed';
 // import { Progress } from 'react-sweet-progress';
 // import "react-sweet-progress/lib/style.css";
 import arrowLeft from '../assets/arrow-left.svg'
-import EthereumLogo from '../assets/ethereum 1.svg';
+import FantomLogo from "../assets/fantomlogo.svg";
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import StopErrorMessage from '../components/StopErrorMessage';
 
@@ -92,7 +92,7 @@ const ClaimDetails = () => {
           <Flex>
             <Avatar boxSize="30px" src={uniswapLogo} mr="8px" />
             <Flex flexDir="column">
-                <Text fontSize="16px" fontWeight="600">InstadApp Insurance Claim</Text>
+                <Text fontSize="16px" fontWeight="600">Uniswap protocol Claim</Text>
                 {/* --------------- wallet address ----------------- */}
                 <Text mt="8px">0x8b93...8b0F</Text>
 
@@ -165,8 +165,8 @@ const ClaimDetails = () => {
             <Flex flexDir="column" mr="20px">
              <Text>.</Text> 
              <Flex alignItems="center" mt="10px">
-              <Avatar src={EthereumLogo} boxSize="20px" mr="5px" />
-              <Text fontSize="14px" color="#645C5E" fontWeight="500">Ethereum</Text> 
+              <Avatar src={FantomLogo} boxSize="20px" mr="5px" />
+              <Text fontSize="14px" color="#645C5E" fontWeight="500">Fantom</Text> 
              </Flex> 
              <Text fontSize="14px" fontWeight="500" mt="10px">64</Text>  
              <Text fontSize="14px" color="#645C5E" fontWeight="500" mt="10px">21/01/2023 - 30/05/2023</Text>  
@@ -200,8 +200,8 @@ const ClaimDetails = () => {
               <Text fontSize="14px" color="#645C5E" fontWeight="500">InstaDapp</Text> 
              </Flex>  
              <Flex alignItems="center" mt="10px">
-              <Avatar src={EthereumLogo} boxSize="20px" mr="5px" />
-              <Text fontSize="14px" color="#645C5E" fontWeight="500">Ethereum</Text> 
+              <Avatar src={FantomLogo} boxSize="20px" mr="5px" />
+              <Text fontSize="14px" color="#645C5E" fontWeight="500">Fantom</Text> 
              </Flex> 
              <Text fontSize="14px" fontWeight="500" mt="10px">Smart contract vulnerability</Text> 
              <Text fontSize="14px" fontWeight="500" mt="10px">0x8b93...8b0F</Text>   

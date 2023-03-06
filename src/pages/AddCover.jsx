@@ -1,55 +1,54 @@
-import React, {Suspense, lazy} from 'react'
+import React, {Suspense, lazy, useState} from 'react'
 import { useContext } from 'react';
 import { Flex, Box, Spinner, Text, Image, Spacer, Button,
     Input,
     InputRightAddon,
     InputGroup,
     useDisclosure,
+    useToast
 } from '@chakra-ui/react';
 import Footer2 from '../components/Footer2';
 import { Formik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import arrowLeft from '../assets/arrow-left.svg';
 import walletIcon from '../assets/empty-wallet.svg';
 import { StopScreenMessageContext } from '../constants/stopScreenMessage';
 import TransactionLoaderModal from '../components/TransactionLoaderModal';
 import StopErrorMessage from '../components/StopErrorMessage';
+import { ethers } from 'ethers';
+import { HexToDecimal } from '../hooks/helpers';
+import { useContractRead, useAccount, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { erc20Setup, insureLabContract, insureLabSetup } from '../constants/interactionSetup';
+import { ConnectInsureLab } from '../utils/customConnect';
 
 const NavBar = lazy(() => import("../components/Navbar"));
 
 const AddCover = ({...rest}) => {
+  const toast = useToast()
+
+  const {id} = useParams()
+  const navigate = useNavigate()
+  
 
      const {root} = useStyles();
 
-    //  const [coverForm, setCoverForm] = useState({
-    //   coveredAddress: '',
-    //   amountCovered: '',
-    //   description: ''
-    //  })
+     const { address } = useAccount();
 
-    //  const handleChange = (e) => {
-    //   setCoverForm({...coverForm, [e.target.name]: e.target.value});
-    //  }
+     const [amountCovered, setAmountCovered] = useState('')
+
+     console.log(amountCovered, "check amount")
 
       // @note - initialValues: is an object that describes the initial values of the respective form fields. 
       const initialValues = {
-        coveredAddress: '',
         amountCovered: '',
-        description: ''
       };
 
 
       // @note - validate: this accepts a function that handles the form validation. The function accepts an object in the form of data values as an argument and validates each property in the object based on the rules defined.
       const validate = (values) => {
         let errors = {};
-        if (!values.coveredAddress) {
-            errors.coveredAddress = "Covered wallet address is required"
-        }
         if (!values.amountCovered) {
             errors.amountCovered = "Amount covered is required"
-        }
-        if (!values.description) {
-            errors.description = "Description is required"
         }
         return errors;
       };
@@ -73,6 +72,110 @@ const AddCover = ({...rest}) => {
     // @note - this will stop user viewing mobile display and it will be removed later in the latest version
      const { isMobile } = useContext(StopScreenMessageContext);
 
+     const { data:tokenData, isLoading:tokenLoading, write:tokenWrite } = useContractWrite({
+      mode: "recklesslyUnprepared",
+      ...erc20Setup,
+      functionName: "approve",
+      args: [
+        insureLabContract,
+        ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
+      ]
+     })
+
+     const { isLoading: tokenWaitLoading } = useWaitForTransaction({
+      hash: tokenData?.hash,
+      onSuccess(){;
+        toast({
+          title: 'Token Approved',
+          description: "You've successfully approved token",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right"
+        })
+        coverWrite()
+
+      },
+      onError(data){
+        toast({
+          title: "Error encountered",
+          description: data,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right"
+        })
+        transactionLoadingOnClose()
+      }
+     })
+
+
+     const { data:coverData, isLoading:coverLoading, write:coverWrite } = useContractWrite({
+      mode: "recklesslyUnprepared",
+      ...insureLabSetup,
+      functionName: "createOnExistinginsure",
+      args: [
+        id,
+        ethers.utils.parseEther(amountCovered ? amountCovered.toString() : "0")
+      ]
+     })
+
+     const { isLoading:coverWaitLoading, isSuccess:coverSuccess, isError:coverError } = useWaitForTransaction({
+      hash: coverData?.hash,
+      onSuccess(){
+        toast({
+          title: 'Cover Created',
+          description: "You've successfully created cover",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right"
+        })
+        setTimeout(() => {
+          transactionLoadingOnClose()
+          navigate(-1);
+        }, 6000);
+      },
+      onError(data){
+        toast({
+          title: "Error encountered",
+          description: data,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right"
+        })
+        transactionLoadingOnClose()
+      }
+     })
+
+     const { data:tokenReadData } = useContractRead({
+      ...erc20Setup,
+      functionName: "allowance",
+      args: [
+        address,
+        insureLabContract
+      ]
+     })
+
+     function tokenAuthorization(){
+      let amountInput = ethers.utils.parseEther(amountCovered ? amountCovered.toString(): "0")
+      if(HexToDecimal(tokenReadData?._hex) >= HexToDecimal(amountInput?._hex)){
+        coverWrite()
+      }
+      else{
+        tokenWrite()
+      }
+     }
+
+
+     const handleSubmit = (e) => {
+      e.preventDefault();
+      tokenAuthorization()
+      transactionLoadingOnOpen()
+     }
+     
+
   return (
     <>
     {!isMobile ?
@@ -91,59 +194,17 @@ const AddCover = ({...rest}) => {
               <Text fontSize="18px" fontWeight="600">Create insurance cover for InstadApp protocol</Text> 
             </Flex>  
             </Flex>
-            <Text fontSize="14px" fontWeight={500} mt="8px">
-              Please fill in the following information to create cover for the protocol
-            </Text>   
+            <Flex gap={10}>
+              <Text fontSize="14px" fontWeight={500} mt="8px">
+                Please fill in the following information to create cover for the protocol
+              </Text>
+              {
+                (tokenLoading || tokenWaitLoading || coverLoading || coverWaitLoading ) ?
+                <Text as="u" onClick={transactionLoadingOnOpen} fontStyle="italic" fontWeight="bold" mt="8px" fontSize="14px" cursor="pointer">Check Transaction Process</Text> : ""
+              }
+            </Flex>  
 
-           <Formik
-      initialValues={initialValues}
-      validate={validate}
-      onSubmit={submitForm}
-    >
-      {(formik) => {
-        const {
-          values,
-          handleChange,
-          handleSubmit,
-          errors,
-          touched,
-          handleBlur,
-        } = formik;
-        return (
-              <Flex mt="20px" flexDir="column" p="50px">
-                    {/* ------------------------------- Input 1 ------------------------------- */}
-                    <Flex flexDir="column" onSubmit={handleSubmit}>
-                      <Text fontSize="15px" fontWeight="500">Covered address</Text>
-                        <Spacer />
-                        <InputGroup
-                          _focus={{ boxShadow: "none" }}
-                          as="button"
-                          w={"100%"}
-                        >
-                          <Input
-                            placeholder="Enter the covered wallet address"
-                            borderRadius="0"
-                            border="0"
-                            borderBottom="1px solid #49454F"
-                            _placeholder={{
-                              color: "#1C1B1F",
-                              justifySelf: "flex-end",
-                              fontSize: "12px"
-                            }}
-                            _focus={{ boxShadow: "none", borderBottomColor: "black" }}
-                            type='text'
-                            value={values.coveredAddress}
-                            name="coveredAddress"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                        </InputGroup>
-                        {errors.coveredAddress && touched.coveredAddress && (
-                        <Text color="red" fontSize="14" fontWeight="500" mt="5px">{errors.coveredAddress}</Text>
-                        )}      
-                </Flex>
-
-                  {/* ------------------------------- Input 2 ------------------------------- */}
+              <Flex mt="20px" flexDir="column" p="50px" onSubmit={handleSubmit}>
                   <Flex flexDir="column" mt="30px">
                       <Text fontSize="15px" fontWeight="500">Amount Covered</Text>
                         <Spacer />
@@ -164,69 +225,36 @@ const AddCover = ({...rest}) => {
                             }}
                             _focus={{ boxShadow: "none"}}
                             type='number'
-                            value={values.amountCovered}
+                            value={amountCovered}
                             name='amountCovered'
-                            onChange={handleChange}
-                            onBlur={handleBlur}
+                            onChange={(e => setAmountCovered(e.target.value))}
                           />
                           <InputRightAddon borderRadius={0} border="0" bg="footerBgColor">
                            <Text fontSize="12px" fontWeight={500}>USDC</Text>
                            <Image src={walletIcon} ml="4px" boxSize="20px" />
                           </InputRightAddon>
                         </InputGroup>
-                        {errors.amountCovered && touched.amountCovered && (
-                        <Text color="red" fontSize="14" fontWeight="500" mt="5px">{errors.amountCovered}</Text>
-                        )}   
                 </Flex>
-
-                {/* ------------------------------- Input 3 ------------------------------- */}
-                <Flex flexDir="column" mt="30px">
-                      <Text fontSize="15px" fontWeight="500">Description</Text>
-                        <Spacer />
-                        <InputGroup
-                          _focus={{ boxShadow: "none" }}
-                          as="button"
-                          w={"100%"}
-                        >
-                          <Input
-                            placeholder="Enter the description of the protocol cover"
-                            borderRadius="0"
-                            border="0"
-                            borderBottom="1px solid #49454F"
-                            _placeholder={{
-                              color: "#1C1B1F",
-                              justifySelf: "flex-end",
-                              fontSize: "12px"
-                            }}
-                            _focus={{ boxShadow: "none", borderBottomColor: "black" }}
-                            text='text'
-                            value={values.description}
-                            name='description'
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                        </InputGroup>
-                        {errors.description && touched.description && (
-                        <Text color="red" fontSize="14" fontWeight="500" mt="5px">{errors.description}</Text>
-                        )}  
-                </Flex>
-                
               </Flex> 
-        );
-      }}
-    </Formik>
-              
+            
           <Flex justifyContent={"center"} align="center">
-            <Button bg="#3E7FDF"
-              borderRadius="20px"
-              p="10px 140px"
-              color="white"
-              fontSize="14px"
-              fontWeight="400"
-              onClick={transactionLoadingOnOpen}
+            {
+              address ?
+              <Button
+                bg="#3E7FDF"
+                borderRadius="20px"
+                p="10px 140px"
+                color="white"
+                fontSize="14px"
+                fontWeight="400"
+                type='button'
+                onClick={handleSubmit}
+                disabled={tokenLoading || tokenWaitLoading || coverLoading || coverWaitLoading }
               >
-              Confirm insurance
-            </Button>
+                Confirm Insurance
+              </Button> :
+              <ConnectInsureLab />
+            }
           </Flex>
       </Flex>
 
@@ -235,6 +263,13 @@ const AddCover = ({...rest}) => {
           <TransactionLoaderModal transactionLoadingIsOpen={transactionLoadingIsOpen}
            transactionLoadingOnClose={transactionLoadingOnClose}
            transactionLoadingOnOpen={transactionLoadingOnOpen}
+           success={coverSuccess}
+           errror={coverError}
+           tokenLoading={tokenLoading}
+           tokenWaitLoading={tokenWaitLoading}
+           coverLoading={coverWaitLoading}
+           amountCovered={amountCovered}
+           coverData={coverData}
           />
           </>
 

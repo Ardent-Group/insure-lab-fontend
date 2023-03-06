@@ -84,7 +84,7 @@ const ProtocolGrid = ({
         <Flex flexDir="column">
          <Button color="black" borderRadius="100px" bg="#DCE7F9"
           fontSize="14px" fontWeight={500}
-          onClick={() => navigate(`/addCover/${id}`)}
+          onClick={() => navigate(`/addCover/${link+1}`)}
          >
             Add cover
         </Button>

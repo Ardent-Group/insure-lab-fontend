@@ -23,7 +23,6 @@ import calendarLogo from '../assets/calendar.svg'
 import { MdArrowDropDown } from "react-icons/md";
 import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
 import { erc20Setup, insureLabContract, insureLabSetup } from '../constants/interactionSetup';
-import { GetCalculatedCover } from '../hooks/getCoverCalculations';
 import { ethers } from 'ethers';
 import { DecimalAbbr, GetCoverCost, GetRiskLevel, HexToDecimal} from '../hooks/helpers';
 import { ConnectInsureLab } from '../utils/customConnect';
@@ -64,9 +63,6 @@ const ProtocolDetails = () => {
    const [coverPeriod, setCoverPeriod] = useState('0');
    const [agree, setAgree] = useState("");
 
-   console.log(coverAddress,coverAmount, coverPeriod, "input parameters")
-   console.log(agree, "check box")
-
 
 
   const { data:protocolDetails } = useContractRead({
@@ -75,24 +71,19 @@ const ProtocolDetails = () => {
     args: [id]
   }) 
 
-  console.log(protocolDetails, "get protocol detail")
 
+      
+      
 
-  let getCalculation = [];
-
-
-    if(protocolDetails){
-      const { data:getCalc } = GetCalculatedCover(
-        protocolDetails[7].toString(),
+    const { data:getCalc } = useContractRead({
+      ...insureLabSetup,
+      functionName: "calculateCover",
+      args: [
+        protocolDetails?protocolDetails[7].toString(): "",
         coverPeriod,
         ethers.utils.parseEther(coverAmount ? coverAmount.toString() : "0")
-      );
-
-      if(getCalc){
-        getCalculation.push(getCalc)
-      }
-    }
-
+      ]
+    })
 
 
   const { data:approveCover, isLoading:approveCoverLoading, write:coverWrite} = useContractWrite({
@@ -101,7 +92,7 @@ const ProtocolDetails = () => {
     functionName: "approve",
     args: [
       insureLabContract,
-      ethers.utils.parseEther(getCalculation[0] ? HexToDecimal(getCalculation[0]._hex).toString() : "0")
+      ethers.utils.parseEther(getCalc ? HexToDecimal(getCalc._hex).toString() : "0")
     ]
   })
 
@@ -181,7 +172,7 @@ const ProtocolDetails = () => {
    })
 
   function tokenAuthorization(){
-      let cover = ethers.utils.parseEther(getCalculation[0] ? HexToDecimal(getCalculation[0]._hex).toString() : "0")
+      let cover = ethers.utils.parseEther(getCalc ? HexToDecimal(getCalc._hex).toString() : "0")
       if( HexToDecimal(tokenReadData?._hex) >= HexToDecimal(cover?._hex)){
         buyCoverWrite()
       }
@@ -381,7 +372,7 @@ const ProtocolDetails = () => {
                 <Flex justify="right" alignItems="center" mt='10px'>
                   <Text {...font3}> {GetRiskLevel(protocolDetails?protocolDetails[7]: "Low")}</Text>
                 </Flex> 
-                <Text>{DecimalAbbr(getCalculation[0] ? getCalculation[0]._hex : "0.00")} USDC</Text>
+                <Text>{DecimalAbbr(getCalc ? getCalc._hex : "0.00")} USDC</Text>
               </Flex>
               </Flex>
              
@@ -512,7 +503,7 @@ const ProtocolDetails = () => {
                             <Text fontSize="18px" fontWeight={500}>Cover Bought</Text>
                             <Flex justify="center" alignItems="center">
                                 <Text color="#645C5E" fontSize="16px" fontWeight={600}>
-                                {DecimalAbbr(getCalculation[0] ? getCalculation[0]._hex : "0.00")} USDC
+                                {DecimalAbbr(getCalc ? getCalc._hex : "0.00")} USDC
                                 </Text>
                             </Flex>
                         </Flex>

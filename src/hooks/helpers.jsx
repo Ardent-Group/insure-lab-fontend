@@ -118,10 +118,13 @@ export const GetEpoch = (months) => {
     const epochInMilli = Math.floor(Date.now()/1000);
     const inputDays = months * 30 * 24 * 60 * 60
 
-    console.log(epochInMilli+inputDays)
     return epochInMilli + inputDays
 }
 
 export const ShortAddress = (address) => {
   return `${address.slice(0, 4)}...${address.slice(38, 42)}`
+}
+
+export const leadingZero = (number, len) => {
+  return String(number).padStart(len, '0');
 }
