@@ -110,7 +110,7 @@ const Protocols = () => {
           />
         )
       }):
-      getProtocols.map((item, index) => {
+      getProtocols?.map((item, index) => {
         return (
           <ProtocolGrid
             key={nanoid()}
